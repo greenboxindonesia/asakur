@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asesmen - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, #023047 100%);
+      color: white;
+      padding: 25px 0;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      border-radius: 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      margin-right: 15px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .assessment-form-group {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .score-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #d3d3d3;
+      outline: none;
+    }
+    
+    .score-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      cursor: pointer;
+    }
+    
+    .score-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p style="font-size: 0.85rem; opacity: 0.8;">Konselor Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('counselor'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_schedule'); return false;">
+      <i class="fas fa-calendar-alt"></i> Jadwal Saya
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_students'); return false;">
+      <i class="fas fa-user-graduate"></i> Klien Saya
+    </a></li>
+    
+    <li><a href="#" class="active" onclick="navigateToPage('counselor_assessments'); return false;">
+      <i class="fas fa-clipboard-check"></i> Asesmen
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_profile'); return false;">
+      <i class="fas fa-user-cog"></i> Profil Saya
+    </a></li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1><i class="fas fa-clipboard-check me-3"></i> Form Asesmen</h1>
+    <p class="text-muted mb-0">Compassion Focused Gratitude Assessment</p>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-8">
+      <!-- Assessment Form -->
+      <div class="content-card">
+        <form id="assessmentForm">
+          <!-- Student Selection -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">Pilih Mahasiswa</label>
+            <select class="form-select form-select-lg" id="student_id" required>
+              <option value="">-- Pilih Mahasiswa --</option>
+            </select>
+          </div>
+          
+          <!-- Session Selection (Optional) -->
+          <div class="mb-4">
+            <label class="form-label">Terkait Sesi (Opsional)</label>
+            <select class="form-select" id="session_id">
+              <option value="">-- Pilih Sesi (jika ada) --</option>
+            </select>
+          </div>
+          
+          <!-- Gratitude Score -->
+          <div class="assessment-form-group">
+            <h5 class="mb-3"><i class="fas fa-heart me-2 text-danger"></i> Gratitude Score</h5>
+            <p class="text-muted small">Tingkat rasa syukur dan apresiasi terhadap kehidupan</p>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>0</span>
+              <div class="score-value" id="gratitude_value">50</div>
+              <span>100</span>
+            </div>
+            
+            <input type="range" class="score-slider" id="gratitude_score" min="0" max="100" value="50" 
+                   oninput="document.getElementById('gratitude_value').textContent = this.value">
+            
+            <div class="mt-3">
+              <small class="text-muted">Indikator: kemampuan menghargai hal positif, mengekspresikan terima kasih</small>
+            </div>
+          </div>
+          
+          <!-- Compassion Score -->
+          <div class="assessment-form-group">
+            <h5 class="mb-3"><i class="fas fa-hands-helping me-2 text-success"></i> Compassion Score</h5>
+            <p class="text-muted small">Tingkat empati dan kepedulian terhadap diri sendiri dan orang lain</p>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>0</span>
+              <div class="score-value" id="compassion_value">50</div>
+              <span>100</span>
+            </div>
+            
+            <input type="range" class="score-slider" id="compassion_score" min="0" max="100" value="50"
+                   oninput="document.getElementById('compassion_value').textContent = this.value">
+            
+            <div class="mt-3">
+              <small class="text-muted">Indikator: self-compassion, empati terhadap orang lain, kemampuan memaafkan</small>
+            </div>
+          </div>
+          
+          <!-- Suicidal Ideation Score -->
+          <div class="assessment-form-group border-danger">
+            <h5 class="mb-3"><i class="fas fa-exclamation-triangle me-2 text-danger"></i> Suicidal Ideation Score</h5>
+            <p class="text-muted small">Tingkat pikiran atau kecenderungan melukai diri sendiri (semakin tinggi semakin berisiko)</p>
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>0</span>
+              <div class="score-value text-danger" id="suicidal_value">10</div>
+              <span>100</span>
+            </div>
+            
+            <input type="range" class="score-slider" id="suicidal_score" min="0" max="100" value="10"
+                   oninput="document.getElementById('suicidal_value').textContent = this.value">
+            
+            <div class="mt-3">
+              <div class="alert alert-warning">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Perhatian:</strong> Skor tinggi (>50) memerlukan tindak lanjut segera
+              </div>
+            </div>
+          </div>
+          
+          <!-- Notes -->
+          <div class="mb-4">
+            <label class="form-label fw-bold">Catatan Asesmen</label>
+            <textarea class="form-control" id="assessment_notes" rows="5" 
+                      placeholder="Tulis observasi, temuan, atau rekomendasi..."></textarea>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-primary btn-lg" onclick="submitAssessment()">
+              <i class="fas fa-save me-2"></i> Simpan Asesmen
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="resetForm()">
+              <i class="fas fa-undo me-2"></i> Reset Form
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <!-- Preview -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-calculator me-2"></i> Preview Hasil</h4>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Gratitude</span>
+            <strong id="preview_gratitude">50</strong>
+          </div>
+          <div class="progress" style="height: 10px;">
+            <div class="progress-bar bg-danger" id="bar_gratitude" style="width: 50%"></div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Compassion</span>
+            <strong id="preview_compassion">50</strong>
+          </div>
+          <div class="progress" style="height: 10px;">
+            <div class="progress-bar bg-success" id="bar_compassion" style="width: 50%"></div>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span>Suicidal (Inverted)</span>
+            <strong id="preview_suicidal">90</strong>
+          </div>
+          <div class="progress" style="height: 10px;">
+            <div class="progress-bar bg-warning" id="bar_suicidal" style="width: 90%"></div>
+          </div>
+        </div>
+        
+        <hr>
+        
+        <div class="text-center p-4" style="background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue)); border-radius: 12px; color: white;">
+          <small>Total Score</small>
+          <h1 class="mb-0" id="total_score">63</h1>
+          <p class="mb-0" id="risk_level">Risiko Sedang</p>
+        </div>
+        
+        <div class="alert alert-info mt-3">
+          <small>
+            <strong>Formula:</strong><br>
+            (Gratitude × 40%) + (Compassion × 40%) + ((100-Suicidal) × 20%)
+          </small>
+        </div>
+      </div>
+      
+      <!-- Guidelines -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-book me-2"></i> Panduan</h4>
+        
+        <div class="mb-3">
+          <h6>Kategori Risiko:</h6>
+          <ul class="small">
+            <li><strong>80-100:</strong> Rendah (Kondisi baik)</li>
+            <li><strong>60-79:</strong> Sedang (Perlu perhatian)</li>
+            <li><strong>0-59:</strong> Tinggi (Perlu intervensi)</li>
+          </ul>
+        </div>
+        
+        <div class="alert alert-warning">
+          <small>
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Jika Suicidal Score > 50, segera lakukan:
+            <ol class="mb-0 ps-3">
+              <li>Evaluasi mendalam</li>
+              <li>Hubungi kontak darurat</li>
+              <li>Koordinasi dengan tim</li>
+            </ol>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let counselorId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadCounselorData();
+    })
+    .getWebAppUrl();
+  
+  // Update preview on slider change
+  document.getElementById('gratitude_score').addEventListener('input', updatePreview);
+  document.getElementById('compassion_score').addEventListener('input', updatePreview);
+  document.getElementById('suicidal_score').addEventListener('input', updatePreview);
+  
+  updatePreview();
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadCounselorData() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      if (session && session.role === 'counselor') {
+        counselorId = session.id;
+        loadStudents();
+      } else {
+        navigateToPage('counselor');
+      }
+    })
+    .getSession();
+}
+
+function loadStudents() {
+  google.script.run
+    .withSuccessHandler(function(students) {
+      const select = document.getElementById('student_id');
+      select.innerHTML = '<option value="">-- Pilih Mahasiswa --</option>';
+      
+      students.filter(s => s.status === 'active').forEach(student => {
+        select.innerHTML += `<option value="${student.user_id}">${student.fullname} (${student.nim})</option>`;
+      });
+    })
+    .getAllStudents();
+}
+
+function updatePreview() {
+  const gratitude = parseInt(document.getElementById('gratitude_score').value);
+  const compassion = parseInt(document.getElementById('compassion_score').value);
+  const suicidal = parseInt(document.getElementById('suicidal_score').value);
+  
+  // Update preview values
+  document.getElementById('preview_gratitude').textContent = gratitude;
+  document.getElementById('preview_compassion').textContent = compassion;
+  document.getElementById('preview_suicidal').textContent = 100 - suicidal; // Inverted
+  
+  // Update bars
+  document.getElementById('bar_gratitude').style.width = gratitude + '%';
+  document.getElementById('bar_compassion').style.width = compassion + '%';
+  document.getElementById('bar_suicidal').style.width = (100 - suicidal) + '%';
+  
+  // Calculate total score
+  const totalScore = Math.round(
+    (gratitude * 0.4) + (compassion * 0.4) + ((100 - suicidal) * 0.2)
+  );
+  
+  document.getElementById('total_score').textContent = totalScore;
+  
+  // Update risk level
+  let riskLevel = 'Risiko Tinggi';
+  let bgColor = 'linear-gradient(135deg, #dc3545, #c82333)';
+  
+  if (totalScore >= 80) {
+    riskLevel = 'Risiko Rendah';
+    bgColor = 'linear-gradient(135deg, #28a745, #20c997)';
+  } else if (totalScore >= 60) {
+    riskLevel = 'Risiko Sedang';
+    bgColor = 'linear-gradient(135deg, #ffc107, #ff9800)';
+  }
+  
+  document.getElementById('risk_level').textContent = riskLevel;
+  document.querySelector('.text-center.p-4').style.background = bgColor;
+}
+
+function submitAssessment() {
+  const studentId = document.getElementById('student_id').value;
+  
+  if (!studentId) {
+    alert('Pilih mahasiswa terlebih dahulu');
+    return;
+  }
+  
+  const assessmentData = {
+    student_id: studentId,
+    counselor_id: counselorId,
+    session_id: document.getElementById('session_id').value || null,
+    gratitude_score: parseInt(document.getElementById('gratitude_score').value),
+    compassion_score: parseInt(document.getElementById('compassion_score').value),
+    suicidal_score: parseInt(document.getElementById('suicidal_score').value),
+    notes: document.getElementById('assessment_notes').value
+  };
+  
+  // Check for high suicidal score
+  if (assessmentData.suicidal_score > 50) {
+    if (!confirm('PERINGATAN: Suicidal score tinggi terdeteksi!\n\nApakah Anda sudah:\n1. Mengevaluasi kondisi mahasiswa\n2. Menghubungi kontak darurat\n3. Mengkoordinasikan dengan tim\n\nLanjutkan menyimpan asesmen?')) {
+      return;
+    }
+  }
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        showNotification('Asesmen berhasil disimpan. Total Score: ' + result.totalScore, 'success');
+        
+        // Send notification if high risk
+        if (result.totalScore < 60) {
+          showNotification('Klien ini memerlukan perhatian khusus (Risiko Tinggi)', 'warning');
+        }
+        
+        resetForm();
+      } else {
+        showNotification('Gagal menyimpan asesmen: ' + result.message, 'danger');
+      }
+    })
+    .createAssessment(assessmentData);
+}
+
+function resetForm() {
+  document.getElementById('assessmentForm').reset();
+  document.getElementById('gratitude_score').value = 50;
+  document.getElementById('compassion_score').value = 50;
+  document.getElementById('suicidal_score').value = 10;
+  
+  document.getElementById('gratitude_value').textContent = 50;
+  document.getElementById('compassion_value').textContent = 50;
+  document.getElementById('suicidal_value').textContent = 10;
+  
+  updatePreview();
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);';
+  notification.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.remove(), 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(() => window.top.location.href = response.redirectUrl || baseUrl, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

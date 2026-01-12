@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal & Laporan - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --dark-blue: #023047;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      border-radius: 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      margin-right: 15px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    
+    .calendar-day {
+      aspect-ratio: 1;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .calendar-day:hover {
+      background-color: rgba(42, 157, 143, 0.1);
+      transform: scale(1.05);
+    }
+    
+    .calendar-day.has-session {
+      background-color: rgba(42, 157, 143, 0.2);
+      border-color: var(--accent-blue);
+    }
+    
+    .calendar-day-number {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    
+    .calendar-session-count {
+      font-size: 0.8rem;
+      color: var(--accent-blue);
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+    }
+    
+    .badge-scheduled { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-completed { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    
+    .stat-card {
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      color: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+    }
+    
+    .stat-card h3 {
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('admin'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
+      <i class="fas fa-user-md"></i> Manajemen Konselor
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </a></li>
+    <li><a href="#" class="active" onclick="navigateToPage('appointment_schedule'); return false;">
+      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('system_settings'); return false;">
+      <i class="fas fa-cogs"></i> Pengaturan Sistem
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
+      <i class="fas fa-phone-alt"></i> Kontak Darurat
+    </a></li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1><i class="fas fa-calendar-alt me-3"></i> Jadwal & Laporan Konseling</h1>
+  </div>
+  
+  <!-- Statistics -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="stat-card">
+        <h3 id="totalSessions">0</h3>
+        <p>Total Sesi</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+        <h3 id="scheduledSessions">0</h3>
+        <p>Terjadwal</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card" style="background: linear-gradient(135deg, #28a745, #20c997);">
+        <h3 id="completedSessions">0</h3>
+        <p>Selesai</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-card" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+        <h3 id="cancelledSessions">0</h3>
+        <p>Dibatalkan</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <!-- Calendar View -->
+    <div class="col-lg-8">
+      <div class="content-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="fas fa-calendar me-2"></i> Kalender Sesi</h4>
+          <div>
+            <button class="btn btn-sm btn-outline-primary me-2" onclick="previousMonth()">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <span id="currentMonth" class="fw-bold mx-3">Januari 2026</span>
+            <button class="btn btn-sm btn-outline-primary" onclick="nextMonth()">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="calendar-grid mb-3">
+          <div class="text-center fw-bold">Min</div>
+          <div class="text-center fw-bold">Sen</div>
+          <div class="text-center fw-bold">Sel</div>
+          <div class="text-center fw-bold">Rab</div>
+          <div class="text-center fw-bold">Kam</div>
+          <div class="text-center fw-bold">Jum</div>
+          <div class="text-center fw-bold">Sab</div>
+        </div>
+        
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- Calendar days will be inserted here -->
+        </div>
+      </div>
+    </div>
+    
+    <!-- Session Statistics Chart -->
+    <div class="col-lg-4">
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-chart-pie me-2"></i> Statistik Sesi</h4>
+        <canvas id="sessionChart" height="250"></canvas>
+        
+        <div class="mt-4">
+          <h5>Tipe Sesi</h5>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>Video Call</span>
+            <span class="badge bg-primary" id="videoCallCount">0</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span>Chat</span>
+            <span class="badge bg-info" id="chatCount">0</span>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <span>In-Person</span>
+            <span class="badge bg-secondary" id="inPersonCount">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sessions List -->
+  <div class="content-card mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4><i class="fas fa-list me-2"></i> Daftar Sesi</h4>
+      <div>
+        <select class="form-select d-inline-block w-auto me-2" id="statusFilterSelect" onchange="filterSessions()">
+          <option value="">Semua Status</option>
+          <option value="scheduled">Terjadwal</option>
+          <option value="completed">Selesai</option>
+          <option value="cancelled">Dibatalkan</option>
+        </select>
+        <button class="btn btn-primary" onclick="exportSessions()">
+          <i class="fas fa-download me-2"></i> Export
+        </button>
+      </div>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tanggal & Waktu</th>
+            <th>Mahasiswa</th>
+            <th>Konselor</th>
+            <th>Tipe</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="sessionsTableBody">
+          <tr>
+            <td colspan="7" class="text-center py-5">
+              <div class="spinner-border text-primary"></div>
+              <p class="mt-2">Memuat data sesi...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let allSessions = [];
+let currentDate = new Date();
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadSessions();
+      renderCalendar();
+    })
+    .getWebAppUrl();
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadSessions() {
+  google.script.run
+    .withSuccessHandler(function(sessions) {
+      allSessions = sessions;
+      displaySessions(sessions);
+      updateStatistics(sessions);
+      renderCalendar();
+    })
+    .getAllSessions();
+}
+
+function updateStatistics(sessions) {
+  document.getElementById('totalSessions').textContent = sessions.length;
+  document.getElementById('scheduledSessions').textContent = sessions.filter(s => s.status === 'scheduled').length;
+  document.getElementById('completedSessions').textContent = sessions.filter(s => s.status === 'completed').length;
+  document.getElementById('cancelledSessions').textContent = sessions.filter(s => s.status === 'cancelled').length;
+  
+  const videoCall = sessions.filter(s => s.session_type === 'video_call').length;
+  const chat = sessions.filter(s => s.session_type === 'chat').length;
+  const inPerson = sessions.filter(s => s.session_type === 'in_person').length;
+  
+  document.getElementById('videoCallCount').textContent = videoCall;
+  document.getElementById('chatCount').textContent = chat;
+  document.getElementById('inPersonCount').textContent = inPerson;
+  
+  updateChart(
+    sessions.filter(s => s.status === 'scheduled').length,
+    sessions.filter(s => s.status === 'completed').length,
+    sessions.filter(s => s.status === 'cancelled').length
+  );
+}
+
+function updateChart(scheduled, completed, cancelled) {
+  const ctx = document.getElementById('sessionChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Terjadwal', 'Selesai', 'Dibatalkan'],
+      datasets: [{
+        data: [scheduled, completed, cancelled],
+        backgroundColor: ['#ffc107', '#28a745', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+}
+
+function displaySessions(sessions) {
+  const tbody = document.getElementById('sessionsTableBody');
+  
+  if (!sessions || sessions.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-5">
+          <i class="fas fa-calendar-times fa-2x text-muted mb-3"></i>
+          <p>Belum ada data sesi</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = '';
+  
+  sessions.slice(0, 20).forEach(function(session) {
+    let statusBadge = 'badge-scheduled';
+    let statusText = 'Terjadwal';
+    
+    if (session.status === 'completed') {
+      statusBadge = 'badge-completed';
+      statusText = 'Selesai';
+    } else if (session.status === 'cancelled') {
+      statusBadge = 'badge-cancelled';
+      statusText = 'Dibatalkan';
+    }
+    
+    const date = new Date(session.scheduled_date);
+    const formattedDate = date.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    tbody.innerHTML += `
+      <tr>
+        <td class="fw-bold">${session.session_id}</td>
+        <td>${formattedDate}</td>
+        <td>${session.student_name || 'Mahasiswa'}</td>
+        <td>${session.counselor_name || 'Konselor'}</td>
+        <td>${session.session_type === 'video_call' ? 'Video Call' : session.session_type}</td>
+        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+        <td>
+          <button class="btn btn-sm btn-info" onclick="viewSessionDetail('${session.session_id}')">
+            <i class="fas fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function renderCalendar() {
+  const grid = document.getElementById('calendarGrid');
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  
+  document.getElementById('currentMonth').textContent = new Date(year, month).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  grid.innerHTML = '';
+  
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) {
+    grid.innerHTML += '<div></div>';
+  }
+  
+  // Days of month
+  for (let day = 1; day <= daysInMonth; day++) {
+    const sessionsOnDay = allSessions.filter(s => {
+      const sessionDate = new Date(s.scheduled_date);
+      return sessionDate.getDate() === day && 
+             sessionDate.getMonth() === month && 
+             sessionDate.getFullYear() === year;
+    }).length;
+    
+    grid.innerHTML += `
+      <div class="calendar-day ${sessionsOnDay > 0 ? 'has-session' : ''}" onclick="viewDaySessions(${day})">
+        <div class="calendar-day-number">${day}</div>
+        ${sessionsOnDay > 0 ? `<div class="calendar-session-count">${sessionsOnDay} sesi</div>` : ''}
+      </div>
+    `;
+  }
+}
+
+function previousMonth() {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+}
+
+function nextMonth() {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+}
+
+function viewDaySessions(day) {
+  alert(`Melihat sesi pada tanggal ${day} - Fitur akan segera tersedia`);
+}
+
+function filterSessions() {
+  const status = document.getElementById('statusFilterSelect').value;
+  const filtered = status ? allSessions.filter(s => s.status === status) : allSessions;
+  displaySessions(filtered);
+}
+
+function viewSessionDetail(sessionId) {
+  alert(`Detail sesi ${sessionId} - Fitur akan segera tersedia`);
+}
+
+function exportSessions() {
+  alert('Export data sesi - Fitur akan segera tersedia');
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(function() {
+        window.top.location.href = response.redirectUrl || baseUrl;
+      }, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

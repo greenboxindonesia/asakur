@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Mahasiswa - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
+      --dark-blue: #023047;
+      --light-bg: #f8f9fa;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-brand p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 12px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      padding: 0 25px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      transition: all 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    .top-bar {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .top-bar h1 {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .top-bar p {
+      color: #666;
+      margin-bottom: 0;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    }
+    
+    .card-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: white;
+    }
+    
+    .icon-blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
+    .icon-green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
+    .icon-light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
+    .icon-dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
+    
+    .stat-card h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-top: 30px;
+    }
+    
+    .table-title {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .table {
+      margin-bottom: 0;
+    }
+    
+    .table thead th {
+      background-color: #f8f9fa;
+      color: var(--dark-blue);
+      font-weight: 600;
+      border: none;
+      padding: 18px 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .table tbody td {
+      padding: 18px 20px;
+      vertical-align: middle;
+      border-color: #f0f0f0;
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .badge-scheduled { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-completed { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    .badge-pending { background-color: rgba(23, 162, 184, 0.15); color: #138496; }
+    
+    .sidebar-toggle {
+      display: none;
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.3rem;
+      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.3);
+      transition: all 0.3s;
+    }
+    
+    .sidebar-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(13, 59, 102, 0.4);
+    }
+    
+    .emergency-btn {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      padding: 20px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      transition: all 0.3s;
+      box-shadow: 0 8px 25px rgba(220, 53, 69, 0.3);
+    }
+    
+    .emergency-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(220, 53, 69, 0.4);
+      background: linear-gradient(135deg, #c82333, #b21f2d);
+    }
+    
+    .action-btn {
+      padding: 12px 25px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .action-btn-primary {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      color: white;
+      border: none;
+    }
+    
+    .action-btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.2);
+    }
+    
+    .progress-card {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      height: 100%;
+    }
+    
+    .progress-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent-blue) 0% var(--percentage), #e9ecef var(--percentage) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+    
+    .progress-circle::before {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background: white;
+      border-radius: 50%;
+    }
+    
+    .progress-text {
+      position: relative;
+      z-index: 1;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+    
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .notification-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+    
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+      
+      .sidebar.active {
+        margin-left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .user-info {
+        align-self: flex-end;
+      }
+      
+      .table-container {
+        padding: 25px 20px;
+      }
+      
+      .emergency-btn {
+        padding: 15px;
+        font-size: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .stat-card {
+        padding: 25px;
+      }
+      
+      .stat-card h2 {
+        font-size: 2rem;
+      }
+      
+      .top-bar h1 {
+        font-size: 1.5rem;
+      }
+      
+      .progress-circle {
+        width: 100px;
+        height: 100px;
+      }
+      
+      .progress-text {
+        font-size: 1.5rem;
+      }
+    }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--secondary-blue);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-blue);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p>Mahasiswa Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" class="active" onclick="navigateToPage('student'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('student_appointments'); return false;">
+      <i class="fas fa-calendar-alt"></i> Jadwal Konseling
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('student_counselors'); return false;">
+      <i class="fas fa-user-md"></i> Cari Konselor
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('student_progress'); return false;">
+      <i class="fas fa-chart-line"></i> Progress Saya
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('student_profile'); return false;">
+      <i class="fas fa-user-cog"></i> Profil Saya
+    </a></li>
+  </ul>
+  
+  <div class="sidebar-footer">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content" id="mainContent">
+  <div class="top-bar">
+    <div>
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1>Dashboard Mahasiswa</h1>
+      <p>Selamat datang, <span id="studentName" class="fw-bold">Mahasiswa</span></p>
+    </div>
+    
+    <div class="user-info">
+      <div class="notification-bell" onclick="showNotifications()">
+        <i class="fas fa-bell fs-5 text-secondary"></i>
+        <span class="notification-count" id="notificationCount" style="display: none;">0</span>
+      </div>
+      
+      <div class="user-avatar" id="userAvatar">
+        <i class="fas fa-user-graduate"></i>
+      </div>
+      <div>
+        <h6 class="mb-0 fw-bold" id="usernameDisplay">Mahasiswa</h6>
+        <small class="text-muted" id="userRole">Student</small>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-blue">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 id="upcomingSessions">0</h2>
+        <p>Sesi Mendatang</p>
+        <small class="text-muted"><i class="fas fa-clock me-1"></i> <span id="pendingSessions">0</span> terjadwal</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-green">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 id="completedSessions">0</h2>
+        <p>Sesi Selesai</p>
+        <small class="text-muted"><i class="fas fa-history me-1"></i> <span id="totalSessions">0</span> total sesi</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-light">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h2 id="totalAssessments">0</h2>
+        <p>Total Asesmen</p>
+        <small class="text-muted"><i class="fas fa-chart-line me-1"></i> <span id="latestScore">0</span> skor terakhir</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-dark">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <h2 id="riskLevel">Rendah</h2>
+        <p>Tingkat Risiko</p>
+        <small class="text-muted" id="riskDescription">Kondisi baik</small>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      <div class="table-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="table-title mb-0">
+            <i class="fas fa-calendar-day"></i> Sesi Mendatang
+          </h3>
+          <button class="btn action-btn action-btn-primary" onclick="navigateToPage('student_appointments')">
+            <i class="fas fa-plus"></i> Minta Sesi Baru
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Konselor</th>
+                <th>Tanggal & Waktu</th>
+                <th>Jenis Sesi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="upcomingSessionsTable">
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2">Memuat data sesi...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="progress-card">
+        <h3 class="table-title">
+          <i class="fas fa-chart-line"></i> Progress Kesehatan Mental
+        </h3>
+        
+        <button class="emergency-btn w-100 mb-4" onclick="triggerEmergency()">
+          <i class="fas fa-phone-alt"></i>
+          <div>
+            <div>KONTAK DARURAT</div>
+            <small>Klik jika butuh bantuan segera</small>
+          </div>
+        </button>
+        
+        <div class="progress-circle" id="progressCircle" style="--percentage: 0%">
+          <div class="progress-text" id="progressText">0%</div>
+        </div>
+        <h5 class="text-center mt-3">Kesehatan Mental</h5>
+        <p class="text-center text-muted">Berdasarkan asesmen terakhir</p>
+        
+        <div class="row mt-4">
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
+              <h4 class="fw-bold mb-0" id="gratitudeScore">0</h4>
+              <small>Gratitude</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
+              <h4 class="fw-bold mb-0" id="compassionScore">0</h4>
+              <small>Compassion</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="mt-4">
+          <h5 class="mb-3">Aksi Cepat</h5>
+          <div class="d-grid gap-2">
+            <button class="btn action-btn action-btn-primary" onclick="navigateToPage('student_progress')">
+              <i class="fas fa-file-pdf"></i> Lihat Laporan
+            </button>
+            <button class="btn btn-outline-success action-btn" onclick="navigateToPage('student_counselors')">
+              <i class="fas fa-search"></i> Cari Konselor
+            </button>
+            <button class="btn btn-outline-primary action-btn" onclick="navigateToPage('student_appointments')">
+              <i class="fas fa-calendar-plus"></i> Buat Janji
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="table-container mt-4">
+    <h3 class="table-title">
+      <i class="fas fa-history"></i> Riwayat Asesmen Terbaru
+    </h3>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Tanggal</th>
+            <th>Konselor</th>
+            <th>Gratitude</th>
+            <th>Compassion</th>
+            <th>Suicidal</th>
+            <th>Total Score</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="recentAssessmentsTable">
+          <tr>
+            <td colspan="8" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Memuat data asesmen...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+        <p class="text-muted mt-2">Mengalihkan ke halaman login</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="emergencyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Kontak Darurat</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <div class="mb-4">
+          <i class="fas fa-phone-alt fa-3x text-danger mb-3"></i>
+          <h4>Apakah Anda membutuhkan bantuan darurat?</h4>
+          <p class="text-muted">Kami akan menghubungi kontak darurat Anda dan mengirim notifikasi ke konselor.</p>
+        </div>
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          <strong>Kontak Darurat Anda:</strong>
+          <p class="mb-0 mt-2" id="emergencyContactInfo">Memuat...</p>
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger" onclick="confirmEmergency()">
+          <i class="fas fa-phone-alt me-2"></i> Hubungi Darurat
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="notificationsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-bell me-2"></i> Notifikasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div id="notificationsList">
+          <p class="text-center">Memuat notifikasi...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="markAllAsRead()">Tandai Semua Dibaca</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let currentSession = null;
+let studentProfile = null;
+let studentSessions = [];
+let studentAssessments = [];
+
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('active');
+    });
+  }
+  
+  initializeDashboard();
+});
+
+function initializeDashboard() {
+  console.log('Initializing dashboard...');
+  
+  google.script.run
+    .withSuccessHandler(function(url) {
+      console.log('Base URL received:', url);
+      baseUrl = url;
+      loadUserInfo();
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error getting base URL:', error);
+      showNotification('Gagal memuat halaman', 'danger');
+    })
+    .getWebAppUrl();
+}
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadUserInfo() {
+  console.log('Loading user info...');
+  
+  google.script.run
+    .withSuccessHandler(function(session) {
+      console.log('Session received:', session);
+      
+      if (session && session.role === 'student') {
+        currentSession = session;
+        
+        document.getElementById('studentName').textContent = session.fullname || session.username;
+        document.getElementById('usernameDisplay').textContent = session.username;
+        document.getElementById('userRole').textContent = 'Mahasiswa';
+        
+        const name = session.fullname || session.username;
+        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('userAvatar').textContent = initials.substring(0, 2);
+        
+        loadStudentProfile(session.id);
+        loadStudentSessions();
+        loadStudentAssessments();
+        loadNotifications();
+      } else {
+        console.error('Invalid session or role');
+        navigateToPage('');
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading user info:', error);
+      showNotification('Gagal memuat informasi pengguna', 'danger');
+      setTimeout(() => navigateToPage(''), 2000);
+    })
+    .getSession();
+}
+
+function loadStudentProfile(studentId) {
+  console.log('Loading student profile for ID:', studentId);
+  
+  google.script.run
+    .withSuccessHandler(function(profile) {
+      console.log('Profile received:', profile);
+      studentProfile = profile;
+      
+      if (profile && profile.emergency_contact) {
+        document.getElementById('emergencyContactInfo').textContent = profile.emergency_contact;
+      } else {
+        document.getElementById('emergencyContactInfo').textContent = 'Belum diatur';
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading profile:', error);
+      document.getElementById('emergencyContactInfo').textContent = 'Gagal memuat';
+    })
+    .getStudentProfile(studentId);
+}
+
+function loadStudentSessions() {
+  console.log('Loading student sessions...');
+  
+  google.script.run
+    .withSuccessHandler(function(sessions) {
+      console.log('Sessions received:', sessions);
+      studentSessions = sessions || [];
+      updateSessionStats(sessions);
+      displayUpcomingSessions(sessions);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading sessions:', error);
+      document.getElementById('upcomingSessionsTable').innerHTML = 
+        '<tr><td colspan="6" class="text-center py-4"><div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Gagal memuat data sesi</p></div></td></tr>';
+      updateSessionStats([]);
+    })
+    .getStudentSessions();
+}
+
+function loadStudentAssessments() {
+  console.log('Loading student assessments...');
+  
+  google.script.run
+    .withSuccessHandler(function(assessments) {
+      console.log('Assessments received:', assessments);
+      studentAssessments = assessments || [];
+      updateAssessmentStats(assessments);
+      displayRecentAssessments(assessments);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading assessments:', error);
+      document.getElementById('recentAssessmentsTable').innerHTML = 
+        '<tr><td colspan="8" class="text-center py-4"><div class="empty-state"><i class="fas fa-exclamation-circle"></i><p>Gagal memuat data asesmen</p></div></td></tr>';
+      updateAssessmentStats([]);
+    })
+    .getStudentAssessments();
+}
+
+function updateSessionStats(sessions) {
+  if (!sessions) sessions = [];
+  
+  const now = new Date();
+  const upcoming = sessions.filter(s => {
+    const sessionDate = new Date(s.scheduled_date);
+    return sessionDate > now && s.status === 'scheduled';
+  });
+  const completed = sessions.filter(s => s.status === 'completed');
+  
+  document.getElementById('upcomingSessions').textContent = upcoming.length;
+  document.getElementById('pendingSessions').textContent = upcoming.length;
+  document.getElementById('completedSessions').textContent = completed.length;
+  document.getElementById('totalSessions').textContent = sessions.length;
+}
+
+function updateAssessmentStats(assessments) {
+  if (!assessments || assessments.length === 0) {
+    document.getElementById('totalAssessments').textContent = '0';
+    document.getElementById('latestScore').textContent = '0';
+    document.getElementById('riskLevel').textContent = 'Belum Ada Data';
+    document.getElementById('riskDescription').textContent = 'Belum ada asesmen';
+    document.getElementById('gratitudeScore').textContent = '0';
+    document.getElementById('compassionScore').textContent = '0';
+    document.getElementById('progressText').textContent = '0%';
+    document.getElementById('progressCircle').style.setProperty('--percentage', '0%');
+    return;
+  }
+  
+  const latest = assessments[0];
+  const totalScore = latest.total_score || 0;
+  
+  document.getElementById('totalAssessments').textContent = assessments.length;
+  document.getElementById('latestScore').textContent = totalScore;
+  document.getElementById('gratitudeScore').textContent = latest.gratitude_score || 0;
+  document.getElementById('compassionScore').textContent = latest.compassion_score || 0;
+  
+  document.getElementById('progressText').textContent = totalScore + '%';
+  document.getElementById('progressCircle').style.setProperty('--percentage', totalScore + '%');
+  
+  const riskLevel = getRiskLevel(totalScore);
+  document.getElementById('riskLevel').textContent = riskLevel.level;
+  document.getElementById('riskDescription').textContent = riskLevel.description;
+}
+
+function displayUpcomingSessions(sessions) {
+  const tableBody = document.getElementById('upcomingSessionsTable');
+  
+  if (!sessions || sessions.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center py-5">
+          <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <p>Belum ada sesi yang terjadwal</p>
+            <button class="btn btn-primary mt-2" onclick="navigateToPage('student_appointments')">
+              <i class="fas fa-plus me-2"></i> Minta Sesi Baru
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  const now = new Date();
+  const upcoming = sessions
+    .filter(s => {
+      const sessionDate = new Date(s.scheduled_date);
+      return sessionDate > now && s.status === 'scheduled';
+    })
+    .sort((a, b) => new Date(a.scheduled_date) - new Date(b.scheduled_date))
+    .slice(0, 5);
+  
+  if (upcoming.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center py-4">
+          <div class="empty-state">
+            <i class="fas fa-calendar-check"></i>
+            <p>Tidak ada sesi mendatang</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tableBody.innerHTML = '';
+  
+  upcoming.forEach((session, index) => {
+    const date = new Date(session.scheduled_date);
+    const formattedDate = date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    const formattedTime = date.toLocaleTimeString('id-ID', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    const sessionType = session.session_type === 'video_call' ? 'Video Call' : 
+                       session.session_type === 'chat' ? 'Chat' : 'Tatap Muka';
+    
+    tableBody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>
+          <strong>${session.counselor_name || 'Konselor'}</strong><br>
+          <small class="text-muted">${session.counselor_specialization || 'Umum'}</small>
+        </td>
+        <td>
+          <i class="fas fa-calendar me-1"></i> ${formattedDate}<br>
+          <i class="fas fa-clock me-1"></i> ${formattedTime}
+        </td>
+        <td><span class="badge bg-info">${sessionType}</span></td>
+        <td><span class="badge badge-${session.status}">${session.status}</span></td>
+        <td>
+          ${session.meeting_link ? 
+            `<a href="${session.meeting_link}" target="_blank" class="btn btn-sm btn-primary">
+              <i class="fas fa-video"></i> Join
+            </a>` : 
+            '<small class="text-muted">Menunggu link</small>'}
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function displayRecentAssessments(assessments) {
+  const tableBody = document.getElementById('recentAssessmentsTable');
+  
+  if (!assessments || assessments.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center py-5">
+          <div class="empty-state">
+            <i class="fas fa-clipboard-list"></i>
+            <p>Belum ada riwayat asesmen</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  const recent = assessments.slice(0, 5);
+  tableBody.innerHTML = '';
+  
+  recent.forEach((assessment, index) => {
+    const date = new Date(assessment.assessment_date);
+    const formattedDate = date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+    
+    const riskLevel = getRiskLevel(assessment.total_score);
+    
+    tableBody.innerHTML += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${formattedDate}</td>
+        <td>${assessment.counselor_name || 'Konselor'}</td>
+        <td><strong>${assessment.gratitude_score || 0}</strong></td>
+        <td><strong>${assessment.compassion_score || 0}</strong></td>
+        <td><strong>${assessment.suicidal_score || 0}</strong></td>
+        <td><strong>${assessment.total_score || 0}</strong></td>
+        <td><span class="badge bg-${riskLevel.color}">${riskLevel.level}</span></td>
+      </tr>
+    `;
+  });
+}
+
+function getRiskLevel(score) {
+  if (score >= 80) {
+    return { level: 'Rendah', color: 'success', description: 'Kondisi baik' };
+  } else if (score >= 60) {
+    return { level: 'Sedang', color: 'warning', description: 'Perlu perhatian' };
+  } else {
+    return { level: 'Tinggi', color: 'danger', description: 'Perlu intervensi segera' };
+  }
+}
+
+function loadNotifications() {
+  google.script.run
+    .withSuccessHandler(function(notifications) {
+      const count = notifications ? notifications.length : 0;
+      const countElement = document.getElementById('notificationCount');
+      
+      if (count > 0) {
+        countElement.textContent = count;
+        countElement.style.display = 'flex';
+      } else {
+        countElement.style.display = 'none';
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading notifications:', error);
+    })
+    .getMyNotifications();
+}
+
+function showNotifications() {
+  google.script.run
+    .withSuccessHandler(function(notifications) {
+      const listContainer = document.getElementById('notificationsList');
+      
+      if (!notifications || notifications.length === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center py-4">
+            <i class="fas fa-bell-slash fa-3x text-muted mb-3"></i>
+            <p>Tidak ada notifikasi baru</p>
+          </div>
+        `;
+      } else {
+        listContainer.innerHTML = '';
+        
+        notifications.forEach(notif => {
+          const date = new Date(notif.created_at);
+          const formattedDate = date.toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          const typeIcon = notif.type === 'emergency' ? 'exclamation-triangle' :
+                          notif.type === 'warning' ? 'exclamation-circle' :
+                          notif.type === 'success' ? 'check-circle' : 'info-circle';
+          
+          const typeColor = notif.type === 'emergency' ? 'danger' :
+                           notif.type === 'warning' ? 'warning' :
+                           notif.type === 'success' ? 'success' : 'info';
+          
+          listContainer.innerHTML += `
+            <div class="alert alert-${typeColor} alert-dismissible fade show">
+              <div class="d-flex">
+                <div class="me-3">
+                  <i class="fas fa-${typeIcon} fa-2x"></i>
+                </div>
+                <div class="flex-grow-1">
+                  <h6 class="alert-heading">${notif.title}</h6>
+                  <p class="mb-1">${notif.message}</p>
+                  <small class="text-muted">${formattedDate}</small>
+                </div>
+              </div>
+              <button type="button" class="btn-close" onclick="markAsRead(${notif.id})"></button>
+            </div>
+          `;
+        });
+      }
+      
+      const modal = new bootstrap.Modal(document.getElementById('notificationsModal'));
+      modal.show();
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error showing notifications:', error);
+      showNotification('Gagal memuat notifikasi', 'danger');
+    })
+    .getMyNotifications();
+}
+
+function markAsRead(notificationId) {
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        loadNotifications();
+      }
+    })
+    .markNotificationAsRead(notificationId);
+}
+
+function markAllAsRead() {
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        loadNotifications();
+        bootstrap.Modal.getInstance(document.getElementById('notificationsModal')).hide();
+        showNotification('Semua notifikasi ditandai sebagai dibaca', 'success');
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error marking all as read:', error);
+      showNotification('Gagal menandai notifikasi', 'danger');
+    })
+    .markAllNotificationsAsRead();
+}
+
+function triggerEmergency() {
+  const modal = new bootstrap.Modal(document.getElementById('emergencyModal'));
+  modal.show();
+}
+
+function confirmEmergency() {
+  google.script.run
+    .withSuccessHandler(function(response) {
+      if (response.success) {
+        bootstrap.Modal.getInstance(document.getElementById('emergencyModal')).hide();
+        showNotification(response.message, 'success');
+      } else {
+        showNotification('Gagal mengirim sinyal darurat', 'danger');
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error triggering emergency:', error);
+      showNotification('Terjadi kesalahan saat menghubungi darurat', 'danger');
+    })
+    .triggerEmergency();
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);';
+  notification.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.remove();
+  }, 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(() => {
+        window.top.location.href = response.redirectUrl || baseUrl;
+      }, 1500);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Logout error:', error);
+      setTimeout(() => {
+        window.top.location.href = baseUrl;
+      }, 2000);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

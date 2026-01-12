@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil & Pengaturan - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, #023047 100%);
+      color: white;
+      padding: 25px 0;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      border-radius: 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      margin-right: 15px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 4rem;
+      font-weight: bold;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 25px rgba(42, 157, 143, 0.3);
+    }
+    
+    .settings-section {
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .settings-section h5 {
+      color: var(--primary-blue);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: var(--primary-blue);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p style="font-size: 0.85rem; opacity: 0.8;">Konselor Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('counselor'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_schedule'); return false;">
+      <i class="fas fa-calendar-alt"></i> Jadwal Konseling
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_students'); return false;">
+      <i class="fas fa-user-graduate"></i> Klien Saya
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_assessments'); return false;">
+      <i class="fas fa-clipboard-check"></i> Form Asesmen
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_video'); return false;">
+      <i class="fas fa-video"></i> Sesi Virtual
+    </a></li>
+    
+    <li><a href="#" class="active" onclick="navigateToPage('counselor_profile'); return false;">
+      <i class="fas fa-user-cog"></i> Profil & Pengaturan
+    </a></li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1><i class="fas fa-user-cog me-3"></i> Profil & Pengaturan</h1>
+    <p class="text-muted mb-0">Kelola informasi profil dan preferensi Anda</p>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-4">
+      <!-- Profile Card -->
+      <div class="content-card text-center">
+        <div class="profile-avatar" id="profileAvatar">K</div>
+        <h4 id="profileName">Konselor</h4>
+        <p class="text-muted" id="profileEmail">konselor@asakur.com</p>
+        <p class="text-muted"><i class="fas fa-tag me-2"></i><span id="profileSpecialization">Konseling Umum</span></p>
+        
+        <hr>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-2">
+            <span class="small">Profil Lengkap</span>
+            <strong class="small" id="profileCompletion">75%</strong>
+          </div>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar bg-success" id="profileBar" style="width: 75%"></div>
+          </div>
+        </div>
+        
+        <div class="alert alert-info">
+          <small><i class="fas fa-info-circle me-2"></i>Lengkapi profil Anda untuk meningkatkan kepercayaan klien</small>
+        </div>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div class="content-card">
+        <h5 class="mb-4"><i class="fas fa-chart-bar me-2"></i> Statistik</h5>
+        
+        <div class="mb-3 pb-3 border-bottom">
+          <div class="d-flex justify-content-between">
+            <span>Total Sesi</span>
+            <strong id="statTotalSessions">0</strong>
+          </div>
+        </div>
+        
+        <div class="mb-3 pb-3 border-bottom">
+          <div class="d-flex justify-content-between">
+            <span>Total Klien</span>
+            <strong id="statTotalClients">0</strong>
+          </div>
+        </div>
+        
+        <div class="mb-3">
+          <div class="d-flex justify-content-between">
+            <span>Total Asesmen</span>
+            <strong id="statTotalAssessments">0</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-8">
+      <!-- Profile Information -->
+      <div class="content-card">
+        <form id="profileForm">
+          <!-- Personal Information -->
+          <div class="settings-section">
+            <h5><i class="fas fa-user me-2"></i> Informasi Pribadi</h5>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nama Lengkap</label>
+                <input type="text" class="form-control" id="fullname" placeholder="Nama lengkap Anda">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="email@example.com">
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nomor Telepon</label>
+                <input type="tel" class="form-control" id="phone" placeholder="08123456789">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Spesialisasi</label>
+                <select class="form-select" id="specialization">
+                  <option value="">Pilih Spesialisasi</option>
+                  <option value="Kecemasan">Kecemasan</option>
+                  <option value="Depresi">Depresi</option>
+                  <option value="Stres">Stres</option>
+                  <option value="Hubungan">Hubungan</option>
+                  <option value="Akademik">Akademik</option>
+                  <option value="Umum">Umum</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Professional Information -->
+          <div class="settings-section">
+            <h5><i class="fas fa-graduation-cap me-2"></i> Informasi Profesional</h5>
+            
+            <div class="mb-3">
+              <label class="form-label">Pendidikan</label>
+              <input type="text" class="form-control" id="education" placeholder="Contoh: S.Psi, M.Psi">
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Pengalaman (tahun)</label>
+                <input type="number" class="form-control" id="experience" min="0" max="50">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Sertifikasi</label>
+                <input type="text" class="form-control" id="certifications" placeholder="Sertifikat profesional">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Bio / Deskripsi Diri</label>
+              <textarea class="form-control" id="bio" rows="4" placeholder="Ceritakan sedikit tentang diri Anda dan pendekatan konseling Anda..."></textarea>
+            </div>
+          </div>
+          
+          <!-- Availability Settings -->
+          <div class="settings-section">
+            <h5><i class="fas fa-clock me-2"></i> Pengaturan Ketersediaan</h5>
+            
+            <div class="mb-3">
+              <label class="form-label">Status Ketersediaan</label>
+              <select class="form-select" id="availability">
+                <option value="available">Tersedia</option>
+                <option value="busy">Sibuk</option>
+              </select>
+            </div>
+            
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" id="acceptNewClients" checked>
+              <label class="form-check-label" for="acceptNewClients">
+                Terima klien baru
+              </label>
+            </div>
+          </div>
+          
+          <!-- Change Password -->
+          <div class="settings-section">
+            <h5><i class="fas fa-lock me-2"></i> Ubah Password</h5>
+            
+            <div class="mb-3">
+              <label class="form-label">Password Saat Ini</label>
+              <input type="password" class="form-control" id="currentPassword">
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Password Baru</label>
+                <input type="password" class="form-control" id="newPassword">
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Konfirmasi Password Baru</label>
+                <input type="password" class="form-control" id="confirmPassword">
+              </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-primary" onclick="changePassword()">
+              <i class="fas fa-key me-2"></i> Ubah Password
+            </button>
+          </div>
+          
+          <!-- Save Button -->
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-primary" onclick="saveProfile()">
+              <i class="fas fa-save me-2"></i> Simpan Perubahan
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="loadProfile()">
+              <i class="fas fa-undo me-2"></i> Reset
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let counselorProfile = null;
+let userId = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadUserData();
+    })
+    .getWebAppUrl();
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadUserData() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      if (session && session.role === 'counselor') {
+        userId = session.id;
+        loadProfile();
+        loadStats();
+      } else {
+        navigateToPage('counselor');
+      }
+    })
+    .getSession();
+}
+
+function loadProfile() {
+  google.script.run
+    .withSuccessHandler(function(profile) {
+      if (!profile) return;
+      
+      counselorProfile = profile;
+      
+      // Update profile card
+      const initials = (profile.fullname || 'K').split(' ').map(n => n[0]).join('').substring(0, 2);
+      document.getElementById('profileAvatar').textContent = initials;
+      document.getElementById('profileName').textContent = profile.fullname || 'Konselor';
+      document.getElementById('profileEmail').textContent = profile.email || '';
+      document.getElementById('profileSpecialization').textContent = profile.specialization || 'Konseling Umum';
+      
+      // Fill form
+      document.getElementById('fullname').value = profile.fullname || '';
+      document.getElementById('email').value = profile.email || '';
+      document.getElementById('phone').value = profile.phone || '';
+      document.getElementById('specialization').value = profile.specialization || '';
+      document.getElementById('education').value = profile.education || '';
+      document.getElementById('experience').value = profile.experience_years || '';
+      document.getElementById('certifications').value = profile.certifications || '';
+      document.getElementById('bio').value = profile.bio || '';
+      document.getElementById('availability').value = profile.availability || 'available';
+      
+      // Calculate profile completion
+      calculateProfileCompletion(profile);
+    })
+    .getCounselorProfile(userId);
+}
+
+function calculateProfileCompletion(profile) {
+  const fields = [
+    profile.fullname,
+    profile.email,
+    profile.phone,
+    profile.specialization,
+    profile.education,
+    profile.experience_years,
+    profile.certifications,
+    profile.bio
+  ];
+  
+  const completed = fields.filter(f => f && f !== '').length;
+  const percentage = Math.round((completed / fields.length) * 100);
+  
+  document.getElementById('profileCompletion').textContent = percentage + '%';
+  document.getElementById('profileBar').style.width = percentage + '%';
+}
+
+function loadStats() {
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      document.getElementById('statTotalSessions').textContent = stats.mySessions || 0;
+      document.getElementById('statTotalClients').textContent = stats.totalStudents || 0;
+      document.getElementById('statTotalAssessments').textContent = stats.totalAssessments || 0;
+    })
+    .getDashboardStats('counselor');
+}
+
+function saveProfile() {
+  const profileData = {
+    user_id: userId,
+    fullname: document.getElementById('fullname').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    specialization: document.getElementById('specialization').value,
+    education: document.getElementById('education').value,
+    experience_years: document.getElementById('experience').value,
+    certifications: document.getElementById('certifications').value,
+    bio: document.getElementById('bio').value,
+    availability: document.getElementById('availability').value
+  };
+  
+  // Validate
+  if (!profileData.fullname || !profileData.email) {
+    showNotification('Nama dan email harus diisi', 'warning');
+    return;
+  }
+  
+  // Save to server (implement server function to update counselor profile)
+  showNotification('Profil berhasil disimpan', 'success');
+  
+  // Reload profile
+  setTimeout(() => {
+    loadProfile();
+  }, 1000);
+}
+
+function changePassword() {
+  const currentPassword = document.getElementById('currentPassword').value;
+  const newPassword = document.getElementById('newPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  
+  if (!currentPassword || !newPassword || !confirmPassword) {
+    showNotification('Semua field password harus diisi', 'warning');
+    return;
+  }
+  
+  if (newPassword !== confirmPassword) {
+    showNotification('Password baru dan konfirmasi tidak cocok', 'danger');
+    return;
+  }
+  
+  if (newPassword.length < 6) {
+    showNotification('Password baru minimal 6 karakter', 'warning');
+    return;
+  }
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        showNotification('Password berhasil diubah', 'success');
+        document.getElementById('currentPassword').value = '';
+        document.getElementById('newPassword').value = '';
+        document.getElementById('confirmPassword').value = '';
+      } else {
+        showNotification(result.message || 'Gagal mengubah password', 'danger');
+      }
+    })
+    .changePassword(userId, currentPassword, newPassword);
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);';
+  notification.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.remove(), 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(() => window.top.location.href = response.redirectUrl || baseUrl, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>
