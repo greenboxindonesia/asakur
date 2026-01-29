@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pengaturan Sistem - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --dark-blue: #023047;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      border-radius: 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      margin-right: 15px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .settings-section {
+      border-bottom: 2px solid #f0f0f0;
+      padding-bottom: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .settings-section h4 {
+      color: var(--dark-blue);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .color-preview {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 2px solid #dee2e6;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: var(--dark-blue);
+      margin-bottom: 8px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      border: none;
+      padding: 12px 30px;
+      font-weight: 600;
+    }
+    
+    .alert-warning {
+      border-left: 4px solid #ffc107;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('admin'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
+      <i class="fas fa-user-md"></i> Manajemen Konselor
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
+      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
+    </a></li>
+    <li><a href="#" class="active" onclick="navigateToPage('system_settings'); return false;">
+      <i class="fas fa-cogs"></i> Pengaturan Sistem
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
+      <i class="fas fa-phone-alt"></i> Kontak Darurat
+    </a></li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1><i class="fas fa-cogs me-3"></i> Pengaturan Sistem</h1>
+    <p class="text-muted mb-0">Konfigurasi aplikasi ASAKUR</p>
+  </div>
+  
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="content-card">
+        <form id="settingsForm">
+          
+          <!-- General Settings -->
+          <div class="settings-section">
+            <h4><i class="fas fa-info-circle"></i> Informasi Umum</h4>
+            
+            <div class="mb-3">
+              <label class="form-label">Nama Aplikasi</label>
+              <input type="text" class="form-control" id="site_name" value="ASAKUR">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Deskripsi</label>
+              <textarea class="form-control" id="site_description" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Email Kontak Admin</label>
+              <input type="email" class="form-control" id="contact_email" value="admin@asakur.com">
+            </div>
+          </div>
+          
+          <!-- Session Settings -->
+          <div class="settings-section">
+            <h4><i class="fas fa-calendar-alt"></i> Pengaturan Sesi</h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Durasi Sesi (menit)</label>
+                <input type="number" class="form-control" id="session_duration" value="60" min="15" max="180">
+                <small class="text-muted">Default: 60 menit</small>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Maksimal Sesi per Hari</label>
+                <input type="number" class="form-control" id="max_sessions_per_day" value="5" min="1" max="20">
+                <small class="text-muted">Per konselor</small>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Waktu Mulai Operasional</label>
+              <input type="time" class="form-control" id="operation_start_time" value="08:00">
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Waktu Selesai Operasional</label>
+              <input type="time" class="form-control" id="operation_end_time" value="17:00">
+            </div>
+          </div>
+          
+          <!-- Appearance Settings -->
+          <div class="settings-section">
+            <h4><i class="fas fa-palette"></i> Tampilan</h4>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Warna Utama</label>
+                <div class="d-flex gap-2 align-items-center">
+                  <input type="color" class="form-control form-control-color" id="main_color" value="#0d3b66">
+                  <div class="color-preview" id="main_color_preview" style="background-color: #0d3b66;"></div>
+                </div>
+              </div>
+              
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Warna Aksen</label>
+                <div class="d-flex gap-2 align-items-center">
+                  <input type="color" class="form-control form-control-color" id="accent_color" value="#2a9d8f">
+                  <div class="color-preview" id="accent_color_preview" style="background-color: #2a9d8f;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Emergency Settings -->
+          <div class="settings-section">
+            <h4><i class="fas fa-exclamation-triangle"></i> Kontak Darurat</h4>
+            
+            <div class="mb-3">
+              <label class="form-label">Nomor Darurat Default</label>
+              <input type="text" class="form-control" id="emergency_contact" value="112">
+              <small class="text-muted">Nomor yang akan ditampilkan jika mahasiswa tidak memiliki kontak darurat</small>
+            </div>
+            
+            <div class="mb-3">
+              <label class="form-label">Email Notifikasi Darurat</label>
+              <input type="email" class="form-control" id="emergency_email" value="emergency@asakur.com">
+            </div>
+          </div>
+          
+          <!-- Notification Settings -->
+          <div class="settings-section">
+            <h4><i class="fas fa-bell"></i> Notifikasi</h4>
+            
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" id="email_notifications" checked>
+              <label class="form-check-label" for="email_notifications">
+                Aktifkan notifikasi email
+              </label>
+            </div>
+            
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" id="sms_notifications">
+              <label class="form-check-label" for="sms_notifications">
+                Aktifkan notifikasi SMS (jika tersedia)
+              </label>
+            </div>
+          </div>
+          
+          <!-- Save Button -->
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-primary" onclick="saveSettings()">
+              <i class="fas fa-save me-2"></i> Simpan Pengaturan
+            </button>
+            <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault()">
+              <i class="fas fa-undo me-2"></i> Reset ke Default
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    <!-- Side Panel -->
+    <div class="col-lg-4">
+      <!-- System Info -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-info-circle me-2"></i> Informasi Sistem</h4>
+        
+        <div class="mb-3">
+          <small class="text-muted">Versi Aplikasi</small>
+          <p class="fw-bold mb-0">ASAKUR v1.0.0</p>
+        </div>
+        
+        <div class="mb-3">
+          <small class="text-muted">Database</small>
+          <p class="fw-bold mb-0">Google Sheets</p>
+        </div>
+        
+        <div class="mb-3">
+          <small class="text-muted">Terakhir Update</small>
+          <p class="fw-bold mb-0" id="lastUpdate">-</p>
+        </div>
+        
+        <hr>
+        
+        <button class="btn btn-outline-primary w-100 mb-2" onclick="testDatabase()">
+          <i class="fas fa-database me-2"></i> Test Database
+        </button>
+        
+        <button class="btn btn-outline-info w-100" onclick="viewLogs()">
+          <i class="fas fa-file-alt me-2"></i> Lihat Logs
+        </button>
+      </div>
+      
+      <!-- Backup & Restore -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-save me-2"></i> Backup & Restore</h4>
+        
+        <p class="text-muted small">Backup data sistem secara berkala untuk keamanan</p>
+        
+        <button class="btn btn-success w-100 mb-2" onclick="createBackup()">
+          <i class="fas fa-download me-2"></i> Buat Backup
+        </button>
+        
+        <button class="btn btn-outline-warning w-100" onclick="restoreBackup()">
+          <i class="fas fa-upload me-2"></i> Restore Backup
+        </button>
+      </div>
+      
+      <!-- Danger Zone -->
+      <div class="content-card border-danger">
+        <h4 class="mb-4 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Danger Zone</h4>
+        
+        <div class="alert alert-warning">
+          <i class="fas fa-info-circle me-2"></i>
+          <small>Tindakan di bawah ini bersifat permanen!</small>
+        </div>
+        
+        <button class="btn btn-danger w-100 mb-2" onclick="clearAllData()">
+          <i class="fas fa-trash me-2"></i> Hapus Semua Data
+        </button>
+        
+        <button class="btn btn-outline-danger w-100" onclick="resetSystem()">
+          <i class="fas fa-sync me-2"></i> Reset Sistem
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadSettings();
+    })
+    .getWebAppUrl();
+  
+  // Color preview update
+  document.getElementById('main_color').addEventListener('input', function(e) {
+    document.getElementById('main_color_preview').style.backgroundColor = e.target.value;
+  });
+  
+  document.getElementById('accent_color').addEventListener('input', function(e) {
+    document.getElementById('accent_color_preview').style.backgroundColor = e.target.value;
+  });
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadSettings() {
+  google.script.run
+    .withSuccessHandler(function(settings) {
+      // Populate form with settings
+      Object.keys(settings).forEach(key => {
+        const element = document.getElementById(key);
+        if (element) {
+          if (element.type === 'checkbox') {
+            element.checked = settings[key] === 'true';
+          } else {
+            element.value = settings[key];
+          }
+        }
+      });
+      
+      // Update color previews
+      document.getElementById('main_color_preview').style.backgroundColor = settings.main_color || '#0d3b66';
+      document.getElementById('accent_color_preview').style.backgroundColor = settings.accent_color || '#2a9d8f';
+      
+      // Update last update time
+      document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('id-ID');
+    })
+    .getSystemSettings();
+}
+
+function saveSettings() {
+  const settings = {
+    site_name: document.getElementById('site_name').value,
+    site_description: document.getElementById('site_description').value,
+    contact_email: document.getElementById('contact_email').value,
+    session_duration: document.getElementById('session_duration').value,
+    max_sessions_per_day: document.getElementById('max_sessions_per_day').value,
+    operation_start_time: document.getElementById('operation_start_time').value,
+    operation_end_time: document.getElementById('operation_end_time').value,
+    main_color: document.getElementById('main_color').value,
+    accent_color: document.getElementById('accent_color').value,
+    emergency_contact: document.getElementById('emergency_contact').value,
+    emergency_email: document.getElementById('emergency_email').value,
+    email_notifications: document.getElementById('email_notifications').checked,
+    sms_notifications: document.getElementById('sms_notifications').checked
+  };
+  
+  // Save each setting
+  let savePromises = [];
+  Object.keys(settings).forEach(key => {
+    google.script.run
+      .withSuccessHandler(function() {
+        console.log(`Saved ${key}`);
+      })
+      .updateSystemSetting(key, settings[key]);
+  });
+  
+  showNotification('Pengaturan berhasil disimpan', 'success');
+}
+
+function resetToDefault() {
+  if (confirm('Reset semua pengaturan ke default? Tindakan ini tidak dapat dibatalkan.')) {
+    google.script.run
+      .withSuccessHandler(function() {
+        showNotification('Pengaturan direset ke default', 'success');
+        loadSettings();
+      })
+      .initializeDefaultSettings();
+  }
+}
+
+function testDatabase() {
+  google.script.run
+    .withSuccessHandler(function(results) {
+      let message = 'Status Database:\n\n';
+      results.forEach(r => {
+        message += `${r.name}: ${r.exists ? '✓' : '✗'} (${r.rowCount} rows)\n`;
+      });
+      alert(message);
+    })
+    .testDatabase();
+}
+
+function viewLogs() {
+  alert('Fitur logs akan segera tersedia');
+}
+
+function createBackup() {
+  if (confirm('Buat backup data sistem?')) {
+    google.script.run
+      .withSuccessHandler(function(result) {
+        if (result.success) {
+          showNotification(`Backup berhasil dibuat: ${result.fileName}`, 'success');
+          alert(`File backup: ${result.fileName}\nDownload URL: ${result.downloadUrl}`);
+        } else {
+          showNotification('Gagal membuat backup', 'danger');
+        }
+      })
+      .createBackup();
+  }
+}
+
+function restoreBackup() {
+  alert('Fitur restore backup akan segera tersedia.\nSilakan upload file backup JSON Anda.');
+}
+
+function clearAllData() {
+  const confirmation = prompt('PERINGATAN: Ini akan menghapus SEMUA data!\nKetik "HAPUS SEMUA" untuk konfirmasi:');
+  
+  if (confirmation === 'HAPUS SEMUA') {
+    google.script.run
+      .withSuccessHandler(function(result) {
+        if (result.success) {
+          showNotification('Semua data berhasil dihapus', 'success');
+          alert('Sistem akan diinisialisasi ulang...');
+          google.script.run.initializeDatabase();
+        }
+      })
+      .clearAllData();
+  } else {
+    alert('Konfirmasi dibatalkan');
+  }
+}
+
+function resetSystem() {
+  const confirmation = prompt('Reset sistem ke pengaturan awal?\nKetik "RESET" untuk konfirmasi:');
+  
+  if (confirmation === 'RESET') {
+    google.script.run
+      .withSuccessHandler(function() {
+        showNotification('Sistem berhasil direset', 'success');
+        setTimeout(() => location.reload(), 2000);
+      })
+      .initializeDatabase();
+  }
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = `
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  `;
+  notification.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(function() {
+        window.top.location.href = response.redirectUrl || baseUrl;
+      }, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

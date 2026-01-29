@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Admin - ASAKUR</title>
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
+      --dark-blue: #023047;
+      --light-bg: #f8f9fa;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-brand p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 12px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      padding: 0 25px;
+    }
+    
+    /* Main Content */
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      transition: all 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    /* Top Bar */
+    .top-bar {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .top-bar h1 {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .top-bar p {
+      color: #666;
+      margin-bottom: 0;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+    }
+    
+    /* Cards */
+    .stat-card {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    }
+    
+    .card-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: white;
+    }
+    
+    .icon-blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
+    .icon-green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
+    .icon-light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
+    .icon-dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
+    
+    .stat-card h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+    
+    /* Table */
+    .table-container {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-top: 30px;
+    }
+    
+    .table-title {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .table {
+      margin-bottom: 0;
+    }
+    
+    .table thead th {
+      background-color: #f8f9fa;
+      color: var(--dark-blue);
+      font-weight: 600;
+      border: none;
+      padding: 18px 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .table tbody td {
+      padding: 18px 20px;
+      vertical-align: middle;
+      border-color: #f0f0f0;
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .badge-pending { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-approved { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-rejected { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    
+    /* Mobile Sidebar Toggle */
+    .sidebar-toggle {
+      display: none;
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.3rem;
+      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.3);
+      transition: all 0.3s;
+    }
+    
+    .sidebar-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(13, 59, 102, 0.4);
+    }
+    
+    /* Responsive */
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+      
+      .sidebar.active {
+        margin-left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .user-info {
+        align-self: flex-end;
+      }
+      
+      .table-container {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p>Admin Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" class="active" onclick="loadDashboard(); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
+      <i class="fas fa-user-md"></i> Manajemen Konselor
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
+      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('system_settings'); return false;">
+      <i class="fas fa-cogs"></i> Pengaturan Sistem
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
+      <i class="fas fa-phone-alt"></i> Kontak Darurat
+    </a></li>
+  </ul>
+  
+  <div class="sidebar-footer">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div>
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1>Dashboard Admin</h1>
+      <p>Selamat datang, <span id="adminName" class="fw-bold">Administrator</span></p>
+    </div>
+    
+    <div class="user-info">
+      <div class="user-avatar">
+        <i class="fas fa-user-shield"></i>
+      </div>
+      <div>
+        <h6 class="mb-0 fw-bold" id="usernameDisplay">Admin</h6>
+        <small class="text-muted" id="userRole">Super Administrator</small>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Statistics Cards -->
+  <div class="row">
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-blue">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <h2 id="totalCounselors">0</h2>
+        <p>Total Konselor</p>
+        <small class="text-muted"><i class="fas fa-clock me-1"></i> <span id="pendingCounselors">0</span> menunggu approval</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-green">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h2 id="totalStudents">0</h2>
+        <p>Total Mahasiswa</p>
+        <small class="text-muted"><i class="fas fa-chart-line me-1"></i> <span id="activeStudents">0</span> aktif</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-light">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 id="totalSessions">0</h2>
+        <p>Sesi Konseling</p>
+        <small class="text-muted"><i class="fas fa-calendar-day me-1"></i> <span id="todaySessions">0</span> hari ini</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-dark">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h2 id="totalAssessments">0</h2>
+        <p>Total Asesmen</p>
+        <small class="text-muted"><i class="fas fa-check-circle me-1"></i> <span id="completedAssessments">0</span> selesai</small>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Charts Row -->
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      <div class="table-container">
+        <h3 class="table-title">
+          <i class="fas fa-user-clock"></i> Konselor Menunggu Approval
+        </h3>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Telepon</th>
+                <th>Spesialisasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="counselorTableBody">
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2">Memuat data konselor...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="table-container h-100">
+        <h3 class="table-title">
+          <i class="fas fa-chart-pie"></i> Statistik Sistem
+        </h3>
+        <div class="text-center">
+          <canvas id="statsChart" height="250"></canvas>
+        </div>
+        <div class="row mt-4">
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
+              <h4 class="fw-bold mb-0" id="chartCounselors">0</h4>
+              <small>Konselor</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
+              <h4 class="fw-bold mb-0" id="chartStudents">0</h4>
+              <small>Mahasiswa</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+        <p class="text-muted">Mengalihkan ke halaman login</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// Global variables
+let baseUrl = '';
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  // Get base URL first
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      console.log('Base URL loaded:', baseUrl);
+      
+      // Now load the rest
+      loadUserInfo();
+      loadDashboard();
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading base URL:', error);
+      showNotification('Gagal memuat konfigurasi sistem', 'danger');
+    })
+    .getWebAppUrl();
+  
+  // Sidebar toggle
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.toggle('active');
+  });
+  
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener('click', function(event) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('sidebarToggle');
+    
+    if (window.innerWidth <= 992 && 
+        sidebar.classList.contains('active') && 
+        !sidebar.contains(event.target) && 
+        !toggleBtn.contains(event.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+});
+
+// Navigate to page function
+function navigateToPage(pageName) {
+  if (!baseUrl) {
+    showNotification('Sistem belum siap, coba lagi', 'warning');
+    return;
+  }
+  
+  const targetUrl = baseUrl + '?page=' + pageName;
+  console.log('Navigating to:', targetUrl);
+  window.top.location.href = targetUrl;
+}
+
+// Load user info
+function loadUserInfo() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      if (session) {
+        document.getElementById('adminName').textContent = session.fullname || session.username;
+        document.getElementById('usernameDisplay').textContent = session.username;
+        
+        // Set avatar initials
+        const name = session.fullname || session.username;
+        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.querySelector('.user-avatar').innerHTML = initials.substring(0, 2);
+      } else {
+        console.log('No session found');
+        logout();
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading session:', error);
+      showNotification('Gagal memuat data pengguna', 'danger');
+    })
+    .getSession();
+}
+
+// Load statistics
+function loadStatistics() {
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      document.getElementById('totalCounselors').textContent = stats.totalCounselors || 0;
+      document.getElementById('pendingCounselors').textContent = stats.pendingCounselors || 0;
+      document.getElementById('totalStudents').textContent = stats.totalStudents || 0;
+      document.getElementById('activeStudents').textContent = stats.activeStudents || 0;
+      document.getElementById('totalSessions').textContent = stats.totalSessions || 0;
+      document.getElementById('todaySessions').textContent = stats.todaySessions || 0;
+      document.getElementById('totalAssessments').textContent = stats.totalAssessments || 0;
+      document.getElementById('completedAssessments').textContent = stats.completedAssessments || 0;
+      
+      // Update chart
+      document.getElementById('chartCounselors').textContent = stats.totalCounselors || 0;
+      document.getElementById('chartStudents').textContent = stats.totalStudents || 0;
+      
+      updateChart(stats.totalCounselors || 0, stats.totalStudents || 0, stats.totalSessions || 0);
+    })
+    .getDashboardStats('admin');
+}
+
+// Update chart
+function updateChart(counselors, students, sessions) {
+  const ctx = document.getElementById('statsChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Konselor', 'Mahasiswa', 'Sesi'],
+      datasets: [{
+        data: [counselors, students, sessions],
+        backgroundColor: [
+          'rgba(13, 59, 102, 0.8)',
+          'rgba(42, 157, 143, 0.8)',
+          'rgba(142, 202, 230, 0.8)'
+        ],
+        borderColor: [
+          'rgb(13, 59, 102)',
+          'rgb(42, 157, 143)',
+          'rgb(142, 202, 230)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+}
+
+// Load counselors table
+function loadCounselorsTable() {
+  const tbody = document.getElementById('counselorTableBody');
+  
+  google.script.run
+    .withSuccessHandler(function(data) {
+      tbody.innerHTML = '';
+
+      if (!data || data.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5">
+              <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
+              <p>Tidak ada data konselor</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      const pendingCounselors = data.filter(item => item.status === 'pending');
+      
+      if (pendingCounselors.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" class="text-center py-5">
+              <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+              <p>Tidak ada konselor yang menunggu persetujuan</p>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      pendingCounselors.forEach(function(item) {
+        let badgeClass = 'badge-pending';
+        let badgeText = 'Pending';
+        
+        if (item.status === 'approved') {
+          badgeClass = 'badge-approved';
+          badgeText = 'Approved';
+        } else if (item.status === 'rejected') {
+          badgeClass = 'badge-rejected';
+          badgeText = 'Rejected';
+        }
+
+        tbody.innerHTML += `
+          <tr>
+            <td class="fw-bold">${item.user_id}</td>
+            <td>${item.name}</td>
+            <td>${item.email || '-'}</td>
+            <td>${item.phone || '-'}</td>
+            <td>${item.specialization || 'Umum'}</td>
+            <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <button class="btn btn-success" onclick="approveCounselor('${item.user_id}')" title="Approve">
+                  <i class="fas fa-check"></i>
+                </button>
+                <button class="btn btn-danger" onclick="rejectCounselor('${item.user_id}')" title="Reject">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+    })
+    .getAllCounselors();
+}
+
+// Approve counselor
+function approveCounselor(userId) {
+  if (confirm(`Setujui konselor ID ${userId}?`)) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (res.success) {
+          showNotification('Konselor berhasil disetujui', 'success');
+          loadStatistics();
+          loadCounselorsTable();
+        } else {
+          showNotification(res.message || 'Gagal approve konselor', 'danger');
+        }
+      })
+      .updateCounselorStatus(userId, 'approved');
+  }
+}
+
+// Reject counselor
+function rejectCounselor(userId) {
+  if (confirm(`Tolak konselor ID ${userId}?`)) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (res.success) {
+          showNotification('Konselor berhasil ditolak', 'success');
+          loadStatistics();
+          loadCounselorsTable();
+        } else {
+          showNotification(res.message || 'Gagal reject konselor', 'danger');
+        }
+      })
+      .updateCounselorStatus(userId, 'rejected');
+  }
+}
+
+// Load dashboard
+function loadDashboard() {
+  loadStatistics();
+  loadCounselorsTable();
+}
+
+// Show notification
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = `
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  `;
+  notification.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+// LOGOUT FUNCTION - FIXED
+function logout() {
+  console.log('Logout initiated...');
+  
+  // Show logout modal
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  // Call server logout
+  google.script.run
+    .withSuccessHandler(function(response) {
+      console.log('Logout response:', response);
+      
+      // Get redirect URL
+      let redirectUrl = baseUrl;
+      if (response && response.redirectUrl) {
+        redirectUrl = response.redirectUrl;
+      }
+      
+      console.log('Redirecting to:', redirectUrl);
+      
+      // Redirect after small delay
+      setTimeout(function() {
+        window.top.location.href = redirectUrl;
+      }, 1500);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Logout error:', error);
+      
+      // Still try to redirect even on error
+      setTimeout(function() {
+        window.top.location.href = baseUrl || window.location.href.split('?')[0];
+      }, 2000);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

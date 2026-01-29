@@ -4,7 +4,7 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Profil & Pengaturan - ASAKUR</title>
+  <title>Pengaturan Sistem - ASAKUR</title>
   
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -102,6 +102,12 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
     
+    .mobile-logo-container img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
     .mobile-logo-container i {
       font-size: 28px;
       color: var(--primary-blue);
@@ -185,6 +191,12 @@
       justify-content: center;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .mobile-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
     }
     
     .mobile-sidebar-logo i {
@@ -365,6 +377,14 @@
       box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
     }
     
+    .mobile-color-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      margin-left: 10px;
+    }
+    
     .mobile-form-check {
       display: flex;
       align-items: center;
@@ -384,20 +404,23 @@
       color: var(--text-primary);
     }
     
-    /* PROFILE AVATAR */
-    .mobile-profile-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 3rem;
-      font-weight: bold;
-      margin: 0 auto 15px;
-      box-shadow: 0 10px 25px rgba(42, 157, 143, 0.3);
+    .mobile-alert {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+    
+    .mobile-alert-warning {
+      background-color: rgba(255, 149, 0, 0.1);
+      border: 1px solid rgba(255, 149, 0, 0.3);
+      color: var(--warning-color);
+    }
+    
+    .mobile-alert-danger {
+      background-color: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      color: var(--error-color);
     }
     
     /* MOBILE BOTTOM NAV */
@@ -481,6 +504,12 @@
       margin: 0 auto 20px;
       overflow: hidden;
       box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
     }
     
     .desktop-sidebar-logo i {
@@ -645,30 +674,31 @@
       margin-bottom: 8px;
     }
     
-    /* DESKTOP PROFILE AVATAR */
-    .desktop-profile-avatar {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 4rem;
-      font-weight: bold;
-      margin: 0 auto 20px;
-      box-shadow: 0 10px 25px rgba(42, 157, 143, 0.3);
+    .desktop-color-preview {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      margin-left: 15px;
     }
     
-    /* PROGRESS BAR */
-    .profile-progress {
-      margin: 20px 0;
+    .desktop-alert {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
     }
     
-    .profile-progress .progress {
-      height: 8px;
-      border-radius: 4px;
+    .desktop-alert-warning {
+      background-color: rgba(255, 149, 0, 0.1);
+      border-color: var(--warning-color);
+      color: var(--warning-color);
+    }
+    
+    .desktop-alert-danger {
+      background-color: rgba(255, 59, 48, 0.1);
+      border-color: var(--error-color);
+      color: var(--error-color);
     }
     
     /* COMMON STYLES */
@@ -777,12 +807,6 @@
       .mobile-settings-card {
         padding: 16px;
       }
-      
-      .mobile-profile-avatar {
-        width: 100px;
-        height: 100px;
-        font-size: 2.5rem;
-      }
     }
     
     @media (max-width: 480px) {
@@ -827,7 +851,7 @@
         </div>
         <div class="mobile-header-info">
           <h1>ASAKUR</h1>
-          <p>Profil & Pengaturan</p>
+          <p>Pengaturan Sistem</p>
         </div>
       </div>
     </div>
@@ -845,10 +869,10 @@
     </div>
     
     <div class="mobile-user-info">
-      <div class="mobile-user-avatar" id="mobileUserAvatar">K</div>
+      <div class="mobile-user-avatar" id="mobileUserAvatar">A</div>
       <div class="mobile-user-details">
-        <h5 id="mobileUserName">Konselor</h5>
-        <small id="mobileUserRole">Konselor</small>
+        <h5 id="mobileUserName">Administrator</h5>
+        <small id="mobileUserRole">Super Admin</small>
       </div>
     </div>
     
@@ -870,204 +894,221 @@
   <main class="mobile-main">
     <!-- Page Title -->
     <h2 class="mobile-section-title">
-      <i class="fas fa-user-cog"></i>
-      <span>Profil & Pengaturan</span>
+      <i class="fas fa-cogs"></i>
+      <span>Pengaturan Sistem</span>
     </h2>
     
+    <!-- Settings Form -->
     <div class="mobile-settings-grid">
-      <!-- Profile Summary Card -->
-      <div class="mobile-settings-card text-center">
-        <div class="mobile-profile-avatar" id="profileAvatar">K</div>
-        <h4 id="profileName">Konselor</h4>
-        <p class="text-muted" id="profileEmail">konselor@asakur.com</p>
-        <p class="text-muted"><i class="fas fa-tag me-2"></i><span id="profileSpecialization">Konseling Umum</span></p>
-        
-        <hr style="margin: 20px 0;">
-        
-        <div class="profile-progress">
-          <div class="d-flex justify-content-between mb-2">
-            <span class="small">Profil Lengkap</span>
-            <strong class="small" id="profileCompletion">75%</strong>
-          </div>
-          <div class="progress">
-            <div class="progress-bar bg-success" id="profileBar" style="width: 75%"></div>
-          </div>
-        </div>
-        
-        <div class="mobile-alert mobile-alert-warning" style="margin-top: 15px;">
-          <i class="fas fa-info-circle"></i>
-          <span>Lengkapi profil Anda untuk meningkatkan kepercayaan klien</span>
-        </div>
-      </div>
-      
-      <!-- Statistics Card -->
       <div class="mobile-settings-card">
-        <h4 class="mobile-settings-section-title"><i class="fas fa-chart-bar"></i> Statistik</h4>
-        
-        <div class="mobile-settings-section">
-          <div class="mobile-form-group">
-            <div class="d-flex justify-content-between">
-              <span>Total Sesi</span>
-              <strong id="statTotalSessions">0</strong>
-            </div>
-          </div>
+        <form id="mobileSettingsForm">
           
-          <div class="mobile-form-group">
-            <div class="d-flex justify-content-between">
-              <span>Total Klien</span>
-              <strong id="statTotalClients">0</strong>
-            </div>
-          </div>
-          
-          <div class="mobile-form-group">
-            <div class="d-flex justify-content-between">
-              <span>Total Asesmen</span>
-              <strong id="statTotalAssessments">0</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Profile Form Card -->
-      <div class="mobile-settings-card">
-        <form id="profileForm">
-          <!-- Personal Information -->
+          <!-- General Settings -->
           <div class="mobile-settings-section">
-            <h4><i class="fas fa-user"></i> Informasi Pribadi</h4>
+            <h4><i class="fas fa-info-circle"></i> Informasi Umum</h4>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Nama Lengkap</label>
-              <input type="text" class="mobile-form-control" id="fullname" placeholder="Nama lengkap Anda">
+              <label class="mobile-form-label">Nama Aplikasi</label>
+              <input type="text" class="mobile-form-control" id="mobileSiteName" value="ASAKUR">
             </div>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Email</label>
-              <input type="email" class="mobile-form-control" id="email" placeholder="email@example.com">
+              <label class="mobile-form-label">Deskripsi</label>
+              <textarea class="mobile-form-control" id="mobileSiteDescription" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
             </div>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Nomor Telepon</label>
-              <input type="tel" class="mobile-form-control" id="phone" placeholder="08123456789">
-            </div>
-            
-            <div class="mobile-form-group">
-              <label class="mobile-form-label">Spesialisasi</label>
-              <select class="mobile-form-control" id="specialization">
-                <option value="">Pilih Spesialisasi</option>
-                <option value="Kecemasan">Kecemasan</option>
-                <option value="Depresi">Depresi</option>
-                <option value="Stres">Stres</option>
-                <option value="Hubungan">Hubungan</option>
-                <option value="Akademik">Akademik</option>
-                <option value="Umum">Umum</option>
-              </select>
+              <label class="mobile-form-label">Email Kontak Admin</label>
+              <input type="email" class="mobile-form-control" id="mobileContactEmail" value="admin@asakur.com">
             </div>
           </div>
           
-          <!-- Professional Information -->
+          <!-- Session Settings -->
           <div class="mobile-settings-section">
-            <h4><i class="fas fa-graduation-cap"></i> Informasi Profesional</h4>
+            <h4><i class="fas fa-calendar-alt"></i> Pengaturan Sesi</h4>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Pendidikan</label>
-              <input type="text" class="mobile-form-control" id="education" placeholder="Contoh: S.Psi, M.Psi">
+              <label class="mobile-form-label">Durasi Sesi (menit)</label>
+              <input type="number" class="mobile-form-control" id="mobileSessionDuration" value="60" min="15" max="180">
+              <small class="text-muted">Default: 60 menit</small>
             </div>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Pengalaman (tahun)</label>
-              <input type="number" class="mobile-form-control" id="experience_years" min="0" max="50">
+              <label class="mobile-form-label">Maksimal Sesi per Hari</label>
+              <input type="number" class="mobile-form-control" id="mobileMaxSessionsPerDay" value="5" min="1" max="20">
+              <small class="text-muted">Per konselor</small>
             </div>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Sertifikasi</label>
-              <input type="text" class="mobile-form-control" id="certifications" placeholder="Sertifikat profesional">
+              <label class="mobile-form-label">Waktu Mulai Operasional</label>
+              <input type="time" class="mobile-form-control" id="mobileOperationStartTime" value="08:00">
             </div>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Bio / Deskripsi Diri</label>
-              <textarea class="mobile-form-control" id="bio" rows="4" placeholder="Ceritakan sedikit tentang diri Anda dan pendekatan konseling Anda..."></textarea>
+              <label class="mobile-form-label">Waktu Selesai Operasional</label>
+              <input type="time" class="mobile-form-control" id="mobileOperationEndTime" value="17:00">
             </div>
           </div>
           
-          <!-- Availability Settings -->
+          <!-- Appearance Settings -->
           <div class="mobile-settings-section">
-            <h4><i class="fas fa-clock"></i> Pengaturan Ketersediaan</h4>
+            <h4><i class="fas fa-palette"></i> Tampilan</h4>
             
             <div class="mobile-form-group">
-              <label class="mobile-form-label">Status Ketersediaan</label>
-              <select class="mobile-form-control" id="availability">
-                <option value="available">Tersedia</option>
-                <option value="busy">Sibuk</option>
-              </select>
+              <label class="mobile-form-label">Warna Utama</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="color" class="mobile-form-control" id="mobileMainColor" value="#0d3b66" style="width: 60px; height: 40px; padding: 5px;">
+                <div class="mobile-color-preview" id="mobileMainColorPreview" style="background-color: #0d3b66;"></div>
+              </div>
+            </div>
+            
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Warna Aksen</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="color" class="mobile-form-control" id="mobileAccentColor" value="#2a9d8f" style="width: 60px; height: 40px; padding: 5px;">
+                <div class="mobile-color-preview" id="mobileAccentColorPreview" style="background-color: #2a9d8f;"></div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Emergency Settings -->
+          <div class="mobile-settings-section">
+            <h4><i class="fas fa-exclamation-triangle"></i> Kontak Darurat</h4>
+            
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Nomor Darurat Default</label>
+              <input type="text" class="mobile-form-control" id="mobileEmergencyContact" value="112">
+              <small class="text-muted">Nomor yang akan ditampilkan jika mahasiswa tidak memiliki kontak darurat</small>
+            </div>
+            
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Email Notifikasi Darurat</label>
+              <input type="email" class="mobile-form-control" id="mobileEmergencyEmail" value="emergency@asakur.com">
+            </div>
+          </div>
+          
+          <!-- Notification Settings -->
+          <div class="mobile-settings-section">
+            <h4><i class="fas fa-bell"></i> Notifikasi</h4>
+            
+            <div class="mobile-form-check">
+              <input type="checkbox" class="mobile-form-check-input" id="mobileEmailNotifications" checked>
+              <label class="mobile-form-check-label" for="mobileEmailNotifications">
+                Aktifkan notifikasi email
+              </label>
             </div>
             
             <div class="mobile-form-check">
-              <input type="checkbox" class="mobile-form-check-input" id="acceptNewClients" checked>
-              <label class="mobile-form-check-label" for="acceptNewClients">
-                Terima klien baru
+              <input type="checkbox" class="mobile-form-check-input" id="mobileSmsNotifications">
+              <label class="mobile-form-check-label" for="mobileSmsNotifications">
+                Aktifkan notifikasi SMS (jika tersedia)
               </label>
             </div>
           </div>
           
           <!-- Save Buttons -->
           <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
-            <button type="button" class="btn-primary-custom" onclick="saveProfile()" style="width: 100%;">
-              <i class="fas fa-save"></i> Simpan Perubahan
+            <button type="button" class="btn-primary-custom" onclick="saveSettings()" style="width: 100%;">
+              <i class="fas fa-save"></i> Simpan Pengaturan
             </button>
-            <button type="button" class="btn-outline-custom" onclick="loadProfile()" style="width: 100%;">
-              <i class="fas fa-undo"></i> Reset
+            <button type="button" class="btn-outline-custom" onclick="resetToDefault()" style="width: 100%;">
+              <i class="fas fa-undo"></i> Reset ke Default
             </button>
           </div>
         </form>
       </div>
       
-      <!-- Change Password Card -->
+      <!-- System Info Card -->
       <div class="mobile-settings-card">
-        <h4 class="mobile-settings-section-title"><i class="fas fa-lock"></i> Ubah Password</h4>
+        <h4 class="mobile-settings-section-title"><i class="fas fa-info-circle"></i> Informasi Sistem</h4>
         
         <div class="mobile-form-group">
-          <label class="mobile-form-label">Password Saat Ini</label>
-          <input type="password" class="mobile-form-control" id="currentPassword">
+          <label class="mobile-form-label">Versi Aplikasi</label>
+          <p style="font-weight: 600;">ASAKUR v1.0.0</p>
         </div>
         
         <div class="mobile-form-group">
-          <label class="mobile-form-label">Password Baru</label>
-          <input type="password" class="mobile-form-control" id="newPassword">
+          <label class="mobile-form-label">Database</label>
+          <p style="font-weight: 600;">Google Sheets</p>
         </div>
         
         <div class="mobile-form-group">
-          <label class="mobile-form-label">Konfirmasi Password Baru</label>
-          <input type="password" class="mobile-form-control" id="confirmPassword">
+          <label class="mobile-form-label">Terakhir Update</label>
+          <p style="font-weight: 600;" id="mobileLastUpdate">-</p>
         </div>
         
-        <button type="button" class="btn-outline-custom" onclick="changePassword()" style="width: 100%; margin-top: 10px;">
-          <i class="fas fa-key"></i> Ubah Password
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+          <button type="button" class="btn-outline-custom" onclick="testDatabase()" style="width: 100%;">
+            <i class="fas fa-database"></i> Test Database
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="viewLogs()" style="width: 100%;">
+            <i class="fas fa-file-alt"></i> Lihat Logs
+          </button>
+        </div>
+      </div>
+      
+      <!-- Backup & Restore Card -->
+      <div class="mobile-settings-card">
+        <h4 class="mobile-settings-section-title"><i class="fas fa-save"></i> Backup & Restore</h4>
+        
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+          Backup data sistem secara berkala untuk keamanan
+        </p>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button type="button" class="btn-primary-custom" onclick="createBackup()" style="width: 100%; background: linear-gradient(135deg, #28a745, #20c997);">
+            <i class="fas fa-download"></i> Buat Backup
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="restoreBackup()" style="width: 100%;">
+            <i class="fas fa-upload"></i> Restore Backup
+          </button>
+        </div>
+      </div>
+      
+      <!-- Danger Zone Card -->
+      <div class="mobile-settings-card" style="border: 2px solid var(--error-color);">
+        <h4 class="mobile-settings-section-title" style="color: var(--error-color);">
+          <i class="fas fa-exclamation-triangle"></i> Danger Zone
+        </h4>
+        
+        <div class="mobile-alert mobile-alert-warning">
+          <i class="fas fa-info-circle"></i>
+          <span>Tindakan di bawah ini bersifat permanen!</span>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button type="button" class="btn-danger-custom" onclick="clearAllData()" style="width: 100%;">
+            <i class="fas fa-trash"></i> Hapus Semua Data
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="resetSystem()" style="width: 100%; border-color: var(--error-color); color: var(--error-color);">
+            <i class="fas fa-sync"></i> Reset Sistem
+          </button>
+        </div>
       </div>
     </div>
   </main>
   
   <!-- Mobile Bottom Navigation -->
   <nav class="mobile-bottom-nav">
-    <button class="mobile-nav-item" onclick="navigateToPage('counselor')">
+    <button class="mobile-nav-item" onclick="navigateToPage('admin')">
       <i class="fas fa-home"></i>
       <span>Dashboard</span>
     </button>
-    <button class="mobile-nav-item" onclick="navigateToPage('counselor_schedule')">
+    <button class="mobile-nav-item" onclick="navigateToPage('counselor_management')">
+      <i class="fas fa-user-md"></i>
+      <span>Konselor</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('student_management')">
+      <i class="fas fa-user-graduate"></i>
+      <span>Mahasiswa</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('appointment_schedule')">
       <i class="fas fa-calendar-alt"></i>
       <span>Jadwal</span>
     </button>
-    <button class="mobile-nav-item" onclick="navigateToPage('counselor_students')">
-      <i class="fas fa-user-graduate"></i>
-      <span>Klien</span>
-    </button>
-    <button class="mobile-nav-item" onclick="navigateToPage('counselor_assessments')">
-      <i class="fas fa-clipboard-check"></i>
-      <span>Asesmen</span>
-    </button>
     <button class="mobile-nav-item active">
-      <i class="fas fa-user-cog"></i>
-      <span>Profil</span>
+      <i class="fas fa-cogs"></i>
+      <span>Pengaturan</span>
     </button>
   </nav>
 </div>
@@ -1081,7 +1122,7 @@
         <i class="fas fa-hands-helping"></i>
       </div>
       <h3>ASAKUR</h3>
-      <p>Konselor Panel</p>
+      <p>Admin Panel</p>
     </div>
     
     <ul class="desktop-sidebar-menu" id="desktopSidebarMenu">
@@ -1090,10 +1131,10 @@
     
     <div class="desktop-sidebar-footer">
       <div class="desktop-user-info">
-        <div class="desktop-user-avatar" id="desktopUserAvatar">K</div>
+        <div class="desktop-user-avatar" id="desktopUserAvatar">A</div>
         <div class="desktop-user-details">
-          <h5 id="desktopUserName">Konselor</h5>
-          <small id="desktopUserRole">Konselor</small>
+          <h5 id="desktopUserName">Administrator</h5>
+          <small id="desktopUserRole">Super Admin</small>
         </div>
       </div>
       <button class="btn btn-logout" onclick="logout()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
@@ -1109,191 +1150,213 @@
     <div class="desktop-header">
       <div>
         <h1>
-          <i class="fas fa-user-cog"></i> Profil & Pengaturan
+          <i class="fas fa-cogs"></i> Pengaturan Sistem
         </h1>
-        <p>Kelola informasi profil dan preferensi Anda</p>
+        <p>Konfigurasi aplikasi ASAKUR</p>
       </div>
     </div>
     
     <div class="row">
-      <!-- Left Column -->
-      <div class="col-lg-4">
-        <!-- Profile Summary Card -->
-        <div class="desktop-content-card text-center">
-          <div class="desktop-profile-avatar" id="desktopProfileAvatar">K</div>
-          <h4 id="desktopProfileName">Konselor</h4>
-          <p class="text-muted" id="desktopProfileEmail">konselor@asakur.com</p>
-          <p class="text-muted"><i class="fas fa-tag me-2"></i><span id="desktopProfileSpecialization">Konseling Umum</span></p>
-          
-          <hr>
-          
-          <div class="profile-progress">
-            <div class="d-flex justify-content-between mb-2">
-              <span class="text-muted small">Profil Lengkap</span>
-              <strong class="small" id="desktopProfileCompletion">75%</strong>
-            </div>
-            <div class="progress">
-              <div class="progress-bar bg-success" id="desktopProfileBar" style="width: 75%"></div>
-            </div>
-          </div>
-          
-          <div class="alert alert-info mt-3">
-            <small><i class="fas fa-info-circle me-2"></i>Lengkapi profil Anda untuk meningkatkan kepercayaan klien</small>
-          </div>
-        </div>
-        
-        <!-- Statistics Card -->
-        <div class="desktop-content-card">
-          <h4><i class="fas fa-chart-bar me-2"></i> Statistik</h4>
-          
-          <div class="mb-3 pb-3 border-bottom">
-            <div class="d-flex justify-content-between">
-              <span>Total Sesi</span>
-              <strong id="desktopStatTotalSessions">0</strong>
-            </div>
-          </div>
-          
-          <div class="mb-3 pb-3 border-bottom">
-            <div class="d-flex justify-content-between">
-              <span>Total Klien</span>
-              <strong id="desktopStatTotalClients">0</strong>
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <div class="d-flex justify-content-between">
-              <span>Total Asesmen</span>
-              <strong id="desktopStatTotalAssessments">0</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Right Column -->
+      <!-- Main Settings -->
       <div class="col-lg-8">
-        <!-- Profile Form Card -->
+        <!-- Settings Form -->
         <div class="desktop-content-card">
-          <form id="desktopProfileForm">
-            <!-- Personal Information -->
+          <form id="desktopSettingsForm">
+            
+            <!-- General Settings -->
             <div class="desktop-settings-section">
-              <h4><i class="fas fa-user me-2"></i> Informasi Pribadi</h4>
+              <h4><i class="fas fa-info-circle"></i> Informasi Umum</h4>
               
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Nama Lengkap</label>
-                  <input type="text" class="form-control" id="desktopFullname" placeholder="Nama lengkap Anda">
+                  <label class="desktop-form-label">Nama Aplikasi</label>
+                  <input type="text" class="form-control" id="desktopSiteName" value="ASAKUR">
+                </div>
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Email Kontak Admin</label>
+                  <input type="email" class="form-control" id="desktopContactEmail" value="admin@asakur.com">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="desktop-form-label">Deskripsi</label>
+                <textarea class="form-control" id="desktopSiteDescription" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
+              </div>
+            </div>
+            
+            <!-- Session Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-calendar-alt"></i> Pengaturan Sesi</h4>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Durasi Sesi (menit)</label>
+                  <input type="number" class="form-control" id="desktopSessionDuration" value="60" min="15" max="180">
+                  <small class="text-muted">Default: 60 menit</small>
                 </div>
                 
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Email</label>
-                  <input type="email" class="form-control" id="desktopEmail" placeholder="email@example.com">
+                  <label class="desktop-form-label">Maksimal Sesi per Hari</label>
+                  <input type="number" class="form-control" id="desktopMaxSessionsPerDay" value="5" min="1" max="20">
+                  <small class="text-muted">Per konselor</small>
                 </div>
               </div>
               
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Nomor Telepon</label>
-                  <input type="tel" class="form-control" id="desktopPhone" placeholder="08123456789">
+                  <label class="desktop-form-label">Waktu Mulai Operasional</label>
+                  <input type="time" class="form-control" id="desktopOperationStartTime" value="08:00">
                 </div>
                 
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Spesialisasi</label>
-                  <select class="form-select" id="desktopSpecialization">
-                    <option value="">Pilih Spesialisasi</option>
-                    <option value="Kecemasan">Kecemasan</option>
-                    <option value="Depresi">Depresi</option>
-                    <option value="Stres">Stres</option>
-                    <option value="Hubungan">Hubungan</option>
-                    <option value="Akademik">Akademik</option>
-                    <option value="Umum">Umum</option>
-                  </select>
+                  <label class="desktop-form-label">Waktu Selesai Operasional</label>
+                  <input type="time" class="form-control" id="desktopOperationEndTime" value="17:00">
                 </div>
               </div>
             </div>
             
-            <!-- Professional Information -->
+            <!-- Appearance Settings -->
             <div class="desktop-settings-section">
-              <h4><i class="fas fa-graduation-cap me-2"></i> Informasi Profesional</h4>
-              
-              <div class="mb-3">
-                <label class="desktop-form-label">Pendidikan</label>
-                <input type="text" class="form-control" id="desktopEducation" placeholder="Contoh: S.Psi, M.Psi">
-              </div>
+              <h4><i class="fas fa-palette"></i> Tampilan</h4>
               
               <div class="row mb-3">
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Pengalaman (tahun)</label>
-                  <input type="number" class="form-control" id="desktopExperience_years" min="0" max="50">
+                  <label class="desktop-form-label">Warna Utama</label>
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="color" class="form-control form-control-color" id="desktopMainColor" value="#0d3b66">
+                    <div class="desktop-color-preview" id="desktopMainColorPreview" style="background-color: #0d3b66;"></div>
+                  </div>
                 </div>
                 
                 <div class="col-md-6">
-                  <label class="desktop-form-label">Sertifikasi</label>
-                  <input type="text" class="form-control" id="desktopCertifications" placeholder="Sertifikat profesional">
+                  <label class="desktop-form-label">Warna Aksen</label>
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="color" class="form-control form-control-color" id="desktopAccentColor" value="#2a9d8f">
+                    <div class="desktop-color-preview" id="desktopAccentColorPreview" style="background-color: #2a9d8f;"></div>
+                  </div>
                 </div>
-              </div>
-              
-              <div class="mb-3">
-                <label class="desktop-form-label">Bio / Deskripsi Diri</label>
-                <textarea class="form-control" id="desktopBio" rows="4" placeholder="Ceritakan sedikit tentang diri Anda dan pendekatan konseling Anda..."></textarea>
               </div>
             </div>
             
-            <!-- Availability Settings -->
+            <!-- Emergency Settings -->
             <div class="desktop-settings-section">
-              <h4><i class="fas fa-clock me-2"></i> Pengaturan Ketersediaan</h4>
+              <h4><i class="fas fa-exclamation-triangle"></i> Kontak Darurat</h4>
               
-              <div class="mb-3">
-                <label class="desktop-form-label">Status Ketersediaan</label>
-                <select class="form-select" id="desktopAvailability">
-                  <option value="available">Tersedia</option>
-                  <option value="busy">Sibuk</option>
-                </select>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Nomor Darurat Default</label>
+                  <input type="text" class="form-control" id="desktopEmergencyContact" value="112">
+                  <small class="text-muted">Nomor yang akan ditampilkan jika mahasiswa tidak memiliki kontak darurat</small>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Email Notifikasi Darurat</label>
+                  <input type="email" class="form-control" id="desktopEmergencyEmail" value="emergency@asakur.com">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Notification Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-bell"></i> Notifikasi</h4>
+              
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="desktopEmailNotifications" checked>
+                <label class="form-check-label" for="desktopEmailNotifications">
+                  Aktifkan notifikasi email
+                </label>
               </div>
               
               <div class="form-check form-switch mb-3">
-                <input class="form-check-input" type="checkbox" id="desktopAcceptNewClients" checked>
-                <label class="form-check-label" for="desktopAcceptNewClients">
-                  Terima klien baru
+                <input class="form-check-input" type="checkbox" id="desktopSmsNotifications">
+                <label class="form-check-label" for="desktopSmsNotifications">
+                  Aktifkan notifikasi SMS (jika tersedia)
                 </label>
               </div>
             </div>
             
             <!-- Save Buttons -->
             <div class="d-flex gap-2">
-              <button type="button" class="btn-primary-custom" onclick="saveProfile()">
-                <i class="fas fa-save me-2"></i> Simpan Perubahan
+              <button type="button" class="btn-primary-custom" onclick="saveSettings()">
+                <i class="fas fa-save me-2"></i> Simpan Pengaturan
               </button>
-              <button type="button" class="btn-outline-custom" onclick="loadProfile()">
-                <i class="fas fa-undo me-2"></i> Reset
+              <button type="button" class="btn-outline-custom" onclick="resetToDefault()">
+                <i class="fas fa-undo me-2"></i> Reset ke Default
               </button>
             </div>
           </form>
         </div>
-        
-        <!-- Change Password Card -->
+      </div>
+      
+      <!-- Side Panel -->
+      <div class="col-lg-4">
+        <!-- System Info -->
         <div class="desktop-content-card">
-          <h4><i class="fas fa-lock me-2"></i> Ubah Password</h4>
+          <h4><i class="fas fa-info-circle me-2"></i> Informasi Sistem</h4>
           
           <div class="mb-3">
-            <label class="desktop-form-label">Password Saat Ini</label>
-            <input type="password" class="form-control" id="desktopCurrentPassword">
+            <small class="text-muted">Versi Aplikasi</small>
+            <p class="fw-bold mb-0">ASAKUR v1.0.0</p>
           </div>
           
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <label class="desktop-form-label">Password Baru</label>
-              <input type="password" class="form-control" id="desktopNewPassword">
-            </div>
+          <div class="mb-3">
+            <small class="text-muted">Database</small>
+            <p class="fw-bold mb-0">Google Sheets</p>
+          </div>
+          
+          <div class="mb-3">
+            <small class="text-muted">Terakhir Update</small>
+            <p class="fw-bold mb-0" id="desktopLastUpdate">-</p>
+          </div>
+          
+          <hr>
+          
+          <div class="d-grid gap-2">
+            <button class="btn-outline-custom" onclick="testDatabase()">
+              <i class="fas fa-database me-2"></i> Test Database
+            </button>
             
-            <div class="col-md-6">
-              <label class="desktop-form-label">Konfirmasi Password Baru</label>
-              <input type="password" class="form-control" id="desktopConfirmPassword">
-            </div>
+            <button class="btn-outline-custom" onclick="viewLogs()">
+              <i class="fas fa-file-alt me-2"></i> Lihat Logs
+            </button>
+          </div>
+        </div>
+        
+        <!-- Backup & Restore -->
+        <div class="desktop-content-card">
+          <h4><i class="fas fa-save me-2"></i> Backup & Restore</h4>
+          
+          <p class="text-muted small mb-3">Backup data sistem secara berkala untuk keamanan</p>
+          
+          <div class="d-grid gap-2">
+            <button class="btn-primary-custom" onclick="createBackup()" style="background: linear-gradient(135deg, #28a745, #20c997);">
+              <i class="fas fa-download me-2"></i> Buat Backup
+            </button>
+            
+            <button class="btn-outline-custom" onclick="restoreBackup()">
+              <i class="fas fa-upload me-2"></i> Restore Backup
+            </button>
+          </div>
+        </div>
+        
+        <!-- Danger Zone -->
+        <div class="desktop-content-card" style="border: 2px solid var(--error-color);">
+          <h4 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Danger Zone</h4>
+          
+          <div class="desktop-alert desktop-alert-warning mb-3">
+            <i class="fas fa-info-circle me-2"></i>
+            <small>Tindakan di bawah ini bersifat permanen!</small>
           </div>
           
-          <button type="button" class="btn-outline-custom" onclick="changePassword()">
-            <i class="fas fa-key me-2"></i> Ubah Password
-          </button>
+          <div class="d-grid gap-2">
+            <button class="btn-danger-custom" onclick="clearAllData()">
+              <i class="fas fa-trash me-2"></i> Hapus Semua Data
+            </button>
+            
+            <button class="btn-outline-custom" onclick="resetSystem()" style="border-color: var(--error-color); color: var(--error-color);">
+              <i class="fas fa-sync me-2"></i> Reset Sistem
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1312,27 +1375,14 @@
   </div>
 </div>
 
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center p-5">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-        <h5 class="mt-4">Sedang logout...</h5>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// Global variables (SAMA seperti sebelumnya)
+// Global variables
 let baseUrl = '';
-let counselorProfile = null;
-let userId = null;
+let currentSession = null;
 
-// Logo loading dengan CORS fix (SAMA seperti sebelumnya)
+// Logo loading with CORS fix
 function loadLogos() {
   const logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
   
@@ -1376,9 +1426,9 @@ function loadLogoImage(container, url, size) {
   img.src = url + '?t=' + new Date().getTime();
 }
 
-// Initialize (diperbarui untuk mendukung dual form)
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Profil Konselor initializing...');
+  console.log('Pengaturan Sistem initializing...');
   
   // Force mobile view if needed
   forceMobileViewIfNeeded();
@@ -1392,20 +1442,26 @@ document.addEventListener('DOMContentLoaded', function() {
       baseUrl = url;
       console.log('Base URL loaded:', baseUrl);
       
+      // Load user info
+      loadUserInfo();
+      
+      // Load settings
+      loadSettings();
+      
       // Setup menu
       setupMenu();
-      
-      // Load user data
-      loadUserData();
     })
     .withFailureHandler(function(error) {
       console.error('Error loading base URL:', error);
       showNotification('Gagal memuat konfigurasi sistem', 'error');
     })
     .getWebAppUrl();
+  
+  // Initialize color previews
+  initColorPreviews();
 });
 
-// Force mobile view if needed (SAMA seperti sebelumnya)
+// Force mobile view if needed
 function forceMobileViewIfNeeded() {
   const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
   const screenWidth = window.innerWidth;
@@ -1417,15 +1473,59 @@ function forceMobileViewIfNeeded() {
   }
 }
 
-// Setup menu items (diperbarui untuk konselor)
+// Initialize color previews
+function initColorPreviews() {
+  // Mobile color previews
+  const mobileMainColor = document.getElementById('mobileMainColor');
+  const mobileAccentColor = document.getElementById('mobileAccentColor');
+  
+  if (mobileMainColor) {
+    mobileMainColor.addEventListener('input', function(e) {
+      document.getElementById('mobileMainColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  if (mobileAccentColor) {
+    mobileAccentColor.addEventListener('input', function(e) {
+      document.getElementById('mobileAccentColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  // Desktop color previews
+  const desktopMainColor = document.getElementById('desktopMainColor');
+  const desktopAccentColor = document.getElementById('desktopAccentColor');
+  
+  if (desktopMainColor) {
+    desktopMainColor.addEventListener('input', function(e) {
+      document.getElementById('desktopMainColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  if (desktopAccentColor) {
+    desktopAccentColor.addEventListener('input', function(e) {
+      document.getElementById('desktopAccentColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+}
+
+// Toggle mobile sidebar
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Setup menu items
 function setupMenu() {
   const menuItems = [
-    { id: 'counselor', title: 'Dashboard', icon: 'fas fa-home' },
-    { id: 'counselor_schedule', title: 'Jadwal Konseling', icon: 'fas fa-calendar-alt' },
-    { id: 'counselor_students', title: 'Klien Saya', icon: 'fas fa-user-graduate' },
-    { id: 'counselor_assessments', title: 'Form Asesmen', icon: 'fas fa-clipboard-check' },
-    { id: 'counselor_video', title: 'Sesi Virtual', icon: 'fas fa-video' },
-    { id: 'counselor_profile', title: 'Profil & Pengaturan', icon: 'fas fa-user-cog', active: true }
+    { id: 'admin', title: 'Dashboard', icon: 'fas fa-home' },
+    { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md' },
+    { id: 'student_management', title: 'Manajemen Mahasiswa', icon: 'fas fa-user-graduate' },
+    { id: 'appointment_schedule', title: 'Jadwal & Laporan', icon: 'fas fa-calendar-alt' },
+    { id: 'system_settings', title: 'Pengaturan Sistem', icon: 'fas fa-cogs', active: true },
+    { id: 'emergency_contacts', title: 'Kontak Darurat', icon: 'fas fa-phone-alt' }
   ];
   
   // Mobile menu
@@ -1455,16 +1555,41 @@ function setupMenu() {
   }
 }
 
-// Toggle mobile sidebar (SAMA seperti sebelumnya)
-function toggleMobileSidebar() {
-  const sidebar = document.getElementById('mobileSidebar');
-  const overlay = document.getElementById('mobileSidebarOverlay');
-  
-  sidebar.classList.toggle('active');
-  overlay.classList.toggle('active');
+// Load user info
+function loadUserInfo() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      currentSession = session;
+      if (session) {
+        updateUserInfo(session);
+      } else {
+        logout();
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading session:', error);
+      showNotification('Gagal memuat data pengguna', 'error');
+    })
+    .getSession();
 }
 
-// Navigate to page (SAMA seperti sebelumnya)
+function updateUserInfo(session) {
+  const name = session.fullname || session.username;
+  const role = session.role || 'Administrator';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  
+  // Mobile
+  document.getElementById('mobileUserName').textContent = name;
+  document.getElementById('mobileUserRole').textContent = role;
+  document.getElementById('mobileUserAvatar').textContent = initials;
+  
+  // Desktop
+  document.getElementById('desktopUserName').textContent = name;
+  document.getElementById('desktopUserRole').textContent = role;
+  document.getElementById('desktopUserAvatar').textContent = initials;
+}
+
+// Navigate to page
 function navigateToPage(pageName) {
   if (!baseUrl) {
     showNotification('Sistem belum siap, coba lagi', 'warning');
@@ -1490,248 +1615,267 @@ function navigateToPage(pageName) {
   }
 }
 
-// FUNGSI-FUNGSI UTAMA (SAMA persis seperti di file asli)
-
-function loadUserData() {
+// Load settings
+function loadSettings() {
   google.script.run
-    .withSuccessHandler(function(session) {
-      if (session && session.role === 'counselor') {
-        userId = session.id;
+    .withSuccessHandler(function(settings) {
+      // Populate mobile form with settings
+      Object.keys(settings).forEach(key => {
+        const mobileElement = document.getElementById('mobile' + key.charAt(0).toUpperCase() + key.slice(1));
+        const desktopElement = document.getElementById('desktop' + key.charAt(0).toUpperCase() + key.slice(1));
         
-        // Update user info in sidebars
-        updateUserInfo(session);
+        if (mobileElement) {
+          if (mobileElement.type === 'checkbox') {
+            mobileElement.checked = settings[key] === 'true' || settings[key] === true;
+          } else {
+            mobileElement.value = settings[key];
+          }
+        }
         
-        // Load profile and stats
-        loadProfile();
-        loadStats();
-      } else {
-        navigateToPage('counselor');
-      }
+        if (desktopElement) {
+          if (desktopElement.type === 'checkbox') {
+            desktopElement.checked = settings[key] === 'true' || settings[key] === true;
+          } else {
+            desktopElement.value = settings[key];
+          }
+        }
+      });
+      
+      // Update color previews
+      updateColorPreviews(settings);
+      
+      // Update last update time
+      const now = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      document.getElementById('mobileLastUpdate').textContent = now;
+      document.getElementById('desktopLastUpdate').textContent = now;
     })
-    .getSession();
+    .withFailureHandler(function(error) {
+      console.error('Error loading settings:', error);
+      showNotification('Gagal memuat pengaturan', 'error');
+    })
+    .getSystemSettings();
 }
 
-function updateUserInfo(session) {
-  const name = session.fullname || session.username || 'Konselor';
-  const role = session.role || 'Konselor';
-  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
-  
+// Update color previews
+function updateColorPreviews(settings) {
   // Mobile
-  document.getElementById('mobileUserName').textContent = name;
-  document.getElementById('mobileUserRole').textContent = role;
-  document.getElementById('mobileUserAvatar').textContent = initials;
+  const mobileMainColorPreview = document.getElementById('mobileMainColorPreview');
+  const mobileAccentColorPreview = document.getElementById('mobileAccentColorPreview');
+  
+  if (mobileMainColorPreview && settings.main_color) {
+    mobileMainColorPreview.style.backgroundColor = settings.main_color;
+  }
+  
+  if (mobileAccentColorPreview && settings.accent_color) {
+    mobileAccentColorPreview.style.backgroundColor = settings.accent_color;
+  }
   
   // Desktop
-  document.getElementById('desktopUserName').textContent = name;
-  document.getElementById('desktopUserRole').textContent = role;
-  document.getElementById('desktopUserAvatar').textContent = initials;
-}
-
-function loadProfile() {
-  google.script.run
-    .withSuccessHandler(function(profile) {
-      if (!profile) return;
-      
-      counselorProfile = profile;
-      
-      // Update mobile profile card
-      const initials = (profile.fullname || 'K').split(' ').map(n => n[0]).join('').substring(0, 2);
-      document.getElementById('profileAvatar').textContent = initials;
-      document.getElementById('profileName').textContent = profile.fullname || 'Konselor';
-      document.getElementById('profileEmail').textContent = profile.email || '';
-      document.getElementById('profileSpecialization').textContent = profile.specialization || 'Konseling Umum';
-      
-      // Update desktop profile card
-      document.getElementById('desktopProfileAvatar').textContent = initials;
-      document.getElementById('desktopProfileName').textContent = profile.fullname || 'Konselor';
-      document.getElementById('desktopProfileEmail').textContent = profile.email || '';
-      document.getElementById('desktopProfileSpecialization').textContent = profile.specialization || 'Konseling Umum';
-      
-      // Fill mobile form
-      document.getElementById('fullname').value = profile.fullname || '';
-      document.getElementById('email').value = profile.email || '';
-      document.getElementById('phone').value = profile.phone || '';
-      document.getElementById('specialization').value = profile.specialization || '';
-      document.getElementById('education').value = profile.education || '';
-      document.getElementById('experience_years').value = profile.experience_years || '';
-      document.getElementById('certifications').value = profile.certifications || '';
-      document.getElementById('bio').value = profile.bio || '';
-      document.getElementById('availability').value = profile.availability || 'available';
-      
-      // Fill desktop form
-      document.getElementById('desktopFullname').value = profile.fullname || '';
-      document.getElementById('desktopEmail').value = profile.email || '';
-      document.getElementById('desktopPhone').value = profile.phone || '';
-      document.getElementById('desktopSpecialization').value = profile.specialization || '';
-      document.getElementById('desktopEducation').value = profile.education || '';
-      document.getElementById('desktopExperience_years').value = profile.experience_years || '';
-      document.getElementById('desktopCertifications').value = profile.certifications || '';
-      document.getElementById('desktopBio').value = profile.bio || '';
-      document.getElementById('desktopAvailability').value = profile.availability || 'available';
-      
-      // Calculate profile completion (both mobile and desktop)
-      calculateProfileCompletion(profile);
-    })
-    .getCounselorProfile(userId);
-}
-
-function calculateProfileCompletion(profile) {
-  const fields = [
-    profile.fullname,
-    profile.email,
-    profile.phone,
-    profile.specialization,
-    profile.education,
-    profile.experience_years,
-    profile.certifications,
-    profile.bio
-  ];
+  const desktopMainColorPreview = document.getElementById('desktopMainColorPreview');
+  const desktopAccentColorPreview = document.getElementById('desktopAccentColorPreview');
   
-  const completed = fields.filter(f => f && f !== '').length;
-  const percentage = Math.round((completed / fields.length) * 100);
+  if (desktopMainColorPreview && settings.main_color) {
+    desktopMainColorPreview.style.backgroundColor = settings.main_color;
+  }
   
-  // Mobile
-  document.getElementById('profileCompletion').textContent = percentage + '%';
-  document.getElementById('profileBar').style.width = percentage + '%';
-  
-  // Desktop
-  document.getElementById('desktopProfileCompletion').textContent = percentage + '%';
-  document.getElementById('desktopProfileBar').style.width = percentage + '%';
+  if (desktopAccentColorPreview && settings.accent_color) {
+    desktopAccentColorPreview.style.backgroundColor = settings.accent_color;
+  }
 }
 
-function loadStats() {
-  google.script.run
-    .withSuccessHandler(function(stats) {
-      // Mobile
-      document.getElementById('statTotalSessions').textContent = stats.mySessions || 0;
-      document.getElementById('statTotalClients').textContent = stats.totalStudents || 0;
-      document.getElementById('statTotalAssessments').textContent = stats.totalAssessments || 0;
-      
-      // Desktop
-      document.getElementById('desktopStatTotalSessions').textContent = stats.mySessions || 0;
-      document.getElementById('desktopStatTotalClients').textContent = stats.totalStudents || 0;
-      document.getElementById('desktopStatTotalAssessments').textContent = stats.totalAssessments || 0;
-    })
-    .getDashboardStats('counselor');
-}
-
-function saveProfile() {
+// Save settings
+function saveSettings() {
   const isMobile = window.innerWidth < 993;
   
-  let profileData = {};
+  let settings = {};
   
   if (isMobile) {
-    profileData = {
-      user_id: userId,
-      fullname: document.getElementById('fullname').value,
-      email: document.getElementById('email').value,
-      phone: document.getElementById('phone').value,
-      specialization: document.getElementById('specialization').value,
-      education: document.getElementById('education').value,
-      experience_years: document.getElementById('experience_years').value,
-      certifications: document.getElementById('certifications').value,
-      bio: document.getElementById('bio').value,
-      availability: document.getElementById('availability').value,
-      accept_new_clients: document.getElementById('acceptNewClients').checked
+    settings = {
+      site_name: document.getElementById('mobileSiteName').value,
+      site_description: document.getElementById('mobileSiteDescription').value,
+      contact_email: document.getElementById('mobileContactEmail').value,
+      session_duration: document.getElementById('mobileSessionDuration').value,
+      max_sessions_per_day: document.getElementById('mobileMaxSessionsPerDay').value,
+      operation_start_time: document.getElementById('mobileOperationStartTime').value,
+      operation_end_time: document.getElementById('mobileOperationEndTime').value,
+      main_color: document.getElementById('mobileMainColor').value,
+      accent_color: document.getElementById('mobileAccentColor').value,
+      emergency_contact: document.getElementById('mobileEmergencyContact').value,
+      emergency_email: document.getElementById('mobileEmergencyEmail').value,
+      email_notifications: document.getElementById('mobileEmailNotifications').checked,
+      sms_notifications: document.getElementById('mobileSmsNotifications').checked
     };
   } else {
-    profileData = {
-      user_id: userId,
-      fullname: document.getElementById('desktopFullname').value,
-      email: document.getElementById('desktopEmail').value,
-      phone: document.getElementById('desktopPhone').value,
-      specialization: document.getElementById('desktopSpecialization').value,
-      education: document.getElementById('desktopEducation').value,
-      experience_years: document.getElementById('desktopExperience_years').value,
-      certifications: document.getElementById('desktopCertifications').value,
-      bio: document.getElementById('desktopBio').value,
-      availability: document.getElementById('desktopAvailability').value,
-      accept_new_clients: document.getElementById('desktopAcceptNewClients').checked
+    settings = {
+      site_name: document.getElementById('desktopSiteName').value,
+      site_description: document.getElementById('desktopSiteDescription').value,
+      contact_email: document.getElementById('desktopContactEmail').value,
+      session_duration: document.getElementById('desktopSessionDuration').value,
+      max_sessions_per_day: document.getElementById('desktopMaxSessionsPerDay').value,
+      operation_start_time: document.getElementById('desktopOperationStartTime').value,
+      operation_end_time: document.getElementById('desktopOperationEndTime').value,
+      main_color: document.getElementById('desktopMainColor').value,
+      accent_color: document.getElementById('desktopAccentColor').value,
+      emergency_contact: document.getElementById('desktopEmergencyContact').value,
+      emergency_email: document.getElementById('desktopEmergencyEmail').value,
+      email_notifications: document.getElementById('desktopEmailNotifications').checked,
+      sms_notifications: document.getElementById('desktopSmsNotifications').checked
     };
   }
   
-  // Validate
-  if (!profileData.fullname || !profileData.email) {
-    showNotification('Nama dan email harus diisi', 'warning');
-    return;
-  }
-  
-  // Save to server
   google.script.run
     .withSuccessHandler(function(result) {
       if (result.success) {
-        showNotification('Profil berhasil disimpan', 'success');
-        // Reload profile
-        setTimeout(() => {
-          loadProfile();
-        }, 1000);
+        showNotification('Pengaturan berhasil disimpan', 'success');
+        // Update color previews
+        updateColorPreviews(settings);
       } else {
-        showNotification('Gagal menyimpan profil', 'error');
+        showNotification('Gagal menyimpan pengaturan', 'error');
       }
     })
     .withFailureHandler(function(error) {
-      console.error('Error saving profile:', error);
-      showNotification('Gagal menyimpan profil', 'error');
+      console.error('Error saving settings:', error);
+      showNotification('Gagal menyimpan pengaturan', 'error');
     })
-    .updateCounselorProfile(profileData);
+    .saveSystemSettings(settings);
 }
 
-function changePassword() {
-  const isMobile = window.innerWidth < 993;
-  
-  let currentPassword, newPassword, confirmPassword;
-  
-  if (isMobile) {
-    currentPassword = document.getElementById('currentPassword').value;
-    newPassword = document.getElementById('newPassword').value;
-    confirmPassword = document.getElementById('confirmPassword').value;
-  } else {
-    currentPassword = document.getElementById('desktopCurrentPassword').value;
-    newPassword = document.getElementById('desktopNewPassword').value;
-    confirmPassword = document.getElementById('desktopConfirmPassword').value;
+// Reset to default
+function resetToDefault() {
+  if (confirm('Reset semua pengaturan ke default? Tindakan ini tidak dapat dibatalkan.')) {
+    google.script.run
+      .withSuccessHandler(function() {
+        showNotification('Pengaturan direset ke default', 'success');
+        loadSettings();
+      })
+      .withFailureHandler(function(error) {
+        console.error('Error resetting settings:', error);
+        showNotification('Gagal mereset pengaturan', 'error');
+      })
+      .initializeDefaultSettings();
   }
-  
-  if (!currentPassword || !newPassword || !confirmPassword) {
-    showNotification('Semua field password harus diisi', 'warning');
-    return;
-  }
-  
-  if (newPassword !== confirmPassword) {
-    showNotification('Password baru dan konfirmasi tidak cocok', 'danger');
-    return;
-  }
-  
-  if (newPassword.length < 6) {
-    showNotification('Password baru minimal 6 karakter', 'warning');
-    return;
-  }
+}
+
+// Test database
+function testDatabase() {
+  const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+  modal.show();
   
   google.script.run
-    .withSuccessHandler(function(result) {
-      if (result.success) {
-        showNotification('Password berhasil diubah', 'success');
-        
-        // Clear password fields
-        if (isMobile) {
-          document.getElementById('currentPassword').value = '';
-          document.getElementById('newPassword').value = '';
-          document.getElementById('confirmPassword').value = '';
-        } else {
-          document.getElementById('desktopCurrentPassword').value = '';
-          document.getElementById('desktopNewPassword').value = '';
-          document.getElementById('desktopConfirmPassword').value = '';
-        }
-      } else {
-        showNotification(result.message || 'Gagal mengubah password', 'danger');
-      }
+    .withSuccessHandler(function(results) {
+      modal.hide();
+      let message = 'Status Database:\n\n';
+      results.forEach(r => {
+        message += `${r.name}: ${r.exists ? '✓' : '✗'} (${r.rowCount} rows)\n`;
+      });
+      alert(message);
     })
-    .changePassword(userId, currentPassword, newPassword);
+    .withFailureHandler(function(error) {
+      modal.hide();
+      console.error('Error testing database:', error);
+      showNotification('Gagal menguji database', 'error');
+    })
+    .testDatabase();
 }
 
-// Show notification (diperbarui dengan style baru)
+// View logs
+function viewLogs() {
+  alert('Fitur logs akan segera tersedia');
+}
+
+// Create backup
+function createBackup() {
+  if (confirm('Buat backup data sistem?')) {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
+    google.script.run
+      .withSuccessHandler(function(result) {
+        modal.hide();
+        if (result.success) {
+          showNotification(`Backup berhasil dibuat: ${result.fileName}`, 'success');
+          alert(`File backup: ${result.fileName}\nDownload URL: ${result.downloadUrl}`);
+        } else {
+          showNotification('Gagal membuat backup', 'error');
+        }
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error creating backup:', error);
+        showNotification('Gagal membuat backup', 'error');
+      })
+      .createBackup();
+  }
+}
+
+// Restore backup
+function restoreBackup() {
+  alert('Fitur restore backup akan segera tersedia.\nSilakan upload file backup JSON Anda.');
+}
+
+// Clear all data
+function clearAllData() {
+  const confirmation = prompt('PERINGATAN: Ini akan menghapus SEMUA data!\nKetik "HAPUS SEMUA" untuk konfirmasi:');
+  
+  if (confirmation === 'HAPUS SEMUA') {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
+    google.script.run
+      .withSuccessHandler(function(result) {
+        modal.hide();
+        if (result.success) {
+          showNotification('Semua data berhasil dihapus', 'success');
+          alert('Sistem akan diinisialisasi ulang...');
+          google.script.run.initializeDatabase();
+        } else {
+          showNotification('Gagal menghapus data', 'error');
+        }
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error clearing data:', error);
+        showNotification('Gagal menghapus data', 'error');
+      })
+      .clearAllData();
+  } else {
+    alert('Konfirmasi dibatalkan');
+  }
+}
+
+// Reset system
+function resetSystem() {
+  const confirmation = prompt('Reset sistem ke pengaturan awal?\nKetik "RESET" untuk konfirmasi:');
+  
+  if (confirmation === 'RESET') {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
+    google.script.run
+      .withSuccessHandler(function() {
+        modal.hide();
+        showNotification('Sistem berhasil direset', 'success');
+        setTimeout(() => location.reload(), 2000);
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error resetting system:', error);
+        showNotification('Gagal mereset sistem', 'error');
+      })
+      .initializeDatabase();
+  }
+}
+
+// Show notification
 function showNotification(message, type) {
   const notification = document.createElement('div');
-  notification.className = `alert alert-${type === 'error' ? 'danger' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'success'} alert-dismissible fade show position-fixed`;
+  notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
   notification.style.cssText = `
     top: 20px;
     right: 20px;
@@ -1740,7 +1884,6 @@ function showNotification(message, type) {
     max-width: 90%;
     box-shadow: var(--shadow-md);
     border-radius: 12px;
-    border-left: 4px solid ${type === 'error' ? 'var(--error-color)' : type === 'warning' ? 'var(--warning-color)' : type === 'info' ? 'var(--accent-blue)' : 'var(--success-color)'};
   `;
   notification.innerHTML = `
     <div style="display: flex; align-items: center; gap: 10px;">
@@ -1759,13 +1902,13 @@ function showNotification(message, type) {
   }, 5000);
 }
 
-// Logout (SAMA seperti sebelumnya)
+// Logout
 function logout() {
   if (!confirm('Apakah Anda yakin ingin logout?')) {
     return;
   }
   
-  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
   modal.show();
   
   google.script.run
@@ -1796,7 +1939,7 @@ function logout() {
     .serverLogout();
 }
 
-// Handle window resize (SAMA seperti sebelumnya)
+// Handle window resize
 let resizeTimeout;
 window.addEventListener('resize', function() {
   clearTimeout(resizeTimeout);
@@ -1805,7 +1948,7 @@ window.addEventListener('resize', function() {
   }, 250);
 });
 
-// Handle orientation change (SAMA seperti sebelumnya)
+// Handle orientation change
 window.addEventListener('orientationchange', function() {
   setTimeout(function() {
     forceMobileViewIfNeeded();

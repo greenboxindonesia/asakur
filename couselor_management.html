@@ -3,7 +3,7 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Manajemen Konselor - ASAKUR</title>
   
   <!-- Bootstrap 5 -->
@@ -18,69 +18,253 @@
       --accent-blue: #2a9d8f;
       --light-blue: #8ecae6;
       --dark-blue: #023047;
-      --sidebar-width: 280px;
+      --surface-color: #ffffff;
+      --background-color: #f5f7fa;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --success-color: #34c759;
+      --warning-color: #ff9500;
+      --error-color: #ff3b30;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
     }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    }
+    
+    html {
+      font-size: 16px;
+      height: 100%;
     }
     
     body {
-      background-color: #f5f7fb;
-      color: #333;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      min-height: 100vh;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Form validation styles */
+    .is-invalid {
+      border-color: var(--error-color) !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23ff3b30'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23ff3b30' stroke='none'/%3e%3c/svg%3e") !important;
+      background-repeat: no-repeat !important;
+      background-position: right calc(0.375em + 0.1875rem) center !important;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+    }
+
+    .is-valid {
+      border-color: var(--success-color) !important;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%2334c759' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e") !important;
+      background-repeat: no-repeat !important;
+      background-position: right calc(0.375em + 0.1875rem) center !important;
+      background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+    }
+
+    .form-text {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Custom placeholder styles */
+    .form-control::placeholder {
+      color: #999;
+      opacity: 0.7;
+    }
+
+    /* Required field indicator */
+    .form-label span.text-danger {
+      font-weight: bold;
+    }
+
+    /* Modal form specific */
+    .modal-content {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .modal-body {
+      padding: 25px;
     }
     
-    /* Sidebar - Same as dashboard */
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    /* MOBILE VERSION */
+    .mobile-container {
+      display: block;
+      min-height: 100vh;
+      background-color: var(--surface-color);
+      position: relative;
+    }
+    
+    /* DESKTOP VERSION */
+    .desktop-container {
+      display: none;
+      min-height: 100vh;
+    }
+    
+    /* MOBILE HEADER */
+    .mobile-header {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      padding: 20px;
       color: white;
-      padding: 25px 0;
-      transition: all 0.3s ease;
+      position: sticky;
+      top: 0;
       z-index: 1000;
-      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
     
-    .sidebar-brand {
-      padding: 0 25px 30px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 25px;
+    .mobile-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     
-    .sidebar-brand h3 {
-      font-weight: 700;
-      font-size: 1.6rem;
-      margin-bottom: 8px;
+    .mobile-header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .mobile-logo-container {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
     
-    .sidebar-brand p {
+    .mobile-logo-container img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .mobile-logo-container i {
+      font-size: 28px;
+      color: var(--primary-blue);
+    }
+    
+    .mobile-header-info h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+    }
+    
+    .mobile-header-info p {
       font-size: 0.85rem;
-      opacity: 0.8;
+      opacity: 0.9;
+      margin: 2px 0 0 0;
     }
     
-    .sidebar-menu {
+    .mobile-menu-toggle {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 10px;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    
+    /* MOBILE SIDEBAR */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      z-index: 2000;
+      transition: left 0.3s ease;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.25);
+    }
+    
+    .mobile-sidebar.active {
+      left: 0;
+    }
+    
+    .mobile-sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1999;
+      display: none;
+    }
+    
+    .mobile-sidebar-overlay.active {
+      display: block;
+    }
+    
+    .mobile-sidebar-header {
+      padding: 25px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .mobile-sidebar-logo {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .mobile-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .mobile-sidebar-logo i {
+      font-size: 32px;
+      color: var(--primary-blue);
+    }
+    
+    .mobile-sidebar-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    
+    .mobile-sidebar-menu {
+      padding: 20px 0;
       list-style: none;
-      padding: 0 15px;
     }
     
-    .sidebar-menu li {
+    .mobile-sidebar-menu li {
       margin-bottom: 5px;
     }
     
-    .sidebar-menu a {
+    .mobile-sidebar-menu a {
       display: flex;
       align-items: center;
       padding: 16px 20px;
@@ -88,271 +272,1268 @@
       text-decoration: none;
       transition: all 0.3s;
       font-weight: 500;
-      border-radius: 12px;
+      border-radius: 0 12px 12px 0;
       margin: 0 5px;
       cursor: pointer;
     }
     
-    .sidebar-menu a:hover, .sidebar-menu a.active {
+    .mobile-sidebar-menu a:hover,
+    .mobile-sidebar-menu a.active {
       background-color: rgba(255, 255, 255, 0.15);
       color: white;
       transform: translateX(5px);
     }
     
-    .sidebar-menu i {
+    .mobile-sidebar-menu i {
       width: 25px;
       font-size: 1.2rem;
       margin-right: 15px;
       text-align: center;
     }
     
-    .sidebar-footer {
+    .mobile-sidebar-footer {
       position: absolute;
-      bottom: 30px;
+      bottom: 0;
       left: 0;
       right: 0;
-      padding: 0 25px;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    /* Main Content */
-    .main-content {
-      margin-left: var(--sidebar-width);
-      padding: 30px;
-      transition: all 0.3s ease;
+    .mobile-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .mobile-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .mobile-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
+    .mobile-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    
+    /* MOBILE MAIN CONTENT */
+    .mobile-main {
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+    
+    .mobile-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .mobile-section-title i {
+      color: var(--accent-blue);
+    }
+    
+    /* MOBILE FILTER CARD */
+    .mobile-filter-card {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    
+    .mobile-filter-group {
+      margin-bottom: 15px;
+    }
+    
+    .mobile-filter-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .mobile-filter-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: block;
+    }
+    
+    .mobile-search-input {
+      width: 100%;
+      padding: 15px 20px 15px 45px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-search-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+    }
+    
+    .mobile-search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+    
+    .mobile-select {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      background-size: 16px;
+    }
+    
+    .mobile-select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+    }
+    
+    /* MOBILE TABLE CONTAINER */
+    .mobile-table-container {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    
+    .mobile-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .mobile-table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+    }
+    
+    .mobile-table thead th {
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 15px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+      font-size: 0.9rem;
+    }
+    
+    .mobile-table tbody td {
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    
+    .mobile-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+    
+    .badge-pending { background-color: rgba(255, 149, 0, 0.15); color: #cc7700; }
+    .badge-approved { background-color: rgba(52, 199, 89, 0.15); color: var(--success-color); }
+    .badge-rejected { background-color: rgba(255, 59, 48, 0.15); color: var(--error-color); }
+    .badge-available { background-color: rgba(52, 199, 89, 0.15); color: var(--success-color); }
+    .badge-busy { background-color: rgba(142, 202, 230, 0.15); color: var(--secondary-blue); }
+    
+    .mobile-action-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .mobile-action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-approve { background-color: rgba(52, 199, 89, 0.1); color: var(--success-color); }
+    .btn-reject { background-color: rgba(255, 59, 48, 0.1); color: var(--error-color); }
+    .btn-view { background-color: rgba(13, 59, 102, 0.1); color: var(--primary-blue); }
+    .btn-edit { background-color: rgba(255, 149, 0, 0.1); color: #cc7700; }
+    
+    .btn-approve:hover { background-color: var(--success-color); color: white; }
+    .btn-reject:hover { background-color: var(--error-color); color: white; }
+    .btn-view:hover { background-color: var(--primary-blue); color: white; }
+    .btn-edit:hover { background-color: #cc7700; color: white; }
+    
+    /* MOBILE BOTTOM NAV */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      min-width: 60px;
+    }
+    
+    .mobile-nav-item i {
+      font-size: 1.3rem;
+    }
+    
+    .mobile-nav-item.active {
+      color: var(--accent-blue);
+      background: rgba(42, 157, 143, 0.1);
+    }
+    
+    /* DESKTOP VERSION */
+    .desktop-container {
+      display: flex;
       min-height: 100vh;
     }
     
-    /* Page Header */
-    .page-header {
+    /* DESKTOP SIDEBAR */
+    .desktop-sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 100;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .desktop-sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    
+    .desktop-sidebar-logo {
+      width: 80px;
+      height: 80px;
       background: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .desktop-sidebar-logo i {
+      font-size: 40px;
+      color: var(--primary-blue);
+    }
+    
+    .desktop-sidebar-header h3 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .desktop-sidebar-header p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .desktop-sidebar-menu {
+      flex: 1;
+      padding: 25px 0;
+      list-style: none;
+      overflow-y: auto;
+    }
+    
+    .desktop-sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .desktop-sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 25px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 0 12px 12px 0;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .desktop-sidebar-menu a:hover,
+    .desktop-sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .desktop-sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .desktop-sidebar-footer {
+      padding: 20px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .desktop-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .desktop-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .desktop-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
+    .desktop-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    
+    /* DESKTOP MAIN CONTENT */
+    .desktop-main {
+      flex: 1;
+      margin-left: 280px;
       padding: 30px;
+      min-height: 100vh;
+      background-color: var(--background-color);
+    }
+    
+    .desktop-header {
+      background: var(--surface-color);
+      padding: 25px 30px;
       border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      box-shadow: var(--shadow-sm);
       margin-bottom: 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     
-    .page-header h1 {
+    .desktop-header h1 {
       color: var(--dark-blue);
       font-weight: 700;
-      font-size: 2rem;
-      margin: 0;
+      font-size: 1.8rem;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       gap: 15px;
     }
     
-    /* Content Card */
-    .content-card {
-      background: white;
-      border-radius: 18px;
-      padding: 35px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    .desktop-header p {
+      color: var(--text-secondary);
+      margin-bottom: 0;
     }
     
-    /* Table */
-    .table thead th {
-      background-color: #f8f9fa;
-      color: var(--dark-blue);
-      font-weight: 600;
-      border: none;
-      padding: 18px 20px;
-      border-bottom: 2px solid #e9ecef;
+    .desktop-user-badge {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
     }
     
-    .table tbody td {
-      padding: 18px 20px;
-      vertical-align: middle;
-      border-color: #f0f0f0;
+    .desktop-user-badge-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
     }
     
-    .badge {
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-weight: 500;
-      font-size: 0.85rem;
-    }
-    
-    .badge-pending { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
-    .badge-approved { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
-    .badge-rejected { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
-    
-    /* Action buttons */
-    .btn-primary {
+    .desktop-add-btn {
       background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
-      border: none;
-    }
-    
-    .btn-primary:hover {
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      transform: translateY(-2px);
-    }
-    
-    /* Mobile Sidebar Toggle */
-    .sidebar-toggle {
-      display: none;
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
       color: white;
       border: none;
+      padding: 12px 24px;
       border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 1.3rem;
-      margin-bottom: 15px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
     
-    /* Responsive */
-    @media (max-width: 992px) {
-      .sidebar {
-        margin-left: -280px;
+    .desktop-add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    /* DESKTOP FILTER CARD */
+    .desktop-filter-card {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    
+    /* DESKTOP TABLE CONTAINER */
+    .desktop-table-container {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    
+    .desktop-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .desktop-table thead th {
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 18px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .desktop-table tbody td {
+      padding: 18px;
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
+    }
+    
+    .desktop-action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    /* COMMON STYLES */
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--secondary-blue);
+      border: 2px solid var(--secondary-blue);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-custom:hover {
+      background: var(--secondary-blue);
+      color: white;
+    }
+    
+    /* Loading animation untuk logo */
+    .logo-loading {
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Edit Modal Styles */
+    .day-checkbox {
+      position: relative;
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .day-checkbox input[type="checkbox"] {
+      display: none;
+    }
+
+    .day-checkbox.active {
+      background-color: var(--accent-blue);
+      color: white;
+      border-color: var(--accent-blue);
+    }
+
+    .day-checkbox:hover {
+      background-color: rgba(42, 157, 143, 0.1);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    /* Responsive Design */
+    /* Mobile only */
+    .mobile-container {
+      display: block !important;
+    }
+    
+    .desktop-container {
+      display: none !important;
+    }
+    
+    /* Desktop only */
+    @media (min-width: 993px) {
+      .mobile-container {
+        display: none !important;
       }
       
-      .sidebar.active {
-        margin-left: 0;
+      .desktop-container {
+        display: flex !important;
+      }
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .mobile-main {
+        padding: 16px;
+        padding-bottom: 80px;
       }
       
-      .main-content {
-        margin-left: 0;
+      .mobile-filter-card {
+        padding: 16px;
       }
       
-      .sidebar-toggle {
-        display: block;
+      .mobile-table-container {
+        padding: 16px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .mobile-header {
+        padding: 16px;
+      }
+      
+      .mobile-logo-container {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .mobile-header-info h1 {
+        font-size: 1.2rem;
+      }
+      
+      .mobile-nav-item {
+        min-width: 55px;
+        padding: 8px;
+        font-size: 0.75rem;
+      }
+      
+      .mobile-nav-item i {
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
 
-<!-- Sidebar -->
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
-    <p>Admin Panel</p>
-  </div>
-  
-  <ul class="sidebar-menu">
-    <li><a href="#" onclick="navigateToPage('admin'); return false;">
-      <i class="fas fa-home"></i> Dashboard
-    </a></li>
-    
-    <li><a href="#" class="active" onclick="navigateToPage('counselor_management'); return false;">
-      <i class="fas fa-user-md"></i> Manajemen Konselor
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
-      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
-      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('system_settings'); return false;">
-      <i class="fas fa-cogs"></i> Pengaturan Sistem
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
-      <i class="fas fa-phone-alt"></i> Kontak Darurat
-    </a></li>
-  </ul>
-  
-  <div class="sidebar-footer">
-    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </a>
-  </div>
-</nav>
-
-<!-- Main Content -->
-<div class="main-content">
-  <button class="sidebar-toggle" id="sidebarToggle">
-    <i class="fas fa-bars"></i>
-  </button>
-  
-  <!-- Page Header -->
-  <div class="page-header">
-    <h1>
-      <i class="fas fa-user-md"></i> Manajemen Konselor
-    </h1>
-    <button class="btn btn-primary" onclick="addNewCounselor()">
-      <i class="fas fa-plus me-2"></i> Tambah Konselor
-    </button>
-  </div>
-  
-  <!-- Filter & Search -->
-  <div class="content-card mb-4">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="input-group">
-          <span class="input-group-text"><i class="fas fa-search"></i></span>
-          <input type="text" class="form-control" id="searchInput" placeholder="Cari konselor..." onkeyup="filterTable()">
+<!-- MOBILE VERSION -->
+<div class="mobile-container">
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-header-content">
+      <div class="mobile-header-left">
+        <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo-container" id="mobileLogoContainer">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <div class="mobile-header-info">
+          <h1>ASAKUR</h1>
+          <p>Manajemen Konselor</p>
         </div>
       </div>
-      <div class="col-md-3">
-        <select class="form-select" id="statusFilter" onchange="filterTable()">
-          <option value="">Semua Status</option>
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
+    </div>
+  </header>
+  
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-sidebar-header">
+      <div class="mobile-sidebar-logo" id="mobileSidebarLogo">
+        <i class="fas fa-hands-helping"></i>
       </div>
-      <div class="col-md-3">
-        <select class="form-select" id="availabilityFilter" onchange="filterTable()">
-          <option value="">Semua Ketersediaan</option>
-          <option value="available">Tersedia</option>
-          <option value="busy">Sibuk</option>
-        </select>
+      <button class="mobile-sidebar-close" onclick="toggleMobileSidebar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="mobile-user-info">
+      <div class="mobile-user-avatar" id="mobileUserAvatar">A</div>
+      <div class="mobile-user-details">
+        <h5 id="mobileUserName">Administrator</h5>
+        <small id="mobileUserRole">Super Admin</small>
       </div>
-      <div class="col-md-2">
-        <button class="btn btn-outline-primary w-100" onclick="exportData()">
-          <i class="fas fa-download me-2"></i> Export
+    </div>
+    
+    <ul class="mobile-sidebar-menu" id="mobileSidebarMenu">
+      <!-- Menu items will be loaded by JavaScript -->
+    </ul>
+    
+    <div class="mobile-sidebar-footer">
+      <button class="btn btn-logout" onclick="logout()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+  
+  <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileSidebar()"></div>
+  
+  <!-- Mobile Main Content -->
+  <main class="mobile-main">
+    <!-- Page Title -->
+    <h2 class="mobile-section-title">
+      <i class="fas fa-user-md"></i>
+      <span>Manajemen Konselor</span>
+    </h2>
+    
+    <!-- Add Button -->
+    <div style="margin-bottom: 20px;">
+      <button class="btn-primary-custom" onclick="addNewCounselor()" style="width: 100%; padding: 15px;">
+        <i class="fas fa-plus"></i>
+        <span>Tambah Konselor Baru</span>
+      </button>
+    </div>
+    
+    <!-- Filter Card -->
+    <div class="mobile-filter-card">
+      <div class="mobile-filter-group">
+        <div style="position: relative;">
+          <i class="fas fa-search mobile-search-icon"></i>
+          <input type="text" class="mobile-search-input" id="mobileSearchInput" placeholder="Cari konselor..." onkeyup="filterTable()">
+        </div>
+      </div>
+      
+      <div class="row" style="margin: 0 -8px;">
+        <div class="mobile-filter-group" style="padding: 0 8px; flex: 1;">
+          <label class="mobile-filter-label">Status</label>
+          <select class="mobile-select" id="mobileStatusFilter" onchange="filterTable()">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div class="mobile-filter-group" style="padding: 0 8px; flex: 1;">
+          <label class="mobile-filter-label">Ketersediaan</label>
+          <select class="mobile-select" id="mobileAvailabilityFilter" onchange="filterTable()">
+            <option value="">Semua</option>
+            <option value="available">Tersedia</option>
+            <option value="busy">Sibuk</option>
+          </select>
+        </div>
+      </div>
+      
+      <div style="margin-top: 15px;">
+        <button class="btn-outline-custom" onclick="exportData()" style="width: 100%; padding: 15px;">
+          <i class="fas fa-download"></i>
+          <span>Export Data</span>
         </button>
       </div>
     </div>
-  </div>
-  
-  <!-- Counselors Table -->
-  <div class="content-card">
-    <h4 class="mb-4"><i class="fas fa-list me-2"></i> Daftar Konselor</h4>
-    <div class="table-responsive">
-      <table class="table table-hover" id="counselorsTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nama</th>
-            <th>Email</th>
-            <th>Telepon</th>
-            <th>Spesialisasi</th>
-            <th>Pengalaman</th>
-            <th>Status</th>
-            <th>Ketersediaan</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="counselorsTableBody">
-          <tr>
-            <td colspan="9" class="text-center py-5">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="mt-2">Memuat data konselor...</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    
+    <!-- Counselors Table -->
+    <div class="mobile-table-container">
+      <h3 class="mobile-section-title" style="margin-top: 0; font-size: 1.1rem;">
+        <i class="fas fa-list"></i>
+        <span>Daftar Konselor</span>
+      </h3>
+      
+      <div class="mobile-table-scroll">
+        <table class="mobile-table">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Spesialisasi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="mobileCounselorsTableBody">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 40px;">
+                <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p style="margin-top: 15px; color: var(--text-secondary);">Memuat data konselor...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  </main>
+  
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item" onclick="navigateToPage('admin')">
+      <i class="fas fa-home"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="mobile-nav-item active">
+      <i class="fas fa-user-md"></i>
+      <span>Konselor</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('student_management')">
+      <i class="fas fa-user-graduate"></i>
+      <span>Mahasiswa</span>
+    </button>
+    <button class="mobile-nav-item" onclick="toggleMobileSidebar()">
+      <i class="fas fa-bars"></i>
+      <span>Menu</span>
+    </button>
+  </nav>
 </div>
 
-<!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+<!-- DESKTOP VERSION -->
+<div class="desktop-container">
+  <!-- Desktop Sidebar -->
+  <aside class="desktop-sidebar">
+    <div class="desktop-sidebar-header">
+      <div class="desktop-sidebar-logo" id="desktopLogoContainer">
+        <i class="fas fa-hands-helping"></i>
+      </div>
+      <h3>ASAKUR</h3>
+      <p>Admin Panel</p>
+    </div>
+    
+    <ul class="desktop-sidebar-menu" id="desktopSidebarMenu">
+      <!-- Menu items will be loaded by JavaScript -->
+    </ul>
+    
+    <div class="desktop-sidebar-footer">
+      <div class="desktop-user-info">
+        <div class="desktop-user-avatar" id="desktopUserAvatar">A</div>
+        <div class="desktop-user-details">
+          <h5 id="desktopUserName">Administrator</h5>
+          <small id="desktopUserRole">Super Admin</small>
+        </div>
+      </div>
+      <button class="btn btn-logout" onclick="logout()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+  
+  <!-- Desktop Main Content -->
+  <main class="desktop-main">
+    <!-- Header -->
+    <div class="desktop-header">
+      <div>
+        <h1>
+          <i class="fas fa-user-md"></i> Manajemen Konselor
+        </h1>
+        <p>Kelola data konselor dan persetujuan pendaftaran</p>
+      </div>
+      
+      <button class="desktop-add-btn" onclick="addNewCounselor()">
+        <i class="fas fa-plus"></i>
+        <span>Tambah Konselor</span>
+      </button>
+    </div>
+    
+    <!-- Filter Card -->
+    <div class="desktop-filter-card">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text" style="background-color: var(--background-color); border: 2px solid var(--border-color); border-right: none; border-radius: 12px 0 0 12px;">
+              <i class="fas fa-search" style="color: var(--text-secondary);"></i>
+            </span>
+            <input type="text" class="form-control" id="desktopSearchInput" placeholder="Cari nama, email, atau telepon..." style="border: 2px solid var(--border-color); border-left: none; border-radius: 0 12px 12px 0; padding: 12px 15px;" onkeyup="filterTable()">
+          </div>
+        </div>
+        
+        <div class="col-md-3">
+          <select class="form-select" id="desktopStatusFilter" style="border: 2px solid var(--border-color); border-radius: 12px; padding: 12px 15px;" onchange="filterTable()">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div class="col-md-3">
+          <select class="form-select" id="desktopAvailabilityFilter" style="border: 2px solid var(--border-color); border-radius: 12px; padding: 12px 15px;" onchange="filterTable()">
+            <option value="">Semua Ketersediaan</option>
+            <option value="available">Tersedia</option>
+            <option value="busy">Sibuk</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <button class="btn-outline-custom" onclick="exportData()" style="width: 100%;">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Counselors Table -->
+    <div class="desktop-table-container">
+      <h4 style="color: var(--dark-blue); font-weight: 600; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-list"></i>
+        <span>Daftar Konselor</span>
+      </h4>
+      
+      <div class="table-responsive">
+        <table class="desktop-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Telepon</th>
+              <th>Spesialisasi</th>
+              <th>Pengalaman</th>
+              <th>Status</th>
+              <th>Ketersediaan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="desktopCounselorsTableBody">
+            <tr>
+              <td colspan="9" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Memuat data konselor...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body text-center p-5">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-        <h5 class="mt-4">Sedang logout...</h5>
-        <p class="text-muted">Mengalihkan ke halaman login</p>
+        <h5 class="mt-4">Memuat...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white;">
+        <h5 class="modal-title"><i class="fas fa-user-md me-2"></i> Detail Konselor</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="detailModalBody">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add New Counselor Modal -->
+<div class="modal fade" id="addCounselorModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white;">
+        <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i> Tambah Konselor Baru</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addCounselorForm">
+          <!-- Bagian Foto Profil -->
+          <div class="row mb-4">
+            <div class="col-md-4 text-center">
+              <div class="profile-image-container mb-3" style="width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; overflow: hidden; background: #f0f0f0; border: 3px solid var(--border-color);">
+                <img id="addProfileImage" src="" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+                <div id="addProfileInitials" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: white; background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));">
+                  N
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="triggerAddImageUpload()">
+                <i class="fas fa-camera me-1"></i> Unggah Foto
+              </button>
+              <input type="file" id="addProfileImageUpload" accept="image/*" style="display: none;" onchange="handleAddImageUpload(event)">
+              <div style="font-size: 0.8rem; color: var(--text-secondary);">
+                Max. 2MB • JPG, PNG
+              </div>
+              <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="removeAddProfileImage()" id="removeAddImageBtn" style="display: none;">
+                <i class="fas fa-trash me-1"></i> Hapus Foto
+              </button>
+            </div>
+            
+            <div class="col-md-8">
+              <div class="alert alert-info" style="font-size: 0.85rem;">
+                <i class="fas fa-info-circle me-1"></i>
+                Password default akan dikirim ke email konselor: <strong>Konselor@123</strong>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Informasi Akun -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addUsername" class="form-label">Username <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="addUsername" name="username" required 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="contoh: konselor_ahmad">
+              <div class="form-text">Username unik untuk login</div>
+            </div>
+            <div class="col-md-6">
+              <label for="addEmail" class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" id="addEmail" name="email" required 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="contoh: konselor@asakur.com">
+            </div>
+          </div>
+          
+          <!-- Informasi Pribadi -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addFullname" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" id="addFullname" name="fullname" required 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="Dr. Ahmad Wijaya, M.Psi">
+            </div>
+            <div class="col-md-6">
+              <label for="addPhone" class="form-label">Nomor Telepon</label>
+              <input type="tel" class="form-control" id="addPhone" name="phone" 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="081234567890">
+            </div>
+          </div>
+          
+          <!-- Informasi Profesional -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addSpecialization" class="form-label">Spesialisasi <span class="text-danger">*</span></label>
+              <select class="form-control" id="addSpecialization" name="specialization" required 
+                      style="padding: 10px; border-radius: 8px;">
+                <option value="">Pilih Spesialisasi</option>
+                <option value="Kecemasan">Kecemasan & Stres</option>
+                <option value="Depresi">Depresi & Mood Disorders</option>
+                <option value="Hubungan">Hubungan & Keluarga</option>
+                <option value="Trauma">Trauma & PTSD</option>
+                <option value="Psikososial">Psikososial & Adaptasi</option>
+                <option value="Umum">Psikologi Umum</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="addExperience" class="form-label">Pengalaman (tahun)</label>
+              <input type="number" class="form-control" id="addExperience" name="experience" 
+                     min="0" max="50" value="0"
+                     style="padding: 10px; border-radius: 8px;">
+            </div>
+          </div>
+          
+          <!-- Pendidikan & Sertifikasi -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addEducation" class="form-label">Pendidikan Terakhir</label>
+              <input type="text" class="form-control" id="addEducation" name="education" 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="S.Psi, M.Psi, Ph.D">
+            </div>
+            <div class="col-md-6">
+              <label for="addCertifications" class="form-label">Sertifikasi</label>
+              <input type="text" class="form-control" id="addCertifications" name="certifications" 
+                     style="padding: 10px; border-radius: 8px;"
+                     placeholder="Psikolog Klinis, CBT Certified">
+            </div>
+          </div>
+          
+          <!-- Status & Bio -->
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="addStatus" class="form-label">Status Awal <span class="text-danger">*</span></label>
+              <select class="form-control" id="addStatus" name="status" required 
+                      style="padding: 10px; border-radius: 8px;">
+                <option value="pending">Pending (Menunggu)</option>
+                <option value="approved" selected>Approved (Disetujui)</option>
+                <option value="inactive">Inactive (Nonaktif)</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="addAvailability" class="form-label">Ketersediaan <span class="text-danger">*</span></label>
+              <select class="form-control" id="addAvailability" name="availability" required 
+                      style="padding: 10px; border-radius: 8px;">
+                <option value="available" selected>Tersedia</option>
+                <option value="busy">Sibuk</option>
+                <option value="away">Sedang tidak di tempat</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Bio -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="addBio" class="form-label">Bio / Deskripsi Profesional</label>
+              <textarea class="form-control" id="addBio" name="bio" rows="4" 
+                        style="padding: 10px; border-radius: 8px;"
+                        placeholder="Deskripsikan latar belakang pendidikan, pengalaman kerja, pendekatan terapi, dan keahlian khusus..."></textarea>
+            </div>
+          </div>
+          
+          <!-- Hidden fields -->
+          <input type="hidden" id="addPhotoUrl" name="photo_url" value="">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i> Batal
+        </button>
+        <button type="button" class="btn btn-primary" onclick="saveNewCounselor()" id="saveNewBtn">
+          <i class="fas fa-save me-1"></i> Simpan Konselor
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Counselor Modal -->
+<div class="modal fade" id="editCounselorModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white;">
+        <h5 class="modal-title"><i class="fas fa-edit me-2"></i> Edit Data Konselor</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-4">
+          <!-- Bagian Foto Profil -->
+          <div class="col-md-4 text-center">
+            <div class="profile-image-container mb-3" style="width: 150px; height: 150px; margin: 0 auto; border-radius: 50%; overflow: hidden; background: #f0f0f0; border: 3px solid var(--border-color);">
+              <img id="editProfileImage" src="" alt="Profile" style="width: 100%; height: 100%; object-fit: cover; display: none;">
+              <div id="editProfileInitials" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: white; background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));"></div>
+            </div>
+            <button type="button" class="btn btn-outline-primary btn-sm mb-2" onclick="triggerImageUpload()">
+              <i class="fas fa-camera me-1"></i> Ganti Foto
+            </button>
+            <input type="file" id="profileImageUpload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+            <div style="font-size: 0.8rem; color: var(--text-secondary);">
+              Max. 2MB • JPG, PNG
+            </div>
+            <button type="button" class="btn btn-outline-danger btn-sm mt-1" onclick="removeProfileImage()" id="removeImageBtn" style="display: none;">
+              <i class="fas fa-trash me-1"></i> Hapus Foto
+            </button>
+          </div>
+          
+          <!-- Bagian Form -->
+          <div class="col-md-8">
+            <form id="editCounselorForm">
+              <input type="hidden" id="editUserId" name="user_id">
+              <input type="hidden" id="editPhotoUrl" name="photo_url">
+              
+              <!-- Baris 1: Nama & Email -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editName" class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="editName" name="name" required style="padding: 10px; border-radius: 8px;">
+                </div>
+                <div class="col-md-6">
+                  <label for="editEmail" class="form-label">Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="editEmail" name="email" required style="padding: 10px; border-radius: 8px;">
+                </div>
+              </div>
+              
+              <!-- Baris 2: Telepon & Spesialisasi -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editPhone" class="form-label">Nomor Telepon</label>
+                  <input type="tel" class="form-control" id="editPhone" name="phone" style="padding: 10px; border-radius: 8px;">
+                </div>
+                <div class="col-md-6">
+                  <label for="editSpecialization" class="form-label">Spesialisasi</label>
+                  <input type="text" class="form-control" id="editSpecialization" name="specialization" style="padding: 10px; border-radius: 8px;">
+                </div>
+              </div>
+              
+              <!-- Baris 3: Status & Ketersediaan -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editStatus" class="form-label">Status <span class="text-danger">*</span></label>
+                  <select class="form-control" id="editStatus" name="status" required style="padding: 10px; border-radius: 8px;">
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="on_leave">On Leave</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="editAvailability" class="form-label">Ketersediaan <span class="text-danger">*</span></label>
+                  <select class="form-control" id="editAvailability" name="availability" required style="padding: 10px; border-radius: 8px;">
+                    <option value="available">Tersedia</option>
+                    <option value="busy">Sibuk</option>
+                    <option value="away">Sedang tidak di tempat</option>
+                  </select>
+                </div>
+              </div>
+              
+              <!-- Baris 4: Pengalaman & Pendidikan -->
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="editExperience" class="form-label">Pengalaman (tahun)</label>
+                  <input type="number" class="form-control" id="editExperience" name="experience_years" min="0" max="50" style="padding: 10px; border-radius: 8px;">
+                </div>
+                <div class="col-md-6">
+                  <label for="editEducation" class="form-label">Pendidikan Terakhir</label>
+                  <input type="text" class="form-control" id="editEducation" name="education" style="padding: 10px; border-radius: 8px;">
+                </div>
+              </div>
+              
+              <!-- Baris 5: Sertifikasi -->
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="editCertifications" class="form-label">Sertifikasi</label>
+                  <input type="text" class="form-control" id="editCertifications" name="certifications" style="padding: 10px; border-radius: 8px;" placeholder="Pisahkan dengan koma (Contoh: Psikolog Klinis, Konselor Pendidikan)">
+                </div>
+              </div>
+              
+              <!-- Baris 6: Bio -->
+              <div class="row mb-3">
+                <div class="col-12">
+                  <label for="editBio" class="form-label">Bio / Deskripsi Profesional</label>
+                  <textarea class="form-control" id="editBio" name="bio" rows="3" style="padding: 10px; border-radius: 8px;"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+          <i class="fas fa-times me-1"></i> Batal
+        </button>
+        <button type="button" class="btn btn-primary" onclick="saveCounselorChanges()" id="saveEditBtn">
+          <i class="fas fa-save me-1"></i> Simpan Perubahan
+        </button>
       </div>
     </div>
   </div>
@@ -361,41 +1542,228 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// Global variables
 let baseUrl = '';
 let allCounselors = [];
+let currentSession = null;
+
+// Logo loading with CORS fix (same as login_mobile.html)
+function loadLogos() {
+  const logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
+  
+  // Load mobile logos
+  const mobileLogoContainer = document.getElementById('mobileLogoContainer');
+  const mobileSidebarLogo = document.getElementById('mobileSidebarLogo');
+  if (mobileLogoContainer) loadLogoImage(mobileLogoContainer, logoUrl, 50);
+  if (mobileSidebarLogo) loadLogoImage(mobileSidebarLogo, logoUrl, 60);
+  
+  // Load desktop logo
+  const desktopLogoContainer = document.getElementById('desktopLogoContainer');
+  if (desktopLogoContainer) loadLogoImage(desktopLogoContainer, logoUrl, 80);
+}
+
+function loadLogoImage(container, url, size) {
+  const img = new Image();
+  img.alt = 'ASAKUR Logo';
+  img.style.width = '85%';
+  img.style.height = '85%';
+  img.style.objectFit = 'contain';
+  
+  container.classList.add('logo-loading');
+  
+  img.onload = function() {
+    console.log('Logo loaded successfully');
+    container.classList.remove('logo-loading');
+    container.innerHTML = '';
+    container.appendChild(img);
+  };
+  
+  img.onerror = function() {
+    console.log('Logo failed to load, using fallback icon');
+    container.classList.remove('logo-loading');
+    container.innerHTML = '';
+    
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-hands-helping';
+    icon.style.fontSize = size === 50 ? '24px' : size === 60 ? '28px' : '36px';
+    icon.style.color = 'var(--primary-blue)';
+    container.appendChild(icon);
+    
+    tryProxyImage(container, url, size);
+  };
+  
+  img.src = url + '?t=' + new Date().getTime();
+}
+
+function tryProxyImage(container, url, size) {
+  const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+  const img = new Image();
+  
+  img.onload = function() {
+    container.innerHTML = '';
+    container.appendChild(img);
+  };
+  
+  img.onerror = function() {
+    console.log('Proxy also failed, keeping icon');
+  };
+  
+  img.src = proxyUrl;
+}
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('Manajemen Konselor initializing...');
+  
+  // Force mobile view if needed
+  forceMobileViewIfNeeded();
+  
+  // Load logos
+  loadLogos();
+  
   // Get base URL
   google.script.run
     .withSuccessHandler(function(url) {
       baseUrl = url;
-      console.log('Base URL:', baseUrl);
+      console.log('Base URL loaded:', baseUrl);
       
-      // Load data
+      // Load session and user info
+      loadUserInfo();
+      
+      // Load counselors data
       loadCounselors();
+      
+      // Setup menu
+      setupMenu();
     })
     .withFailureHandler(function(error) {
       console.error('Error loading base URL:', error);
+      showNotification('Gagal memuat konfigurasi sistem', 'error');
     })
     .getWebAppUrl();
-  
-  // Sidebar toggle
-  document.getElementById('sidebarToggle').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.toggle('active');
-  });
 });
+
+// Force mobile view if needed
+function forceMobileViewIfNeeded() {
+  const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+  const screenWidth = window.innerWidth;
+  
+  if (isMobileDevice || screenWidth < 993) {
+    console.log('📱 Forcing mobile view');
+    document.body.classList.add('mobile-view');
+  } else {
+    console.log('💻 Using desktop view');
+    document.body.classList.add('desktop-view');
+  }
+}
+
+// Toggle mobile sidebar
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Setup menu items
+function setupMenu() {
+  const menuItems = [
+    { id: 'admin', title: 'Dashboard', icon: 'fas fa-home' },
+    { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md', active: true },
+    { id: 'student_management', title: 'Manajemen Mahasiswa', icon: 'fas fa-user-graduate' },
+    { id: 'appointment_schedule', title: 'Jadwal & Laporan', icon: 'fas fa-calendar-alt' },
+    { id: 'system_settings', title: 'Pengaturan Sistem', icon: 'fas fa-cogs' },
+    { id: 'emergency_contacts', title: 'Kontak Darurat', icon: 'fas fa-phone-alt' }
+  ];
+  
+  // Mobile menu
+  const mobileMenu = document.getElementById('mobileSidebarMenu');
+  if (mobileMenu) {
+    mobileMenu.innerHTML = menuItems.map(item => `
+      <li>
+        <a href="#" class="${item.active ? 'active' : ''}" onclick="navigateToPage('${item.id}'); return false;">
+          <i class="${item.icon}"></i>
+          <span>${item.title}</span>
+        </a>
+      </li>
+    `).join('');
+  }
+  
+  // Desktop menu
+  const desktopMenu = document.getElementById('desktopSidebarMenu');
+  if (desktopMenu) {
+    desktopMenu.innerHTML = menuItems.map(item => `
+      <li>
+        <a href="#" class="${item.active ? 'active' : ''}" onclick="navigateToPage('${item.id}'); return false;">
+          <i class="${item.icon}"></i>
+          <span>${item.title}</span>
+        </a>
+      </li>
+    `).join('');
+  }
+}
+
+// Load user info
+function loadUserInfo() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      currentSession = session;
+      if (session) {
+        updateUserInfo(session);
+      } else {
+        console.log('No session found, redirecting to login');
+        logout();
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading session:', error);
+      showNotification('Gagal memuat data pengguna', 'error');
+    })
+    .getSession();
+}
+
+function updateUserInfo(session) {
+  const name = session.fullname || session.username;
+  const role = session.role || 'Administrator';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  
+  // Mobile
+  document.getElementById('mobileUserName').textContent = name;
+  document.getElementById('mobileUserRole').textContent = role;
+  document.getElementById('mobileUserAvatar').textContent = initials;
+  
+  // Desktop
+  document.getElementById('desktopUserName').textContent = name;
+  document.getElementById('desktopUserRole').textContent = role;
+  document.getElementById('desktopUserAvatar').textContent = initials;
+}
 
 // Navigate to page
 function navigateToPage(pageName) {
   if (!baseUrl) {
-    alert('Sistem belum siap');
+    showNotification('Sistem belum siap, coba lagi', 'warning');
     return;
+  }
+  
+  // Close mobile sidebar if open
+  if (window.innerWidth < 993) {
+    toggleMobileSidebar();
   }
   
   const targetUrl = baseUrl + '?page=' + pageName;
   console.log('Navigating to:', targetUrl);
-  window.top.location.href = targetUrl;
+  
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = targetUrl;
+    } else {
+      window.location.href = targetUrl;
+    }
+  } catch (e) {
+    console.error('Redirect error:', e);
+    window.open(targetUrl, '_top');
+  }
 }
 
 // Load counselors
@@ -407,7 +1775,7 @@ function loadCounselors() {
     })
     .withFailureHandler(function(error) {
       console.error('Error loading counselors:', error);
-      document.getElementById('counselorsTableBody').innerHTML = `
+      const errorHTML = `
         <tr>
           <td colspan="9" class="text-center py-5 text-danger">
             <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
@@ -415,18 +1783,67 @@ function loadCounselors() {
           </td>
         </tr>
       `;
+      document.getElementById('mobileCounselorsTableBody').innerHTML = errorHTML;
+      document.getElementById('desktopCounselorsTableBody').innerHTML = errorHTML;
     })
     .getAllCounselors();
 }
 
 // Display counselors
 function displayCounselors(counselors) {
-  const tbody = document.getElementById('counselorsTableBody');
+  // Log data untuk debugging
+  console.log('Data counselors dari database:', counselors);
+  
+  if (counselors && counselors.length > 0) {
+    console.log('Contoh data pertama:', counselors[0]);
+  }
+  
+  // Mobile table
+  updateMobileTable(counselors);
+  
+  // Desktop table
+  updateDesktopTable(counselors);
+}
+
+// Initialize day checkboxes functionality
+function initDayCheckboxes() {
+  const checkboxes = document.querySelectorAll('.day-checkbox input[type="checkbox"]');
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+      const label = this.parentElement;
+      if (this.checked) {
+        label.classList.add('active');
+      } else {
+        label.classList.remove('active');
+      }
+    });
+  });
+}
+
+// Call this after modal is shown
+document.addEventListener('DOMContentLoaded', function() {
+  // Update the editCounselor function to handle modal events
+  const editModal = document.getElementById('editCounselorModal');
+  if (editModal) {
+    editModal.addEventListener('hidden.bs.modal', function() {
+      // Reset form when modal is closed
+      document.getElementById('editCounselorForm').reset();
+      
+      // Reset day checkboxes
+      document.querySelectorAll('.day-checkbox').forEach(label => {
+        label.classList.remove('active');
+      });
+    });
+  }
+});
+
+function updateMobileTable(counselors) {
+  const tbody = document.getElementById('mobileCounselorsTableBody');
   
   if (!counselors || counselors.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="9" class="text-center py-5">
+        <td colspan="4" class="text-center py-5">
           <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
           <p>Belum ada data konselor</p>
         </td>
@@ -435,7 +1852,7 @@ function displayCounselors(counselors) {
     return;
   }
   
-  tbody.innerHTML = '';
+  let rowsHTML = '';
   
   counselors.forEach(function(counselor) {
     let statusBadge = 'badge-pending';
@@ -449,33 +1866,34 @@ function displayCounselors(counselors) {
       statusText = 'Rejected';
     }
     
-    const availabilityBadge = counselor.availability === 'available' ? 'bg-success' : 'bg-secondary';
+    const availabilityBadge = counselor.availability === 'available' ? 'badge-available' : 'badge-busy';
     const availabilityText = counselor.availability === 'available' ? 'Tersedia' : 'Sibuk';
     
-    tbody.innerHTML += `
+    rowsHTML += `
       <tr>
-        <td class="fw-bold">${counselor.user_id}</td>
-        <td>${counselor.name}</td>
-        <td>${counselor.email || '-'}</td>
-        <td>${counselor.phone || '-'}</td>
-        <td>${counselor.specialization || 'Umum'}</td>
-        <td>${counselor.experience || 'N/A'}</td>
-        <td><span class="badge ${statusBadge}">${statusText}</span></td>
-        <td><span class="badge ${availabilityBadge}">${availabilityText}</span></td>
         <td>
-          <div class="btn-group btn-group-sm">
+          <div style="font-weight: 600;">${counselor.name}</div>
+          <small style="color: var(--text-secondary);">${counselor.user_id}</small>
+        </td>
+        <td>${counselor.specialization || 'Umum'}</td>
+        <td>
+          <span class="mobile-badge ${statusBadge}">${statusText}</span><br>
+          <small style="font-size: 0.8rem; color: var(--text-secondary);">${availabilityText}</small>
+        </td>
+        <td>
+          <div class="mobile-action-buttons">
             ${counselor.status === 'pending' ? `
-              <button class="btn btn-success" onclick="updateStatus('${counselor.user_id}', 'approved')" title="Approve">
+              <button class="mobile-action-btn btn-approve" onclick="updateStatus('${counselor.user_id}', 'approved')" title="Approve">
                 <i class="fas fa-check"></i>
               </button>
-              <button class="btn btn-danger" onclick="updateStatus('${counselor.user_id}', 'rejected')" title="Reject">
+              <button class="mobile-action-btn btn-reject" onclick="updateStatus('${counselor.user_id}', 'rejected')" title="Reject">
                 <i class="fas fa-times"></i>
               </button>
             ` : ''}
-            <button class="btn btn-info" onclick="viewDetail('${counselor.user_id}')" title="Detail">
+            <button class="mobile-action-btn btn-view" onclick="viewDetail('${counselor.user_id}')" title="Detail">
               <i class="fas fa-eye"></i>
             </button>
-            <button class="btn btn-warning" onclick="editCounselor('${counselor.user_id}')" title="Edit">
+            <button class="mobile-action-btn btn-edit" onclick="editCounselor('${counselor.user_id}')" title="Edit">
               <i class="fas fa-edit"></i>
             </button>
           </div>
@@ -483,22 +1901,107 @@ function displayCounselors(counselors) {
       </tr>
     `;
   });
+  
+  tbody.innerHTML = rowsHTML;
+}
+
+function updateDesktopTable(counselors) {
+  const tbody = document.getElementById('desktopCounselorsTableBody');
+  
+  if (!counselors || counselors.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" class="text-center py-5">
+          <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
+          <p>Belum ada data konselor</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  let rowsHTML = '';
+  
+  counselors.forEach(function(counselor) {
+    let statusBadge = 'badge-pending';
+    let statusText = 'Pending';
+    
+    if (counselor.status === 'approved') {
+      statusBadge = 'badge-approved';
+      statusText = 'Approved';
+    } else if (counselor.status === 'rejected') {
+      statusBadge = 'badge-rejected';
+      statusText = 'Rejected';
+    }
+    
+    const availabilityBadge = counselor.availability === 'available' ? 'badge-available' : 'badge-busy';
+    const availabilityText = counselor.availability === 'available' ? 'Tersedia' : 'Sibuk';
+    
+    // **PENTING: Ambil data dengan nama kolom yang benar dari database**
+    // Di database Anda, kolom pengalaman disebut "experience", bukan "experience_years"
+    const experienceYears = counselor.experience || '0';
+    
+    rowsHTML += `
+      <tr>
+        <td class="fw-bold">${counselor.user_id || counselor.id || '-'}</td>
+        <td>${counselor.name || '-'}</td>
+        <td>${counselor.email || '-'}</td>
+        <td>${counselor.phone || '-'}</td>
+        <td>${counselor.specialization || 'Umum'}</td>
+        <td>${experienceYears} tahun</td>
+        <td><span class="mobile-badge ${statusBadge}">${statusText}</span></td>
+        <td><span class="mobile-badge ${availabilityBadge}">${availabilityText}</span></td>
+        <td>
+          <div class="desktop-action-buttons">
+            ${counselor.status === 'pending' ? `
+              <button class="mobile-action-btn btn-approve" onclick="updateStatus('${counselor.user_id}', 'approved')" title="Approve">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="mobile-action-btn btn-reject" onclick="updateStatus('${counselor.user_id}', 'rejected')" title="Reject">
+                <i class="fas fa-times"></i>
+              </button>
+            ` : ''}
+            <button class="mobile-action-btn btn-view" onclick="viewDetail('${counselor.user_id}')" title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="mobile-action-btn btn-edit" onclick="editCounselor('${counselor.user_id}')" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+  
+  tbody.innerHTML = rowsHTML;
 }
 
 // Filter table
 function filterTable() {
-  const searchValue = document.getElementById('searchInput').value.toLowerCase();
-  const statusFilter = document.getElementById('statusFilter').value;
-  const availabilityFilter = document.getElementById('availabilityFilter').value;
+  let searchInput, statusFilter, availabilityFilter;
+  
+  if (window.innerWidth < 993) {
+    // Mobile
+    searchInput = document.getElementById('mobileSearchInput').value.toLowerCase();
+    statusFilter = document.getElementById('mobileStatusFilter').value;
+    availabilityFilter = document.getElementById('mobileAvailabilityFilter').value;
+  } else {
+    // Desktop
+    searchInput = document.getElementById('desktopSearchInput').value.toLowerCase();
+    statusFilter = document.getElementById('desktopStatusFilter').value;
+    availabilityFilter = document.getElementById('desktopAvailabilityFilter').value;
+  }
   
   let filtered = allCounselors;
   
   // Apply search filter
-  if (searchValue) {
+  if (searchInput) {
     filtered = filtered.filter(c => 
-      c.name.toLowerCase().includes(searchValue) ||
-      (c.email && c.email.toLowerCase().includes(searchValue)) ||
-      (c.phone && c.phone.includes(searchValue))
+      c.name.toLowerCase().includes(searchInput) ||
+      (c.email && c.email.toLowerCase().includes(searchInput)) ||
+      (c.phone && c.phone.includes(searchInput)) ||
+      (c.specialization && c.specialization.toLowerCase().includes(searchInput)) ||
+      c.user_id.toLowerCase().includes(searchInput)
     );
   }
   
@@ -518,15 +2021,17 @@ function filterTable() {
 // Update status
 function updateStatus(userId, newStatus) {
   const action = newStatus === 'approved' ? 'menyetujui' : 'menolak';
+  const counselor = allCounselors.find(c => c.user_id === userId);
+  const counselorName = counselor ? counselor.name : 'konselor ini';
   
-  if (confirm(`Apakah Anda yakin ingin ${action} konselor ini?`)) {
+  if (confirm(`Apakah Anda yakin ingin ${action} ${counselorName}?`)) {
     google.script.run
       .withSuccessHandler(function(result) {
         if (result.success) {
           showNotification(`Konselor berhasil ${newStatus === 'approved' ? 'disetujui' : 'ditolak'}`, 'success');
           loadCounselors();
         } else {
-          showNotification(result.message || 'Gagal update status', 'danger');
+          showNotification(result.message || 'Gagal update status', 'error');
         }
       })
       .updateCounselorStatus(userId, newStatus);
@@ -535,30 +2040,702 @@ function updateStatus(userId, newStatus) {
 
 // View detail
 function viewDetail(userId) {
-  alert('Fitur detail konselor akan segera tersedia');
+  console.log('View detail for:', userId);
+  
+  const counselor = allCounselors.find(c => c.user_id === userId);
+  
+  if (!counselor) {
+    showNotification('Data konselor tidak ditemukan', 'error');
+    return;
+  }
+  
+  // Log data untuk debugging
+  console.log('Detail counselor data:', counselor);
+  
+  // **AMBIL DATA DENGAN NAMA KOLOM YANG BENAR DARI DATABASE**
+  // Lihat spreadsheet Anda: experience, education, certifications
+  const experienceYears = counselor.experience || '0'; // Di spreadsheet kolom: experience
+  const education = counselor.education || '-'; // Di spreadsheet kolom: education
+  const certifications = counselor.certifications || '-'; // Di spreadsheet kolom: certifications
+  const bio = counselor.bio || counselor.description || '-'; // Coba bio atau description
+  const photoUrl = counselor.photo_url || counselor.photo || ''; // Coba photo_url atau photo
+  
+  console.log('Data yang diambil:', {
+    experienceYears,
+    education,
+    certifications,
+    bio,
+    photoUrl
+  });
+  
+  // Mapping status
+  const statusMap = {
+    'pending': 'Menunggu',
+    'approved': 'Disetujui', 
+    'rejected': 'Ditolak',
+    'inactive': 'Nonaktif',
+    'on_leave': 'Cuti'
+  };
+  
+  const availabilityMap = {
+    'available': 'Tersedia',
+    'busy': 'Sibuk',
+    'away': 'Sedang tidak di tempat'
+  };
+  
+  const statusText = statusMap[counselor.status] || counselor.status || 'Tidak diketahui';
+  const availabilityText = availabilityMap[counselor.availability] || counselor.availability || 'Tidak diketahui';
+  
+  // Dalam fungsi viewDetail(), perbaiki bagian foto:
+  let photoHTML = '';
+  const initials = (counselor.name || 'K').charAt(0).toUpperCase();
+
+  if (photoUrl && photoUrl.trim() !== '' && photoUrl !== 'undefined') {
+    // Gunakan timestamp untuk menghindari cache
+    const timestamp = new Date().getTime();
+    const cacheBusterUrl = photoUrl + (photoUrl.includes('?') ? '&' : '?') + 't=' + timestamp;
+    
+    photoHTML = `
+      <div style="position: relative; width: 100%; height: 100%;">
+        <img src="${cacheBusterUrl}" 
+            alt="${counselor.name}" 
+            style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
+            onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            loading="lazy">
+        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: white; background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue)); display: none;">
+          ${initials}
+        </div>
+      </div>
+    `;
+  } else {
+    // Tampilkan initials jika tidak ada foto
+    photoHTML = `
+      <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: bold; color: white; background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));">
+        ${initials}
+      </div>
+    `;
+  }
+  
+  const detailHTML = `
+    <div class="row">
+      <!-- Foto Profil -->
+      <div class="col-md-4 text-center mb-4">
+        <div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; margin: 0 auto; border: 3px solid var(--border-color); position: relative;">
+          ${photoHTML}
+        </div>
+        <h5 class="mt-3">${counselor.name || '-'}</h5>
+        <div class="mb-2">
+          <span class="mobile-badge ${counselor.status === 'approved' ? 'badge-approved' : 
+                                    counselor.status === 'rejected' ? 'badge-rejected' : 
+                                    counselor.status === 'inactive' ? 'badge-busy' : 
+                                    'badge-pending'}">${statusText}</span>
+          <span class="mobile-badge ${counselor.availability === 'available' ? 'badge-available' : 'badge-busy'} ms-2">${availabilityText}</span>
+        </div>
+      </div>
+      
+      <!-- Data Detail -->
+      <div class="col-md-8">
+        <!-- Baris 1: ID dan Spesialisasi -->
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong><i class="fas fa-id-card me-1"></i> ID Konselor:</strong><br>
+            <span class="text-muted">${counselor.user_id || '-'}</span>
+          </div>
+          <div class="col-6">
+            <strong><i class="fas fa-stethoscope me-1"></i> Spesialisasi:</strong><br>
+            <span>${counselor.specialization || '-'}</span>
+          </div>
+        </div>
+        
+        <!-- Baris 2: Email dan Telepon -->
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong><i class="fas fa-envelope me-1"></i> Email:</strong><br>
+            <span>${counselor.email || '-'}</span>
+          </div>
+          <div class="col-6">
+            <strong><i class="fas fa-phone me-1"></i> Telepon:</strong><br>
+            <span>${counselor.phone || '-'}</span>
+          </div>
+        </div>
+        
+        <!-- BARIS 3: PENGALAMAN DAN PENDIDIKAN (SINKRON DENGAN DATABASE) -->
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong><i class="fas fa-briefcase me-1"></i> Pengalaman:</strong><br>
+            <span>${experienceYears} tahun</span>
+          </div>
+          <div class="col-6">
+            <strong><i class="fas fa-graduation-cap me-1"></i> Pendidikan Terakhir:</strong><br>
+            <span>${education}</span>
+          </div>
+        </div>
+        
+        <!-- Baris 4: Sertifikasi -->
+        ${certifications !== '-' ? `
+        <div class="row mb-3">
+          <div class="col-12">
+            <strong><i class="fas fa-certificate me-1"></i> Sertifikasi:</strong><br>
+            <span>${certifications}</span>
+          </div>
+        </div>
+        ` : ''}
+        
+        <!-- Baris 5: Bio -->
+        ${bio !== '-' ? `
+        <div class="row mb-3">
+          <div class="col-12">
+            <strong><i class="fas fa-user me-1"></i> Bio / Deskripsi Profesional:</strong><br>
+            <span>${bio}</span>
+          </div>
+        </div>
+        ` : ''}
+        
+        <!-- Debug info untuk foto (hanya tampil di console) -->
+        <div style="display: none;">
+          <p id="photoDebugInfo" data-photo-url="${photoUrl}"></p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tombol Aksi -->
+    <div class="mt-4 text-end">
+      <button class="btn btn-primary me-2" onclick="editCounselor('${userId}')">
+        <i class="fas fa-edit me-1"></i> Edit Data
+      </button>
+      <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        <i class="fas fa-times me-1"></i> Tutup
+      </button>
+    </div>
+  `;
+  
+  document.getElementById('detailModalBody').innerHTML = detailHTML;
+  
+  // Log URL foto untuk debugging
+  if (photoUrl && photoUrl.trim() !== '') {
+    console.log('Foto URL untuk detail:', photoUrl);
+    
+    // Test URL accessibility setelah modal ditampilkan
+    setTimeout(() => {
+      const img = document.querySelector('#detailModal img');
+      if (img) {
+        img.onload = function() {
+          console.log('✅ Foto berhasil dimuat:', photoUrl);
+        };
+        img.onerror = function() {
+          console.log('❌ Foto gagal dimuat, URL:', photoUrl);
+          console.log('🔧 Mencoba fallback ke initials...');
+          
+          // Force fallback ke initials
+          if (img.nextElementSibling) {
+            img.style.display = 'none';
+            img.nextElementSibling.style.display = 'flex';
+          }
+        };
+      }
+    }, 500);
+  }
+  
+  const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+  modal.show();
 }
 
 // Edit counselor
 function editCounselor(userId) {
-  alert('Fitur edit konselor akan segera tersedia');
+  console.log('Edit counselor called for:', userId);
+  
+  const counselor = allCounselors.find(c => c.user_id === userId);
+  
+  if (!counselor) {
+    showNotification('Data konselor tidak ditemukan', 'error');
+    return;
+  }
+  
+  // Show loading state
+  const saveBtn = document.getElementById('saveEditBtn');
+  saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memuat...';
+  saveBtn.disabled = true;
+  
+  // Log data counselor untuk debugging
+  console.log('Counselor data for editing:', counselor);
+  
+  // **PENTING: Ambil data dengan nama kolom yang benar dari database**
+  // Di database Anda:
+  // - Pengalaman: "experience" (bukan "experience_years")
+  // - Pendidikan: "education"
+  // - Sertifikasi: "certifications"
+  // - Foto: "photo_url" atau "photo"
+  
+  // Populate form dengan data dari database
+  document.getElementById('editUserId').value = counselor.user_id;
+  document.getElementById('editName').value = counselor.name || '';
+  document.getElementById('editEmail').value = counselor.email || '';
+  document.getElementById('editPhone').value = counselor.phone || '';
+  document.getElementById('editSpecialization').value = counselor.specialization || '';
+  
+  // Ambil pengalaman dari "experience" (bukan "experience_years")
+  const experienceValue = counselor.experience || '0';
+  console.log('Experience value (from experience field):', experienceValue);
+  document.getElementById('editExperience').value = experienceValue;
+  
+  // Ambil pendidikan dari "education"
+  document.getElementById('editEducation').value = counselor.education || '';
+  
+  // Ambil sertifikasi dari "certifications"
+  document.getElementById('editCertifications').value = counselor.certifications || '';
+  
+  // Status dan ketersediaan
+  document.getElementById('editStatus').value = counselor.status || 'pending';
+  document.getElementById('editAvailability').value = counselor.availability || 'available';
+  
+  // Bio - coba dari "bio" atau "description"
+  document.getElementById('editBio').value = counselor.bio || counselor.description || '';
+  
+  // Photo URL - coba dari "photo_url" atau "photo"
+  const photoUrl = counselor.photo_url || counselor.photo || '';
+  document.getElementById('editPhotoUrl').value = photoUrl;
+  
+  console.log('Photo URL found:', photoUrl);
+  
+  // Handle foto profil
+  const profileImg = document.getElementById('editProfileImage');
+  const profileInitials = document.getElementById('editProfileInitials');
+  const removeBtn = document.getElementById('removeImageBtn');
+  
+  if (photoUrl && photoUrl.trim() !== '' && photoUrl !== 'undefined') {
+    console.log('Displaying photo:', photoUrl);
+    profileImg.src = photoUrl;
+    profileImg.style.display = 'block';
+    profileInitials.style.display = 'none';
+    removeBtn.style.display = 'inline-block';
+  } else {
+    // Show initials
+    console.log('No photo, showing initials');
+    const initials = (counselor.name || 'K').charAt(0).toUpperCase();
+    profileInitials.textContent = initials;
+    profileImg.style.display = 'none';
+    profileInitials.style.display = 'flex';
+    removeBtn.style.display = 'none';
+  }
+  
+  // Reset save button
+  saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Perubahan';
+  saveBtn.disabled = false;
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('editCounselorModal'));
+  modal.show();
 }
 
-// Add new counselor
+// Fungsi untuk upload foto
+function triggerImageUpload() {
+  document.getElementById('profileImageUpload').click();
+}
+
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Validasi tipe file
+  if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+    showNotification('Hanya file JPG dan PNG yang diizinkan', 'error');
+    return;
+  }
+  
+  // Validasi ukuran file (max 2MB)
+  if (file.size > 2 * 1024 * 1024) {
+    showNotification('Ukuran file maksimal 2MB', 'error');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const profileImg = document.getElementById('editProfileImage');
+    const profileInitials = document.getElementById('editProfileInitials');
+    const removeBtn = document.getElementById('removeImageBtn');
+    
+    // Tampilkan preview
+    profileImg.src = e.target.result;
+    profileImg.style.display = 'block';
+    profileInitials.style.display = 'none';
+    removeBtn.style.display = 'inline-block';
+    
+    // Simpan base64 data
+    document.getElementById('editPhotoUrl').value = e.target.result;
+    
+    showNotification('Foto profil berhasil diunggah', 'success');
+  };
+  
+  reader.onerror = function() {
+    showNotification('Gagal membaca file', 'error');
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+function removeProfileImage() {
+  const profileImg = document.getElementById('editProfileImage');
+  const profileInitials = document.getElementById('editProfileInitials');
+  const removeBtn = document.getElementById('removeImageBtn');
+  const counselor = allCounselors.find(c => c.user_id === document.getElementById('editUserId').value);
+  
+  // Kembalikan ke initials
+  const initials = (counselor?.name || 'K').charAt(0).toUpperCase();
+  profileInitials.textContent = initials;
+  
+  profileImg.style.display = 'none';
+  profileInitials.style.display = 'flex';
+  removeBtn.style.display = 'none';
+  
+  // Hapus photo_url
+  document.getElementById('editPhotoUrl').value = '';
+  
+  showNotification('Foto profil dihapus', 'info');
+}
+
+// Save counselor changes
+function saveCounselorChanges() {
+  const form = document.getElementById('editCounselorForm');
+  const userId = document.getElementById('editUserId').value;
+  
+  // Validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  
+  // Collect form data dengan nama kolom yang sesuai database
+  const formData = {
+    user_id: userId,
+    name: document.getElementById('editName').value.trim(),
+    email: document.getElementById('editEmail').value.trim(),
+    phone: document.getElementById('editPhone').value.trim(),
+    specialization: document.getElementById('editSpecialization').value,
+    experience: parseInt(document.getElementById('editExperience').value) || 0, // Kolom: experience
+    education: document.getElementById('editEducation').value.trim(), // Kolom: education
+    certifications: document.getElementById('editCertifications').value.trim(), // Kolom: certifications
+    bio: document.getElementById('editBio').value.trim(), // Kolom: bio
+    status: document.getElementById('editStatus').value,
+    availability: document.getElementById('editAvailability').value,
+    photo_url: document.getElementById('editPhotoUrl').value // Kolom: photo_url
+  };
+  
+  console.log('Data yang akan disimpan:', formData);
+  
+  // Show loading state
+  const saveBtn = document.getElementById('saveEditBtn');
+  saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+  saveBtn.disabled = true;
+  
+  // Save changes
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('editCounselorModal'));
+        modal.hide();
+        
+        // Show success message
+        showNotification('Data konselor berhasil diperbarui', 'success');
+        
+        // Reload counselors list
+        loadCounselors();
+      } else {
+        showNotification(result.message || 'Gagal menyimpan perubahan', 'error');
+        
+        // Reset save button
+        saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Perubahan';
+        saveBtn.disabled = false;
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error saving counselor:', error);
+      showNotification('Terjadi kesalahan saat menyimpan data: ' + error.toString(), 'error');
+      
+      // Reset save button
+      saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Perubahan';
+      saveBtn.disabled = false;
+    })
+    .updateCounselorData(formData);
+}
+
+// Add event listeners for day checkboxes
+document.addEventListener('DOMContentLoaded', function() {
+  // This will be called after the modal is added to DOM
+  setTimeout(() => {
+    const checkboxes = document.querySelectorAll('#editWorkDaysContainer input[name="work_days"]');
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', function() {
+        const label = this.parentElement;
+        if (this.checked) {
+          label.classList.add('active');
+        } else {
+          label.classList.remove('active');
+        }
+      });
+    });
+  }, 1000);
+});
+
+// Add event listeners for form validation
+document.addEventListener('DOMContentLoaded', function() {
+  // Username validation
+  const usernameInput = document.getElementById('addUsername');
+  if (usernameInput) {
+    usernameInput.addEventListener('input', function() {
+      checkUsernameAvailability(this.value);
+    });
+  }
+  
+  // Email validation
+  const emailInput = document.getElementById('addEmail');
+  if (emailInput) {
+    emailInput.addEventListener('blur', function() {
+      validateEmail(this.value);
+    });
+  }
+  
+  // Specialization validation
+  const specializationSelect = document.getElementById('addSpecialization');
+  if (specializationSelect) {
+    specializationSelect.addEventListener('change', function() {
+      if (this.value === 'Lainnya') {
+        const customSpec = prompt('Masukkan spesialisasi lain:');
+        if (customSpec && customSpec.trim()) {
+          this.innerHTML += `<option value="${customSpec}" selected>${customSpec}</option>`;
+        }
+      }
+    });
+  }
+});
+
+// Add new counselor modal
 function addNewCounselor() {
-  alert('Fitur tambah konselor akan segera tersedia');
+  // Reset form
+  document.getElementById('addCounselorForm').reset();
+  
+  // Reset photo
+  const addProfileImg = document.getElementById('addProfileImage');
+  const addProfileInitials = document.getElementById('addProfileInitials');
+  const removeAddBtn = document.getElementById('removeAddImageBtn');
+  
+  addProfileImg.style.display = 'none';
+  addProfileInitials.style.display = 'flex';
+  addProfileInitials.textContent = 'N';
+  removeAddBtn.style.display = 'none';
+  document.getElementById('addPhotoUrl').value = '';
+  
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('addCounselorModal'));
+  modal.show();
+}
+
+// Handle image upload for add modal
+function triggerAddImageUpload() {
+  document.getElementById('addProfileImageUpload').click();
+}
+
+function handleAddImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Validasi tipe file
+  if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+    showNotification('Hanya file JPG dan PNG yang diizinkan', 'error');
+    return;
+  }
+  
+  // Validasi ukuran file (max 2MB)
+  if (file.size > 2 * 1024 * 1024) {
+    showNotification('Ukuran file maksimal 2MB', 'error');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const addProfileImg = document.getElementById('addProfileImage');
+    const addProfileInitials = document.getElementById('addProfileInitials');
+    const removeAddBtn = document.getElementById('removeAddImageBtn');
+    
+    // Tampilkan preview
+    addProfileImg.src = e.target.result;
+    addProfileImg.style.display = 'block';
+    addProfileInitials.style.display = 'none';
+    removeAddBtn.style.display = 'inline-block';
+    
+    // Simpan base64 data
+    document.getElementById('addPhotoUrl').value = e.target.result;
+    
+    showNotification('Foto profil berhasil diunggah', 'success');
+  };
+  
+  reader.onerror = function() {
+    showNotification('Gagal membaca file', 'error');
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+function removeAddProfileImage() {
+  const addProfileImg = document.getElementById('addProfileImage');
+  const addProfileInitials = document.getElementById('addProfileInitials');
+  const removeAddBtn = document.getElementById('removeAddImageBtn');
+  
+  addProfileInitials.textContent = 'N';
+  addProfileImg.style.display = 'none';
+  addProfileInitials.style.display = 'flex';
+  removeAddBtn.style.display = 'none';
+  
+  // Hapus photo_url
+  document.getElementById('addPhotoUrl').value = '';
+  
+  showNotification('Foto profil dihapus', 'info');
+}
+
+// Save new counselor
+function saveNewCounselor() {
+  const form = document.getElementById('addCounselorForm');
+  const saveBtn = document.getElementById('saveNewBtn');
+  
+  // Validate form
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  
+  // Collect form data
+  const formData = {
+    username: document.getElementById('addUsername').value.trim(),
+    email: document.getElementById('addEmail').value.trim(),
+    password: "Konselor@123", // Default password
+    fullname: document.getElementById('addFullname').value.trim(),
+    phone: document.getElementById('addPhone').value.trim(),
+    specialization: document.getElementById('addSpecialization').value,
+    experience: parseInt(document.getElementById('addExperience').value) || 0,
+    education: document.getElementById('addEducation').value.trim(),
+    certifications: document.getElementById('addCertifications').value.trim(),
+    bio: document.getElementById('addBio').value.trim(),
+    status: document.getElementById('addStatus').value,
+    availability: document.getElementById('addAvailability').value,
+    photo_url: document.getElementById('addPhotoUrl').value
+  };
+  
+  // Validate required fields
+  if (!formData.username || !formData.email || !formData.fullname || !formData.specialization) {
+    showNotification('Harap lengkapi semua field yang wajib diisi', 'error');
+    return;
+  }
+  
+  console.log('Data konselor baru:', formData);
+  
+  // Show loading state
+  saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Menyimpan...';
+  saveBtn.disabled = true;
+  
+  // Save new counselor
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('addCounselorModal'));
+        modal.hide();
+        
+        // Show success message
+        showNotification('Konselor baru berhasil ditambahkan', 'success');
+        
+        // Log info untuk admin
+        console.log('Konselor berhasil ditambahkan:', {
+          username: formData.username,
+          password: formData.password,
+          email: formData.email
+        });
+        
+        // Tampilkan informasi login di alert
+        setTimeout(() => {
+          alert(
+            '✅ KONSELOR BERHASIL DITAMBAHKAN\n\n' +
+            'Username: ' + formData.username + '\n' +
+            'Password: ' + formData.password + '\n' +
+            'Email: ' + formData.email + '\n\n' +
+            'Informasi login telah dikirim ke email konselor.\n' +
+            'Status: ' + (formData.status === 'approved' ? 'Disetujui (aktif)' : 'Menunggu persetujuan')
+          );
+        }, 500);
+        
+        // Reload counselors list
+        loadCounselors();
+      } else {
+        showNotification(result.message || 'Gagal menambahkan konselor', 'error');
+        
+        // Reset save button
+        saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Konselor';
+        saveBtn.disabled = false;
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error adding counselor:', error);
+      showNotification('Terjadi kesalahan: ' + error.toString(), 'error');
+      
+      // Reset save button
+      saveBtn.innerHTML = '<i class="fas fa-save me-1"></i> Simpan Konselor';
+      saveBtn.disabled = false;
+    })
+    .registerCounselor(formData);
+}
+
+// Validate username availability
+function checkUsernameAvailability(username) {
+  if (username.length < 3) return;
+  
+  // Cek apakah username sudah ada di data lokal
+  const existing = allCounselors.find(c => 
+    c.username && c.username.toLowerCase() === username.toLowerCase()
+  );
+  
+  if (existing) {
+    document.getElementById('addUsername').classList.add('is-invalid');
+    showNotification('Username sudah digunakan', 'warning');
+  } else {
+    document.getElementById('addUsername').classList.remove('is-invalid');
+  }
+}
+
+// Validate email format and availability
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!emailRegex.test(email)) {
+    document.getElementById('addEmail').classList.add('is-invalid');
+    return false;
+  }
+  
+  // Cek apakah email sudah ada di data lokal
+  const existing = allCounselors.find(c => 
+    c.email && c.email.toLowerCase() === email.toLowerCase()
+  );
+  
+  if (existing) {
+    document.getElementById('addEmail').classList.add('is-invalid');
+    showNotification('Email sudah terdaftar', 'warning');
+    return false;
+  }
+  
+  document.getElementById('addEmail').classList.remove('is-invalid');
+  return true;
 }
 
 // Export data
 function exportData() {
   google.script.run
     .withSuccessHandler(function(csvData) {
-      const blob = new Blob([csvData], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'konselor_data_' + new Date().toISOString().split('T')[0] + '.csv';
-      a.click();
-      window.URL.revokeObjectURL(url);
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `konselor_data_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       showNotification('Data berhasil diexport', 'success');
     })
     .exportCounselorsData();
@@ -567,17 +2744,22 @@ function exportData() {
 // Show notification
 function showNotification(message, type) {
   const notification = document.createElement('div');
-  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
   notification.style.cssText = `
     top: 20px;
     right: 20px;
     z-index: 9999;
     min-width: 300px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 90%;
+    box-shadow: var(--shadow-md);
+    border-radius: 12px;
   `;
   notification.innerHTML = `
-    ${message}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle'}"></i>
+      <div>${message}</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" style="position: absolute; top: 15px; right: 15px;"></button>
   `;
   
   document.body.appendChild(notification);
@@ -591,29 +2773,105 @@ function showNotification(message, type) {
 
 // Logout
 function logout() {
-  console.log('Logout initiated...');
+  if (!confirm('Apakah Anda yakin ingin logout?')) {
+    return;
+  }
   
-  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-  modal.show();
+  console.log('Logout initiated...');
   
   google.script.run
     .withSuccessHandler(function(response) {
+      console.log('Logout response:', response);
+      
       let redirectUrl = baseUrl;
       if (response && response.redirectUrl) {
         redirectUrl = response.redirectUrl;
       }
       
+      console.log('Redirecting to:', redirectUrl);
+      
       setTimeout(function() {
-        window.top.location.href = redirectUrl;
-      }, 1500);
+        try {
+          if (window.top && window.top !== window.self) {
+            window.top.location.href = redirectUrl;
+          } else {
+            window.location.href = redirectUrl;
+          }
+        } catch (e) {
+          window.open(redirectUrl, '_top');
+        }
+      }, 1000);
     })
     .withFailureHandler(function(error) {
       console.error('Logout error:', error);
       setTimeout(function() {
-        window.top.location.href = baseUrl;
-      }, 2000);
+        window.location.href = baseUrl || window.location.href.split('?')[0];
+      }, 1500);
     })
     .serverLogout();
+}
+
+// Handle window resize
+let resizeTimeout;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(function() {
+    console.log('Window resized to:', window.innerWidth);
+    forceMobileViewIfNeeded();
+  }, 250);
+});
+
+// Handle orientation change
+window.addEventListener('orientationchange', function() {
+  setTimeout(function() {
+    console.log('Orientation changed, width:', window.innerWidth);
+    forceMobileViewIfNeeded();
+  }, 300);
+});
+
+// Debug function untuk melihat struktur data
+function debugCounselorData() {
+  console.log('=== DEBUG COUNSELOR DATA ===');
+  if (allCounselors && allCounselors.length > 0) {
+    const firstCounselor = allCounselors[0];
+    console.log('Struktur data konselor pertama:', Object.keys(firstCounselor));
+    console.log('Data lengkap:', firstCounselor);
+    
+    // Tampilkan semua field yang ada
+    console.log('Field yang tersedia:');
+    Object.keys(firstCounselor).forEach(key => {
+      console.log(`- ${key}: ${firstCounselor[key]}`);
+    });
+  } else {
+    console.log('Tidak ada data konselor');
+  }
+  console.log('============================');
+}
+
+// Panggil debug function saat load data
+function loadCounselors() {
+  google.script.run
+    .withSuccessHandler(function(data) {
+      allCounselors = data;
+      console.log('Data diterima dari server:', data);
+      debugCounselorData(); // DEBUG
+      displayCounselors(data);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading counselors:', error);
+      const errorHTML = `
+        <tr>
+          <td colspan="9" class="text-center py-5 text-danger">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <p>Gagal memuat data konselor</p>
+            <small>${error.toString()}</small>
+          </td>
+        </tr>
+      `;
+      document.getElementById('mobileCounselorsTableBody').innerHTML = errorHTML;
+      document.getElementById('desktopCounselorsTableBody').innerHTML = errorHTML;
+    })
+    .getAllCounselors();
 }
 </script>
 </body>

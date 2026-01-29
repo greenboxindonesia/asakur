@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Dashboard Konselor - ASAKUR</title>
-  
+
+  <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  
+
   <style>
     :root {
       --primary-blue: #0d3b66;
@@ -17,68 +21,282 @@
       --accent-blue: #2a9d8f;
       --light-blue: #8ecae6;
       --dark-blue: #023047;
-      --sidebar-width: 280px;
+      --surface-color: #ffffff;
+      --background-color: #f5f7fa;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --success-color: #34c759;
+      --warning-color: #ff9500;
+      --error-color: #ff3b30;
+      --info-color: #007aff;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
-    
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
     }
-    
+
+    html {
+      font-size: 16px;
+      height: 100%;
+    }
+
     body {
-      background-color: #f5f7fb;
-      color: #333;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      min-height: 100vh;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-      color: white;
-      padding: 25px 0;
-      transition: all 0.3s ease;
-      z-index: 1000;
-      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
-    }
-    
-    .sidebar-brand {
-      padding: 0 25px 30px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 25px;
-    }
-    
-    .sidebar-brand h3 {
-      font-weight: 700;
-      font-size: 1.6rem;
-      margin-bottom: 8px;
+
+    /* Logo container styles */
+    .logo-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      overflow: hidden;
+      background: white;
     }
-    
-    .sidebar-brand p {
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .logo-icon {
+      font-size: inherit;
+      color: var(--primary-blue);
+    }
+
+    /* User avatar styles */
+    .user-avatar {
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .user-avatar-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .user-avatar-initials {
+      font-size: inherit;
+    }
+
+    /* Perbaikan untuk tombol availability */
+    .btn-toggle-availability {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: white;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-toggle-availability:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Status badge improvements */
+    .availability-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .badge-available {
+      background-color: rgba(52, 199, 89, 0.15);
+      color: var(--success-color);
+      border: 1px solid rgba(52, 199, 89, 0.3);
+    }
+
+    .badge-busy {
+      background-color: rgba(255, 149, 0, 0.15);
+      color: var(--warning-color);
+      border: 1px solid rgba(255, 149, 0, 0.3);
+    }
+
+    /* Loading spinner fix */
+    .spinner-border {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 0.15em solid currentColor;
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: spinner-border .75s linear infinite;
+    }
+
+    @keyframes spinner-border {
+      to { transform: rotate(360deg); }
+    }
+
+    /* MOBILE VERSION */
+    .mobile-dashboard {
+      display: block;
+      min-height: 100vh;
+      background-color: var(--surface-color);
+      position: relative;
+    }
+
+    /* DESKTOP VERSION */
+    .desktop-dashboard {
+      display: none;
+      min-height: 100vh;
+    }
+
+    /* MOBILE HEADER */
+    .mobile-header {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      padding: 20px;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow-md);
+    }
+
+    .mobile-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .mobile-logo-container {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .mobile-header-info h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .mobile-header-info p {
       font-size: 0.85rem;
-      opacity: 0.8;
+      opacity: 0.9;
+      margin: 2px 0 0 0;
     }
-    
-    .sidebar-menu {
+
+    .mobile-menu-toggle {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 10px;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    /* MOBILE SIDEBAR */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      z-index: 2000;
+      transition: left 0.3s ease;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .mobile-sidebar.active {
+      left: 0;
+    }
+
+    .mobile-sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1999;
+      display: none;
+    }
+
+    .mobile-sidebar-overlay.active {
+      display: block;
+    }
+
+    .mobile-sidebar-header {
+      padding: 25px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-sidebar-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .mobile-sidebar-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    .mobile-sidebar-menu {
+      padding: 20px 0;
       list-style: none;
-      padding: 0 15px;
     }
-    
-    .sidebar-menu li {
+
+    .mobile-sidebar-menu li {
       margin-bottom: 5px;
     }
-    
-    .sidebar-menu a {
+
+    .mobile-sidebar-menu a {
       display: flex;
       align-items: center;
       padding: 16px 20px;
@@ -86,211 +304,448 @@
       text-decoration: none;
       transition: all 0.3s;
       font-weight: 500;
-      border-radius: 12px;
+      border-radius: 0 12px 12px 0;
       margin: 0 5px;
       cursor: pointer;
     }
-    
-    .sidebar-menu a:hover, .sidebar-menu a.active {
+
+    .mobile-sidebar-menu a:hover,
+    .mobile-sidebar-menu a.active {
       background-color: rgba(255, 255, 255, 0.15);
       color: white;
       transform: translateX(5px);
     }
-    
-    .sidebar-menu i {
+
+    .mobile-sidebar-menu i {
       width: 25px;
       font-size: 1.2rem;
       margin-right: 15px;
       text-align: center;
     }
-    
-    .sidebar-footer {
+
+    .mobile-sidebar-footer {
       position: absolute;
-      bottom: 30px;
+      bottom: 0;
       left: 0;
       right: 0;
-      padding: 0 25px;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
-    
-    .main-content {
-      margin-left: var(--sidebar-width);
-      padding: 30px;
+
+    .mobile-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 0 20px;
+    }
+
+    .mobile-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .mobile-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .mobile-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+
+    /* MOBILE MAIN CONTENT */
+    .mobile-main {
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+
+    .mobile-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-section-title i {
+      color: var(--accent-blue);
+    }
+
+    /* MOBILE STATS CARDS */
+    .mobile-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .mobile-stat-card {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
+    }
+
+    .mobile-stat-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .mobile-stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: white;
+    }
+
+    .mobile-stat-icon.blue {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    }
+
+    .mobile-stat-icon.green {
+      background: linear-gradient(135deg, var(--accent-blue), #2a9d8f);
+    }
+
+    .mobile-stat-icon.light {
+      background: linear-gradient(135deg, var(--light-blue), #8ecae6);
+    }
+
+    .mobile-stat-icon.dark {
+      background: linear-gradient(135deg, var(--dark-blue), #023047);
+    }
+
+    .mobile-stat-card h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+      color: var(--dark-blue);
+    }
+
+    .mobile-stat-card p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .mobile-stat-card small {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .availability-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-top: 5px;
+    }
+
+    .badge-available {
+      background-color: rgba(52, 199, 89, 0.15);
+      color: var(--success-color);
+    }
+
+    .badge-busy {
+      background-color: rgba(255, 149, 0, 0.15);
+      color: var(--warning-color);
+    }
+
+    /* MOBILE TABLE CONTAINER */
+    .mobile-table-container {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 25px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .mobile-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .mobile-table {
+      width: 100%;
+      min-width: 500px;
+      border-collapse: collapse;
+    }
+
+    .mobile-table thead th {
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 15px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .mobile-table tbody td {
+      padding: 15px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .mobile-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
+    }
+
+    .badge-scheduled {
+      background-color: rgba(0, 122, 255, 0.15);
+      color: var(--info-color);
+    }
+
+    .badge-completed {
+      background-color: rgba(52, 199, 89, 0.15);
+      color: var(--success-color);
+    }
+
+    .badge-cancelled {
+      background-color: rgba(255, 59, 48, 0.15);
+      color: var(--error-color);
+    }
+
+    .badge-pending {
+      background-color: rgba(255, 149, 0, 0.15);
+      color: var(--warning-color);
+    }
+
+    /* MOBILE BOTTOM NAV */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      min-width: 60px;
+    }
+
+    .mobile-nav-item i {
+      font-size: 1.3rem;
+    }
+
+    .mobile-nav-item.active {
+      color: var(--accent-blue);
+      background: rgba(42, 157, 143, 0.1);
+    }
+
+    /* DESKTOP VERSION */
+    .desktop-dashboard {
+      display: flex;
       min-height: 100vh;
     }
-    
-    .top-bar {
-      background: white;
+
+    /* DESKTOP SIDEBAR */
+    .desktop-sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 100;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .desktop-sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .desktop-sidebar-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 16px;
+      margin: 0 auto 20px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .desktop-sidebar-header h3 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .desktop-sidebar-header p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+
+    .desktop-sidebar-menu {
+      flex: 1;
+      padding: 25px 0;
+      list-style: none;
+      overflow-y: auto;
+    }
+
+    .desktop-sidebar-menu li {
+      margin-bottom: 5px;
+    }
+
+    .desktop-sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 25px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 0 12px 12px 0;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .desktop-sidebar-menu a:hover,
+    .desktop-sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .desktop-sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+
+    .desktop-sidebar-footer {
+      padding: 20px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .desktop-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .desktop-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .desktop-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .desktop-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+
+    /* DESKTOP MAIN CONTENT */
+    .desktop-main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 30px;
+      min-height: 100vh;
+      background-color: var(--background-color);
+    }
+
+    .desktop-top-bar {
+      background: var(--surface-color);
       padding: 25px 30px;
       border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      margin-bottom: 35px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 30px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    
-    .top-bar h1 {
+
+    .desktop-top-bar h1 {
       color: var(--dark-blue);
       font-weight: 700;
-      font-size: 1.9rem;
+      font-size: 1.8rem;
       margin-bottom: 5px;
     }
-    
-    .top-bar p {
-      color: #666;
+
+    .desktop-top-bar p {
+      color: var(--text-secondary);
       margin-bottom: 0;
     }
-    
-    .user-info {
+
+    .desktop-user-badge {
       display: flex;
       align-items: center;
       gap: 15px;
-    }
-    
-    .user-avatar {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.3rem;
-      font-weight: bold;
-      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
-    }
-    
-    .stat-card {
-      background: white;
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      margin-bottom: 30px;
-      transition: all 0.3s ease;
-      border: none;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    }
-    
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
-    }
-    
-    .card-icon {
-      width: 70px;
-      height: 70px;
-      border-radius: 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.2rem;
-      margin-bottom: 25px;
-      color: white;
-    }
-    
-    .icon-blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
-    .icon-green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
-    .icon-light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
-    .icon-dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
-    
-    .stat-card h2 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--dark-blue);
-      margin-bottom: 5px;
-    }
-    
-    .stat-card p {
-      color: #666;
-      font-size: 1rem;
-      margin-bottom: 0;
-    }
-    
-    .table-container {
-      background: white;
-      border-radius: 18px;
-      padding: 35px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      margin-top: 30px;
-    }
-    
-    .table-title {
-      color: var(--dark-blue);
-      font-weight: 700;
-      font-size: 1.5rem;
-      margin-bottom: 25px;
-      padding-bottom: 20px;
-      border-bottom: 2px solid #f0f0f0;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-    
-    .table {
-      margin-bottom: 0;
-    }
-    
-    .table thead th {
-      background-color: #f8f9fa;
-      color: var(--dark-blue);
-      font-weight: 600;
-      border: none;
-      padding: 18px 20px;
-      border-bottom: 2px solid #e9ecef;
-    }
-    
-    .table tbody td {
-      padding: 18px 20px;
-      vertical-align: middle;
-      border-color: #f0f0f0;
-    }
-    
-    .badge {
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-weight: 500;
-      font-size: 0.85rem;
-    }
-    
-    .badge-scheduled { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
-    .badge-completed { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
-    .badge-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
-    
-    .sidebar-toggle {
-      display: none;
-      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
-      color: white;
-      border: none;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 12px 20px;
       border-radius: 12px;
-      padding: 12px 18px;
-      font-size: 1.3rem;
-      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.3);
-      transition: all 0.3s;
+      border: 1px solid var(--border-color);
     }
-    
+
+    .desktop-user-badge-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      position: relative;
+    }
+
     .notification-bell {
       position: relative;
       cursor: pointer;
+      margin-right: 15px;
     }
-    
+
     .notification-count {
       position: absolute;
       top: -8px;
       right: -8px;
-      background: #dc3545;
+      background: var(--error-color);
       color: white;
       border-radius: 50%;
       width: 20px;
@@ -300,498 +755,1644 @@
       align-items: center;
       justify-content: center;
     }
-    
-    @media (max-width: 992px) {
-      .sidebar {
-        margin-left: -280px;
+
+    /* DESKTOP STATS CARDS */
+    .desktop-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .desktop-stat-card {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 25px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .desktop-stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .desktop-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    }
+
+    .desktop-stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .desktop-stat-card h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 5px;
+    }
+
+    .desktop-stat-card p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .desktop-stat-card small {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .desktop-availability-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+
+    /* DESKTOP CHARTS & TABLES */
+    .desktop-content-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .desktop-table-container {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .desktop-table-title {
+      color: var(--dark-blue);
+      font-weight: 600;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .desktop-table-title i {
+      color: var(--accent-blue);
+    }
+
+    .desktop-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .desktop-table thead th {
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 18px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .desktop-table tbody td {
+      padding: 18px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .desktop-chart-container {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      height: 100%;
+    }
+
+    /* COMMON STYLES */
+    .btn-action {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-join {
+      background-color: rgba(0, 122, 255, 0.1);
+      color: var(--info-color);
+      border: 1px solid rgba(0, 122, 255, 0.3);
+    }
+
+    .btn-join:hover {
+      background-color: var(--info-color);
+      color: white;
+    }
+
+    .btn-detail {
+      background-color: rgba(42, 157, 143, 0.1);
+      color: var(--accent-blue);
+      border: 1px solid rgba(42, 157, 143, 0.3);
+    }
+
+    .btn-detail:hover {
+      background-color: var(--accent-blue);
+      color: white;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-toggle-availability {
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: white;
+      color: var(--text-primary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      margin-top: 10px;
+    }
+
+    .btn-toggle-availability:hover {
+      background: var(--background-color);
+      transform: translateY(-2px);
+    }
+
+    /* Loading animation untuk logo */
+    .logo-loading {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.6;
       }
-      
-      .sidebar.active {
-        margin-left: 0;
+
+      50% {
+        opacity: 1;
       }
-      
-      .main-content {
-        margin-left: 0;
-      }
-      
-      .sidebar-toggle {
-        display: block;
+
+      100% {
+        opacity: 0.6;
       }
     }
-    
+
+    /* Responsive Design */
+    /* Mobile only */
+    .mobile-dashboard {
+      display: block !important;
+    }
+
+    .desktop-dashboard {
+      display: none !important;
+    }
+
+    /* Desktop only */
+    @media (min-width: 993px) {
+      .mobile-dashboard {
+        display: none !important;
+      }
+
+      .desktop-dashboard {
+        display: flex !important;
+      }
+    }
+
+    /* Mobile optimizations */
     @media (max-width: 768px) {
-      .main-content {
-        padding: 20px;
+      .mobile-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
-      
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-        padding: 20px;
+
+      .mobile-main {
+        padding: 16px;
+        padding-bottom: 80px;
       }
-      
-      .user-info {
-        align-self: flex-end;
+
+      .mobile-stat-card {
+        padding: 16px;
+      }
+
+      .mobile-stat-card h3 {
+        font-size: 1.6rem;
+      }
+
+      .mobile-table-container {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .mobile-stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .mobile-header {
+        padding: 16px;
+      }
+
+      .mobile-logo-container {
+        width: 45px;
+        height: 45px;
+      }
+
+      .mobile-header-info h1 {
+        font-size: 1.2rem;
+      }
+
+      .mobile-nav-item {
+        min-width: 55px;
+        padding: 8px;
+        font-size: 0.75rem;
+      }
+
+      .mobile-nav-item i {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .desktop-content-row {
+        grid-template-columns: 1fr;
+      }
+
+      .desktop-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
+
 <body>
 
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
-    <p>Konselor Panel</p>
-  </div>
-  
-  <ul class="sidebar-menu">
-    <li><a href="#" class="active" onclick="loadDashboard(); return false;">
-      <i class="fas fa-home"></i> Dashboard
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('counselor_schedule'); return false;">
-      <i class="fas fa-calendar-alt"></i> Jadwal Konseling
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('counselor_students'); return false;">
-      <i class="fas fa-user-graduate"></i> Klien Saya
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('counselor_assessments'); return false;">
-      <i class="fas fa-clipboard-check"></i> Form Asesmen
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('counselor_video'); return false;">
-      <i class="fas fa-video"></i> Sesi Virtual
-    </a></li>
-    
-    <li><a href="#" onclick="navigateToPage('counselor_profile'); return false;">
-      <i class="fas fa-user-cog"></i> Profil & Pengaturan
-    </a></li>
-  </ul>
-  
-  <div class="sidebar-footer">
-    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </a>
-  </div>
-</nav>
+  <!-- MOBILE DASHBOARD -->
+  <div class="mobile-dashboard">
+    <!-- Mobile Header -->
+    <header class="mobile-header">
+      <div class="mobile-header-content">
+        <div class="mobile-header-left">
+          <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+            <i class="fas fa-bars"></i>
+          </button>
+          <div class="mobile-logo-container logo-container" id="mobileLogoContainer">
+            <!-- Logo akan diisi oleh JavaScript -->
+          </div>
+          <div class="mobile-header-info">
+            <h1>ASAKUR</h1>
+            <p>Konselor Dashboard</p>
+          </div>
+        </div>
+        <div class="mobile-user-badge" style="display: none;">
+          <div class="desktop-user-badge-avatar user-avatar" id="mobileUserAvatar">K</div>
+        </div>
+      </div>
+    </header>
 
-<div class="main-content" id="mainContent">
-  <div class="top-bar">
-    <div>
-      <button class="sidebar-toggle" id="sidebarToggle">
-        <i class="fas fa-bars"></i>
-      </button>
-      <h1>Dashboard Konselor</h1>
-      <p>Selamat datang, <span id="counselorName" class="fw-bold">Konselor</span></p>
-    </div>
-    
-    <div class="user-info">
-      <div class="notification-bell" onclick="showNotifications()">
-        <i class="fas fa-bell fs-5 text-secondary"></i>
-        <span class="notification-count" id="notificationCount" style="display: none;">0</span>
-      </div>
-      
-      <div class="user-avatar" id="userAvatar">
-        <i class="fas fa-user-md"></i>
-      </div>
-      <div>
-        <h6 class="mb-0 fw-bold" id="usernameDisplay">Konselor</h6>
-        <small class="text-muted" id="userRole">Professional Counselor</small>
-      </div>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xl-3 col-lg-6">
-      <div class="stat-card">
-        <div class="card-icon icon-blue">
-          <i class="fas fa-calendar-check"></i>
+    <!-- Mobile Sidebar -->
+    <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="mobile-sidebar-header">
+        <div class="mobile-sidebar-logo logo-container" id="mobileSidebarLogo">
+          <!-- Logo akan diisi oleh JavaScript -->
         </div>
-        <h2 id="todaySessions">0</h2>
-        <p>Sesi Hari Ini</p>
-        <small class="text-muted"><i class="fas fa-clock me-1"></i> <span id="pendingSessions">0</span> menunggu</small>
+        <button class="mobile-sidebar-close" onclick="toggleMobileSidebar()">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-    </div>
-    
-    <div class="col-xl-3 col-lg-6">
-      <div class="stat-card">
-        <div class="card-icon icon-green">
-          <i class="fas fa-user-graduate"></i>
+
+      <div class="mobile-user-info">
+        <div class="mobile-user-avatar user-avatar" id="mobileSidebarUserAvatar">K</div>
+        <div class="mobile-user-details">
+          <h5 id="mobileUserName">Konselor</h5>
+          <small id="mobileUserRole">Professional Counselor</small>
         </div>
-        <h2 id="totalClients">0</h2>
-        <p>Total Klien</p>
-        <small class="text-muted"><i class="fas fa-chart-line me-1"></i> <span id="activeClients">0</span> aktif</small>
       </div>
-    </div>
-    
-    <div class="col-xl-3 col-lg-6">
-      <div class="stat-card">
-        <div class="card-icon icon-light">
-          <i class="fas fa-file-alt"></i>
-        </div>
-        <h2 id="totalAssessments">0</h2>
-        <p>Total Asesmen</p>
-        <small class="text-muted"><i class="fas fa-check-circle me-1"></i> Bulan ini</small>
-      </div>
-    </div>
-    
-    <div class="col-xl-3 col-lg-6">
-      <div class="stat-card">
-        <div class="card-icon icon-dark">
-          <i class="fas fa-toggle-on"></i>
-        </div>
-        <h2 id="availabilityStatus">Tersedia</h2>
-        <p>Status Ketersediaan</p>
-        <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleAvailability()" id="toggleAvailabilityBtn">
-          <i class="fas fa-sync"></i> Ubah Status
+
+      <ul class="mobile-sidebar-menu" id="mobileSidebarMenu">
+        <!-- Menu items will be loaded by JavaScript -->
+      </ul>
+
+      <div class="mobile-sidebar-footer">
+        <button class="btn btn-logout" onclick="logout()"
+          style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
         </button>
       </div>
     </div>
-  </div>
-  
-  <div class="row mt-4">
-    <div class="col-lg-8">
-      <div class="table-container">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h3 class="table-title mb-0">
-            <i class="fas fa-calendar-day"></i> Sesi Mendatang
-          </h3>
-          <button class="btn btn-primary btn-sm" onclick="navigateToPage('counselor_schedule')">
-            <i class="fas fa-plus"></i> Buat Sesi Baru
+
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileSidebar()"></div>
+
+    <!-- Mobile Main Content -->
+    <main class="mobile-main">
+      <!-- Stats Section -->
+      <h2 class="mobile-section-title">
+        <i class="fas fa-chart-line"></i>
+        <span>Dashboard Saya</span>
+      </h2>
+
+      <div class="mobile-stats-grid">
+        <div class="mobile-stat-card">
+          <div class="mobile-stat-icon blue">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3 id="mobileTodaySessions">0</h3>
+          <p>Sesi Hari Ini</p>
+          <small><i class="fas fa-clock"></i> <span id="mobilePendingSessions">0</span> menunggu</small>
+        </div>
+
+        <div class="mobile-stat-card">
+          <div class="mobile-stat-icon green">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <h3 id="mobileTotalClients">0</h3>
+          <p>Total Klien</p>
+          <small><i class="fas fa-chart-line"></i> <span id="mobileActiveClients">0</span> aktif</small>
+        </div>
+
+        <div class="mobile-stat-card">
+          <div class="mobile-stat-icon light">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h3 id="mobileTotalAssessments">0</h3>
+          <p>Total Asesmen</p>
+          <small><i class="fas fa-check-circle"></i> Bulan ini</small>
+        </div>
+
+        <div class="mobile-stat-card">
+          <div class="mobile-stat-icon dark">
+            <i class="fas fa-toggle-on"></i>
+          </div>
+          <h3 id="mobileAvailabilityStatus">Tersedia</h3>
+          <p>Status Ketersediaan</p>
+          <button class="btn-toggle-availability" onclick="toggleAvailability()">
+            <i class="fas fa-sync"></i> Ubah Status
           </button>
         </div>
-        <div class="table-responsive">
-          <table class="table table-hover">
+      </div>
+
+      <!-- Chart Section -->
+      <div class="mobile-table-container">
+        <h3 class="mobile-section-title" style="margin-top: 0;">
+          <i class="fas fa-chart-pie"></i>
+          <span>Ringkasan Minggu Ini</span>
+        </h3>
+        <canvas id="mobileStatsChart" height="200"></canvas>
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+          <div
+            style="flex: 1; text-align: center; padding: 15px; background: rgba(13, 59, 102, 0.1); border-radius: 12px;">
+            <h4 style="margin: 0; font-weight: 700;" id="mobileWeekSessions">0</h4>
+            <small>Total Sesi</small>
+          </div>
+          <div
+            style="flex: 1; text-align: center; padding: 15px; background: rgba(42, 157, 143, 0.1); border-radius: 12px;">
+            <h4 style="margin: 0; font-weight: 700;" id="mobileWeekCompleted">0</h4>
+            <small>Selesai</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Sessions Table -->
+      <div class="mobile-table-container">
+        <h3 class="mobile-section-title" style="margin-top: 0;">
+          <i class="fas fa-calendar-day"></i>
+          <span>Sesi Mendatang</span>
+        </h3>
+        <div class="mobile-table-scroll">
+          <table class="mobile-table">
             <thead>
               <tr>
-                <th>No.</th>
                 <th>Mahasiswa</th>
                 <th>Tanggal & Waktu</th>
-                <th>Jenis Sesi</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>
             </thead>
-            <tbody id="upcomingSessionsTable">
+            <tbody id="mobileSessionsTableBody">
               <tr>
-                <td colspan="6" class="text-center py-5">
-                  <div class="spinner-border text-primary" role="status">
+                <td colspan="4" style="text-align: center; padding: 30px;">
+                  <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;">
                     <span class="visually-hidden">Loading...</span>
                   </div>
-                  <p class="mt-2">Memuat data sesi...</p>
+                  <p style="margin-top: 10px; color: var(--text-secondary);">Memuat data sesi...</p>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </div>
-    
-    <div class="col-lg-4">
-      <div class="table-container h-100">
-        <h3 class="table-title">
-          <i class="fas fa-chart-pie"></i> Ringkasan Minggu Ini
-        </h3>
-        <div class="text-center">
-          <canvas id="statsChart" height="200"></canvas>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+      <button class="mobile-nav-item active" onclick="loadDashboard()">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </button>
+      <button class="mobile-nav-item" onclick="navigateToPage('counselor_schedule')">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Jadwal</span>
+      </button>
+      <button class="mobile-nav-item" onclick="navigateToPage('counselor_students')">
+        <i class="fas fa-user-graduate"></i>
+        <span>Klien</span>
+      </button>
+      <button class="mobile-nav-item" onclick="toggleMobileSidebar()">
+        <i class="fas fa-bars"></i>
+        <span>Menu</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- DESKTOP DASHBOARD -->
+  <div class="desktop-dashboard">
+    <!-- Desktop Sidebar -->
+    <aside class="desktop-sidebar">
+      <div class="desktop-sidebar-header">
+        <div class="desktop-sidebar-logo logo-container" id="desktopLogoContainer">
+          <!-- Logo akan diisi oleh JavaScript -->
         </div>
-        <div class="row mt-4">
-          <div class="col-6">
-            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
-              <h4 class="fw-bold mb-0" id="weekSessions">0</h4>
-              <small>Total Sesi</small>
-            </div>
+        <h3>ASAKUR</h3>
+        <p>Konselor Panel</p>
+      </div>
+
+      <ul class="desktop-sidebar-menu" id="desktopSidebarMenu">
+        <!-- Menu items will be loaded by JavaScript -->
+      </ul>
+
+      <div class="desktop-sidebar-footer">
+        <div class="desktop-user-info">
+          <div class="desktop-user-avatar user-avatar" id="desktopUserAvatar">K</div>
+          <div class="desktop-user-details">
+            <h5 id="desktopUserName">Konselor</h5>
+            <small id="desktopUserRole">Professional Counselor</small>
           </div>
-          <div class="col-6">
-            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
-              <h4 class="fw-bold mb-0" id="weekCompleted">0</h4>
-              <small>Selesai</small>
+        </div>
+        <button class="btn btn-logout" onclick="logout()"
+          style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Desktop Main Content -->
+    <main class="desktop-main">
+      <!-- Top Bar -->
+      <div class="desktop-top-bar">
+        <div>
+          <h1>Dashboard Konselor</h1>
+          <p>Selamat datang, <span id="desktopCounselorName" class="fw-bold">Konselor</span></p>
+        </div>
+
+        <div class="desktop-user-badge">
+          <div class="notification-bell" onclick="showNotifications()">
+            <i class="fas fa-bell"></i>
+            <span class="notification-count" id="desktopNotificationCount" style="display: none;">0</span>
+          </div>
+          <div class="desktop-user-badge-avatar user-avatar" id="desktopTopAvatar">K</div>
+          <div>
+            <h6 class="mb-0 fw-bold" id="desktopUsernameDisplay">Konselor</h6>
+            <small class="text-muted" id="desktopUserRoleBadge">Professional Counselor</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="desktop-stats-grid">
+        <div class="desktop-stat-card">
+          <div class="desktop-stat-icon blue">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h2 id="desktopTodaySessions">0</h2>
+          <p>Sesi Hari Ini</p>
+          <small><i class="fas fa-clock"></i> <span id="desktopPendingSessions">0</span> menunggu</small>
+        </div>
+
+        <div class="desktop-stat-card">
+          <div class="desktop-stat-icon green">
+            <i class="fas fa-user-graduate"></i>
+          </div>
+          <h2 id="desktopTotalClients">0</h2>
+          <p>Total Klien</p>
+          <small><i class="fas fa-chart-line"></i> <span id="desktopActiveClients">0</span> aktif</small>
+        </div>
+
+        <div class="desktop-stat-card">
+          <div class="desktop-stat-icon light">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <h2 id="desktopTotalAssessments">0</h2>
+          <p>Total Asesmen</p>
+          <small><i class="fas fa-check-circle"></i> Bulan ini</small>
+        </div>
+
+        <div class="desktop-stat-card">
+          <div class="desktop-stat-icon dark">
+            <i class="fas fa-toggle-on"></i>
+          </div>
+          <h2 id="desktopAvailabilityStatus">Tersedia</h2>
+          <p>Status Ketersediaan</p>
+          <button class="btn-toggle-availability" onclick="toggleAvailability()" id="toggleAvailabilityBtn">
+            <i class="fas fa-sync"></i> Ubah Status
+          </button>
+        </div>
+      </div>
+
+      <!-- Charts & Tables -->
+      <div class="desktop-content-row">
+        <div class="desktop-table-container">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3 class="desktop-table-title">
+              <i class="fas fa-calendar-day"></i>
+              <span>Sesi Mendatang</span>
+            </h3>
+            <button class="btn btn-primary btn-sm" onclick="navigateToPage('counselor_schedule')">
+              <i class="fas fa-plus"></i> Buat Sesi Baru
+            </button>
+          </div>
+          <div class="table-responsive">
+            <table class="desktop-table">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th>Mahasiswa</th>
+                  <th>Tanggal & Waktu</th>
+                  <th>Jenis Sesi</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="desktopSessionsTableBody">
+                <tr>
+                  <td colspan="6" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Memuat data sesi...</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="desktop-chart-container">
+          <h3 class="desktop-table-title">
+            <i class="fas fa-chart-pie"></i>
+            <span>Ringkasan Minggu Ini</span>
+          </h3>
+          <div class="text-center">
+            <canvas id="desktopStatsChart" height="250"></canvas>
+          </div>
+          <div class="row mt-4">
+            <div class="col-6">
+              <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
+                <h4 class="fw-bold mb-0" id="desktopWeekSessions">0</h4>
+                <small>Total Sesi</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
+                <h4 class="fw-bold mb-0" id="desktopWeekCompleted">0</h4>
+                <small>Selesai</small>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
-</div>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body text-center p-5">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-        <h5 class="mt-4">Sedang logout...</h5>
-        <p class="text-muted">Mengalihkan ke halaman login</p>
+  <!-- Loading Modal -->
+  <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body text-center p-5">
+          <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+          <h5 class="mt-4">Memuat...</h5>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+<!-- GANTI bagian <script> dengan kode yang diperbaiki ini -->
 <script>
-let baseUrl = '';
-let counselorProfile = null;
+// ========== FIXED JAVASCRIPT V4 - PERBAIKAN KOMPREHENSIF ==========
 
-document.addEventListener('DOMContentLoaded', function() {
+// Global variables
+let currentSession = null;
+let counselorProfile = null;
+let mobileChart = null;
+let desktopChart = null;
+let baseUrl = ''; // Tambahkan baseUrl untuk navigasi
+
+// ========== INITIALIZATION ==========
+
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('🚀 Dashboard Initialization V4...');
+  
+  // Get base URL untuk navigasi
   google.script.run
     .withSuccessHandler(function(url) {
       baseUrl = url;
-      loadUserInfo();
-      loadDashboard();
+      console.log('Base URL loaded:', baseUrl);
+      
+      // Setup
+      setupMenu();
+      loadAllLogos();
+      handleWindowResize();
+      
+      // Initialize dashboard
+      setTimeout(() => {
+        initializeDashboard();
+      }, 500);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading base URL:', error);
+      // Tetap lanjut meski tanpa baseUrl
+      setupMenu();
+      loadAllLogos();
+      handleWindowResize();
+      setTimeout(() => {
+        initializeDashboard();
+      }, 500);
     })
     .getWebAppUrl();
-  
-  document.getElementById('sidebarToggle').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.toggle('active');
-  });
 });
 
-function navigateToPage(pageName) {
-  if (!baseUrl) return;
-  window.top.location.href = baseUrl + '?page=' + pageName;
-}
+// ========== MAIN INITIALIZATION ==========
 
-function loadUserInfo() {
+function initializeDashboard() {
+  console.log('📊 Initializing dashboard...');
+  
+  // Show loading
+  showLoading('Memuat data...');
+  
+  // Check if google.script.run is available
+  if (typeof google === 'undefined' || !google.script || !google.script.run) {
+    console.error('❌ google.script.run not available');
+    showError('Environment tidak valid. Pastikan dibuka dari Google Apps Script.');
+    hideLoading();
+    return;
+  }
+  
+  console.log('✅ google.script.run is available');
+  
+  // Step 1: Get session
   google.script.run
-    .withSuccessHandler(function(session) {
-      if (session) {
-        document.getElementById('counselorName').textContent = session.fullname || session.username;
-        document.getElementById('usernameDisplay').textContent = session.username;
-        
-        const name = session.fullname || session.username;
-        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
-        document.getElementById('userAvatar').innerHTML = initials.substring(0, 2);
-        
-        loadCounselorProfile(session.id);
-        loadNotifications();
-      } else {
-        navigateToPage('');
-      }
-    })
-    .getSession();
+    .withSuccessHandler(handleSessionSuccess)
+    .withFailureHandler(handleSessionError)
+    .getCounselorSessionData();
 }
 
-function loadCounselorProfile(userId) {
+function handleSessionSuccess(session) {
+  console.log('✅ Session response received');
+  
+  if (!session || !session.id) {
+    console.error('❌ Invalid session data');
+    showError('Data sesi tidak valid');
+    hideLoading();
+    return;
+  }
+  
+  console.log('✅ Valid session ID:', session.id);
+  currentSession = session;
+  
+  // Step 2: Load profile
+  loadProfile(session.id);
+}
+
+function handleSessionError(error) {
+  console.error('❌ Session error:', error);
+  showError('Gagal memuat sesi: ' + (error.message || 'Unknown error'));
+  hideLoading();
+}
+
+// ========== PROFILE LOADING ==========
+
+function loadProfile(userId) {
+  console.log('👤 Loading profile for user:', userId);
+  
   google.script.run
     .withSuccessHandler(function(profile) {
-      counselorProfile = profile;
-      if (profile) {
-        const availabilityText = profile.availability === 'available' ? 'Tersedia' : 'Sibuk';
-        document.getElementById('availabilityStatus').textContent = availabilityText;
+      console.log('✅ Profile response received:', profile);
+      
+      if (profile && profile.user_id) {
+        counselorProfile = profile;
         
-        const btn = document.getElementById('toggleAvailabilityBtn');
-        btn.innerHTML = profile.availability === 'available' 
-          ? '<i class="fas fa-toggle-on"></i> Ubah ke Sibuk'
-          : '<i class="fas fa-toggle-off"></i> Ubah ke Tersedia';
+        // **PERBAIKAN 1: Normalisasi status availability**
+        // Pastikan availability konsisten dengan database
+        normalizeAvailability(profile);
+        
+        console.log('✅ Profile loaded successfully:', {
+          id: profile.user_id,
+          name: profile.fullname,
+          availability: profile.availability,
+          hasPhoto: !!profile.photo_url
+        });
+        
+        updateUserInfoWithProfile(profile);
+        updateProfileUI(profile);
+      } else {
+        console.warn('⚠️ Profile is null or incomplete, creating default');
+        // Buat profile default
+        const defaultProfile = createDefaultProfile(userId);
+        counselorProfile = defaultProfile;
+        updateUserInfoWithProfile(defaultProfile);
+        updateProfileUI(defaultProfile);
+      }
+      
+      loadDashboardData();
+    })
+    .withFailureHandler(function(error) {
+      console.error('❌ Profile error:', error);
+      
+      // Buat profile default jika error
+      const defaultProfile = createDefaultProfile(userId);
+      counselorProfile = defaultProfile;
+      updateUserInfoWithProfile(defaultProfile);
+      updateProfileUI(defaultProfile);
+      loadDashboardData();
+    })
+    .getCounselorProfileById(userId);
+}
+
+// **PERBAIKAN 1: Fungsi untuk normalisasi availability**
+function normalizeAvailability(profile) {
+  if (!profile || !profile.availability) {
+    profile.availability = 'available';
+    return;
+  }
+  
+  const availStr = String(profile.availability).toLowerCase().trim();
+  
+  // Mapping semua kemungkinan nilai
+  if (availStr.includes('busy') || availStr.includes('sibuk') || 
+      availStr.includes('tidak tersedia') || availStr === 'busy') {
+    profile.availability = 'busy';
+  } else if (availStr.includes('available') || availStr.includes('tersedia') || 
+             availStr.includes('bisa') || availStr === 'available') {
+    profile.availability = 'available';
+  } else {
+    // Default jika nilai tidak dikenal
+    console.log('⚠️ Unknown availability value: "' + profile.availability + '", defaulting to available');
+    profile.availability = 'available';
+  }
+}
+
+function createDefaultProfile(userId) {
+  return {
+    user_id: userId,
+    fullname: currentSession?.fullname || 'Konselor',
+    username: currentSession?.username || 'konselor',
+    email: currentSession?.email || '',
+    availability: 'available',
+    photo_url: null
+  };
+}
+
+// ========== DASHBOARD DATA LOADING ==========
+
+function loadDashboardData() {
+  console.log('📊 Loading dashboard data...');
+  
+  if (!currentSession || !currentSession.id) {
+    console.error('❌ No session ID available');
+    showError('ID sesi tidak tersedia');
+    hideLoading();
+    return;
+  }
+  
+  const counselorId = currentSession.id;
+  console.log('👤 Loading data for counselor ID:', counselorId);
+  
+  // Load statistics
+  google.script.run
+    .withSuccessHandler(handleStatsSuccess)
+    .withFailureHandler(handleStatsError)
+    .getCounselorDashboardStats(counselorId);
+  
+  // Load upcoming sessions
+  google.script.run
+    .withSuccessHandler(function(sessions) {
+      console.log('✅ Sessions response received');
+      processSessionsData(sessions);
+    })
+    .withFailureHandler(function(error) {
+      console.error('❌ Sessions error:', error);
+      updateSessionsTable([]);
+    })
+    .getCounselorUpcomingSessions(counselorId);
+  
+  // Load notifications
+  google.script.run
+    .withSuccessHandler(function(notifications) {
+      console.log('✅ Notifications response received:', notifications?.length || 0);
+      updateNotificationCount(notifications?.length || 0);
+    })
+    .withFailureHandler(function(error) {
+      console.error('❌ Notifications error:', error);
+      updateNotificationCount(0);
+    })
+    .getMyNotifications();
+}
+
+function handleStatsSuccess(stats) {
+  console.log('📈 Processing stats...');
+  
+  if (!stats) {
+    console.warn('⚠️ Stats is null/undefined');
+    stats = getEmptyStats();
+  }
+  
+  updateStatistics(stats);
+  hideLoading();
+}
+
+function handleStatsError(error) {
+  console.error('❌ Stats error:', error);
+  showNotification('Gagal memuat statistik', 'warning');
+  updateStatistics(getEmptyStats());
+  hideLoading();
+}
+
+// ========== UI UPDATE FUNCTIONS ==========
+
+function updateUserInfoWithProfile(profile) {
+  console.log('👤 Updating user info UI with profile:', profile);
+  
+  const name = profile.fullname || currentSession?.fullname || currentSession?.username || 'Konselor';
+  const role = 'Professional Counselor';
+  const initials = getInitials(name);
+  
+  // Update mobile UI
+  updateElementText('mobileUserName', name);
+  updateElementText('mobileUserRole', role);
+  updateAvatar('mobileSidebarUserAvatar', profile.photo_url, initials);
+  updateAvatar('mobileUserAvatar', profile.photo_url, initials);
+  
+  // Update desktop UI
+  updateElementText('desktopUserName', name);
+  updateElementText('desktopUserRole', role);
+  updateElementText('desktopCounselorName', name);
+  updateElementText('desktopUsernameDisplay', name);
+  updateElementText('desktopUserRoleBadge', role);
+  updateAvatar('desktopUserAvatar', profile.photo_url, initials);
+  updateAvatar('desktopTopAvatar', profile.photo_url, initials);
+}
+
+function updateProfileUI(profile) {
+  console.log('📝 Updating profile UI with:', profile);
+  
+  if (!profile) return;
+  
+  // **PERBAIKAN 1: Gunakan availability dari profile yang sudah dinormalisasi**
+  const availabilityText = profile.availability === 'available' ? 'Tersedia' : 'Sibuk';
+  const availabilityClass = profile.availability === 'available' ? 'badge-available' : 'badge-busy';
+  
+  // Update mobile
+  updateElementText('mobileAvailabilityStatus', availabilityText);
+  
+  // Update desktop
+  updateElementText('desktopAvailabilityStatus', availabilityText);
+  
+  // Update toggle button
+  const toggleBtn = document.getElementById('toggleAvailabilityBtn');
+  if (toggleBtn) {
+    if (profile.availability === 'available') {
+      toggleBtn.innerHTML = '<i class="fas fa-toggle-on"></i> Ubah ke Sibuk';
+      toggleBtn.classList.remove('btn-warning');
+      toggleBtn.classList.add('btn-primary');
+    } else {
+      toggleBtn.innerHTML = '<i class="fas fa-toggle-off"></i> Ubah ke Tersedia';
+      toggleBtn.classList.remove('btn-primary');
+      toggleBtn.classList.add('btn-warning');
+    }
+  }
+  
+  // Update badge di mobile
+  const mobileStatusBadge = document.querySelector('.mobile-stat-card:nth-child(4) .availability-badge');
+  if (mobileStatusBadge) {
+    mobileStatusBadge.textContent = availabilityText;
+    mobileStatusBadge.className = 'availability-badge ' + availabilityClass;
+  }
+}
+
+// ========== NAVIGASI DIPERBAIKI ==========
+// FUNGSI NAVIGASI YANG SAMA DENGAN dashboard_admin.html
+
+function navigateToPage(pageName) {
+  console.log('🧭 Navigate to:', pageName);
+  
+  if (!baseUrl) {
+    showNotification('Sistem belum siap, coba lagi', 'warning');
+    return;
+  }
+  
+  // Close mobile sidebar if open
+  if (window.innerWidth < 993) {
+    toggleMobileSidebar();
+  }
+  
+  const targetUrl = baseUrl + '?page=' + pageName;
+  console.log('Navigating to:', targetUrl);
+  
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = targetUrl;
+    } else {
+      window.location.href = targetUrl;
+    }
+  } catch (e) {
+    console.error('Redirect error:', e);
+    window.open(targetUrl, '_top');
+  }
+}
+
+// ========== TOGGLE AVAILABILITY DIPERBAIKI ==========
+
+function toggleAvailability() {
+  console.log('🔄 Toggling availability...');
+  
+  if (!counselorProfile) {
+    showNotification('Profil tidak ditemukan. Silakan refresh halaman.', 'error');
+    return;
+  }
+  
+  if (!counselorProfile.user_id) {
+    showNotification('ID pengguna tidak ditemukan', 'error');
+    return;
+  }
+  
+  const currentAvailability = counselorProfile.availability;
+  const newAvailability = currentAvailability === 'available' ? 'busy' : 'available';
+  
+  console.log(`Changing availability from ${currentAvailability} to ${newAvailability}`);
+  
+  showLoading('Mengubah status...');
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      hideLoading();
+      
+      if (result.success) {
+        // **PERBAIKAN 1: Update profile lokal dengan nilai baru**
+        counselorProfile.availability = newAvailability;
+        
+        // Update UI
+        updateProfileUI(counselorProfile);
+        
+        // Tampilkan notifikasi sesuai status baru
+        const statusText = newAvailability === 'available' ? 'Tersedia' : 'Sibuk';
+        showNotification('Status berhasil diubah menjadi: ' + statusText, 'success');
+        
+        // Refresh stats untuk sinkronisasi
+        setTimeout(() => {
+          loadDashboardData();
+        }, 1000);
+        
+      } else {
+        showNotification('Gagal mengubah status: ' + (result.message || 'Unknown error'), 'error');
       }
     })
-    .getCounselorProfile(userId);
-}
-
-function loadDashboard() {
-  loadStatistics();
-  loadUpcomingSessions();
-}
-
-function loadStatistics() {
-  google.script.run
-    .withSuccessHandler(function(stats) {
-      document.getElementById('todaySessions').textContent = stats.todaySessions || 0;
-      document.getElementById('pendingSessions').textContent = stats.todayMySessions || 0;
-      document.getElementById('totalClients').textContent = stats.totalStudents || 0;
-      document.getElementById('activeClients').textContent = stats.activeStudents || 0;
-      document.getElementById('totalAssessments').textContent = stats.totalAssessments || 0;
-      
-      updateChart(stats);
+    .withFailureHandler(function(error) {
+      hideLoading();
+      console.error('❌ Error updating availability:', error);
+      showNotification('Terjadi kesalahan saat mengubah status: ' + (error.message || 'Unknown error'), 'error');
     })
-    .getDashboardStats('counselor');
+    .updateCounselorAvailability(counselorProfile.user_id, newAvailability);
 }
 
-function updateChart(stats) {
-  const ctx = document.getElementById('statsChart').getContext('2d');
-  new Chart(ctx, {
+// ========== LOGOUT SIMPLE & EFFECTIVE ==========
+
+function logout() {
+  if (!confirm('Apakah Anda yakin ingin logout?')) {
+    return;
+  }
+  
+  console.log('Logout initiated...');
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      console.log('Logout response:', response);
+      
+      let redirectUrl = baseUrl;
+      if (response && response.redirectUrl) {
+        redirectUrl = response.redirectUrl;
+      }
+      
+      console.log('Redirecting to:', redirectUrl);
+      
+      setTimeout(function() {
+        try {
+          if (window.top && window.top !== window.self) {
+            window.top.location.href = redirectUrl;
+          } else {
+            window.location.href = redirectUrl;
+          }
+        } catch (e) {
+          window.open(redirectUrl, '_top');
+        }
+      }, 1000);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Logout error:', error);
+      setTimeout(function() {
+        window.location.href = baseUrl || window.location.href.split('?')[0];
+      }, 1500);
+    })
+    .serverLogout();
+}
+
+// ========== SESSION DETAIL ==========
+
+function viewSessionDetail(sessionId) {
+  console.log('👁️ Viewing session detail:', sessionId);
+  
+  // Navigate ke halaman detail session
+  navigateToPage('session_detail&id=' + sessionId);
+}
+
+// ========== HELPER FUNCTIONS ==========
+
+function getInitials(name) {
+  if (!name) return 'K';
+  return name.split(' ')
+    .map(n => n[0])
+    .join('')
+    .toUpperCase()
+    .substring(0, 2);
+}
+
+function updateElementText(elementId, text) {
+  const element = document.getElementById(elementId);
+  if (element) {
+    element.textContent = text;
+  }
+}
+
+function updateAvatar(elementId, photoUrl, initials) {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  
+  element.innerHTML = '';
+  
+  if (photoUrl && photoUrl.trim() !== '' && photoUrl !== '#') {
+    const img = document.createElement('img');
+    img.src = photoUrl;
+    img.className = 'user-avatar-img';
+    img.alt = 'Profile Photo';
+    img.onerror = function() {
+      // Fallback ke initials jika gambar error
+      element.innerHTML = `<span class="user-avatar-initials">${initials}</span>`;
+    };
+    element.appendChild(img);
+  } else {
+    element.innerHTML = `<span class="user-avatar-initials">${initials}</span>`;
+  }
+}
+
+function showLoading(message = 'Memuat...') {
+  const modalElement = document.getElementById('loadingModal');
+  if (modalElement) {
+    const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+    modal.show();
+    
+    // Update message jika ada
+    const messageElement = modalElement.querySelector('h5');
+    if (messageElement && message) {
+      messageElement.textContent = message;
+    }
+  }
+}
+
+function hideLoading() {
+  const modalElement = document.getElementById('loadingModal');
+  if (modalElement) {
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    if (modal) {
+      modal.hide();
+    }
+  }
+}
+
+function showNotification(message, type = 'info') {
+  console.log(`📢 Notification [${type}]:`, message);
+  
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; max-width: 90%;';
+  
+  const icon = type === 'success' ? 'fa-check-circle' : 
+               type === 'error' ? 'fa-exclamation-circle' : 
+               type === 'warning' ? 'fa-exclamation-triangle' : 'fa-info-circle';
+  
+  notification.innerHTML = `
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas ${icon}"></i>
+      <div>${message}</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  // Auto remove after 5 seconds
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+function showError(message) {
+  showNotification(message, 'error');
+}
+
+function getEmptyStats() {
+  return {
+    todaySessions: 0,
+    todayPending: 0,
+    totalClients: 0,
+    activeClients: 0,
+    totalAssessments: 0,
+    monthlyAssessments: 0,
+    weekSessions: 0,
+    weekScheduled: 0,
+    weekCompleted: 0,
+    weekCancelled: 0
+  };
+}
+
+// ========== CHART FUNCTIONS ==========
+
+function updateStatistics(stats) {
+  console.log('📊 Updating statistics UI');
+  
+  // Mobile stats
+  updateElementText('mobileTodaySessions', stats.todaySessions || 0);
+  updateElementText('mobilePendingSessions', stats.todayPending || 0);
+  updateElementText('mobileTotalClients', stats.totalClients || 0);
+  updateElementText('mobileActiveClients', stats.activeClients || 0);
+  updateElementText('mobileTotalAssessments', stats.monthlyAssessments || 0);
+  updateElementText('mobileWeekSessions', stats.weekSessions || 0);
+  updateElementText('mobileWeekCompleted', stats.weekCompleted || 0);
+  
+  // Desktop stats
+  updateElementText('desktopTodaySessions', stats.todaySessions || 0);
+  updateElementText('desktopPendingSessions', stats.todayPending || 0);
+  updateElementText('desktopTotalClients', stats.totalClients || 0);
+  updateElementText('desktopActiveClients', stats.activeClients || 0);
+  updateElementText('desktopTotalAssessments', stats.monthlyAssessments || 0);
+  updateElementText('desktopWeekSessions', stats.weekSessions || 0);
+  updateElementText('desktopWeekCompleted', stats.weekCompleted || 0);
+  
+  // Update charts
+  updateMobileChart(
+    stats.weekScheduled || 0,
+    stats.weekCompleted || 0,
+    stats.weekCancelled || 0
+  );
+  
+  updateDesktopChart(
+    stats.weekScheduled || 0,
+    stats.weekCompleted || 0,
+    stats.weekCancelled || 0
+  );
+}
+
+function updateMobileChart(scheduled, completed, cancelled) {
+  const ctx = document.getElementById('mobileStatsChart');
+  if (!ctx) return;
+  
+  if (mobileChart) {
+    mobileChart.destroy();
+  }
+  
+  mobileChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
       labels: ['Terjadwal', 'Selesai', 'Dibatalkan'],
       datasets: [{
-        data: [
-          stats.todayMySessions || 0,
-          stats.completedAssessments || 0,
-          stats.cancelledSessions || 0
-        ],
-        backgroundColor: ['#ffc107', '#28a745', '#dc3545']
+        data: [scheduled, completed, cancelled],
+        backgroundColor: [
+          'rgba(13, 59, 102, 0.8)',
+          'rgba(42, 157, 143, 0.8)',
+          'rgba(255, 59, 48, 0.8)'
+        ]
       }]
     },
     options: {
       responsive: true,
       plugins: {
-        legend: { position: 'bottom' }
+        legend: {
+          position: 'bottom'
+        }
       }
     }
   });
-  
-  document.getElementById('weekSessions').textContent = stats.mySessions || 0;
-  document.getElementById('weekCompleted').textContent = stats.completedAssessments || 0;
 }
 
-function loadUpcomingSessions() {
-  google.script.run
-    .withSuccessHandler(function(session) {
-      if (!session) return;
+function updateDesktopChart(scheduled, completed, cancelled) {
+  const ctx = document.getElementById('desktopStatsChart');
+  if (!ctx) return;
+  
+  if (desktopChart) {
+    desktopChart.destroy();
+  }
+  
+  desktopChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Terjadwal', 'Selesai', 'Dibatalkan'],
+      datasets: [{
+        data: [scheduled, completed, cancelled],
+        backgroundColor: [
+          'rgba(0, 122, 255, 0.8)',
+          'rgba(52, 199, 89, 0.8)',
+          'rgba(255, 59, 48, 0.8)'
+        ]
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+}
+
+// ========== SESSIONS TABLE FUNCTIONS ==========
+
+function processSessionsData(sessions) {
+  console.log('🔄 Processing sessions data...');
+  
+  if (!sessions) {
+    updateSessionsTable([]);
+    return;
+  }
+  
+  // Ensure it's an array
+  let sessionsArray = Array.isArray(sessions) ? sessions : [];
+  
+  if (sessionsArray.length === 0) {
+    console.log('ℹ️ No sessions found');
+  }
+  
+  updateSessionsTable(sessionsArray);
+}
+
+function updateSessionsTable(sessions) {
+  console.log('📋 Updating sessions table with', sessions.length, 'items');
+  
+  updateMobileTableBody(sessions);
+  updateDesktopTableBody(sessions);
+}
+
+function updateMobileTableBody(sessions) {
+  const tbody = document.getElementById('mobileSessionsTableBody');
+  if (!tbody) return;
+  
+  if (!sessions || sessions.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4" class="text-center py-5">
+          <i class="fas fa-calendar-check fa-2x text-muted mb-3"></i>
+          <p class="text-muted">Tidak ada sesi mendatang</p>
+          <small class="text-muted d-block mb-3">Semua sesi sudah selesai atau belum dijadwalkan</small>
+          <button class="btn btn-primary btn-sm" onclick="navigateToPage('counselor_schedule')">
+            <i class="fas fa-plus"></i> Buat Sesi Baru
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  let html = '';
+  
+  sessions.forEach((session, index) => {
+    try {
+      const sessionDate = parseSessionDate(session.scheduled_date);
+      const formattedDate = formatSessionDate(sessionDate);
       
-      google.script.run
-        .withSuccessHandler(function(sessions) {
-          const tbody = document.getElementById('upcomingSessionsTable');
-          tbody.innerHTML = '';
-
-          if (!sessions || sessions.length === 0) {
-            tbody.innerHTML = `
-              <tr>
-                <td colspan="6" class="text-center py-5">
-                  <i class="fas fa-calendar-times fa-2x text-muted mb-3"></i>
-                  <p>Tidak ada sesi mendatang</p>
-                </td>
-              </tr>
-            `;
-            return;
-          }
-
-          const now = new Date();
-          const upcoming = sessions
-            .filter(s => new Date(s.scheduled_date) > now && s.status === 'scheduled')
-            .sort((a, b) => new Date(a.scheduled_date) - new Date(b.scheduled_date))
-            .slice(0, 5);
-
-          if (upcoming.length === 0) {
-            tbody.innerHTML = `
-              <tr>
-                <td colspan="6" class="text-center py-5">
-                  <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-                  <p>Tidak ada sesi mendatang</p>
-                </td>
-              </tr>
-            `;
-            return;
-          }
-
-          upcoming.forEach((s, index) => {
-            const sessionDate = new Date(s.scheduled_date);
-            const formattedDate = sessionDate.toLocaleDateString('id-ID', {
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-
-            tbody.innerHTML += `
-              <tr>
-                <td>${index + 1}</td>
-                <td>
-                  <strong>${s.student_name || 'Mahasiswa'}</strong><br>
-                  <small class="text-muted">${s.student_nim || ''}</small>
-                </td>
-                <td>${formattedDate}</td>
-                <td>${s.session_type === 'video_call' ? 'Video Call' : s.session_type}</td>
-                <td><span class="badge badge-scheduled">Terjadwal</span></td>
-                <td>
-                  <div class="btn-group btn-group-sm">
-                    ${s.meeting_link ? 
-                      `<button class="btn btn-primary" onclick="window.open('${s.meeting_link}', '_blank')" title="Join">
-                        <i class="fas fa-video"></i>
-                      </button>` : ''
-                    }
-                    <button class="btn btn-info" onclick="viewSessionDetail('${s.session_id}')" title="Detail">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `;
-          });
-        })
-        .getCounselorSessions(session.id);
-    })
-    .getSession();
+      const statusBadge = getStatusBadge(session.status);
+      
+      const showJoinButton = session.meeting_link && 
+        session.meeting_link !== '#' &&
+        session.meeting_link.trim() !== '' &&
+        (session.session_type === 'video_call' || session.session_type === 'virtual' || session.session_type === 'online') &&
+        (session.status === 'scheduled' || session.status === 'pending' || session.status === 'confirmed');
+      
+      html += `
+        <tr>
+          <td>
+            <strong>${session.student_name || 'Mahasiswa'}</strong>
+            ${session.student_nim ? `<br><small class="text-muted">NIM: ${session.student_nim}</small>` : ''}
+          </td>
+          <td>
+            <div>${formattedDate}</div>
+            <small class="text-muted">${session.session_type === 'video_call' || session.session_type === 'online' ? '🎥 Video' : '👥 Tatap Muka'}</small>
+          </td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="action-buttons">
+              ${showJoinButton ? `
+                <button class="btn-action btn-join" onclick="joinSession('${session.session_id}', '${session.meeting_link}')">
+                  <i class="fas fa-video"></i>
+                </button>
+              ` : ''}
+              <button class="btn-action btn-detail" onclick="viewSessionDetail('${session.session_id}')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    } catch (e) {
+      console.error('❌ Error formatting mobile session row:', e);
+    }
+  });
+  
+  tbody.innerHTML = html;
 }
 
-function toggleAvailability() {
-  if (!counselorProfile) return;
+function updateDesktopTableBody(sessions) {
+  const tbody = document.getElementById('desktopSessionsTableBody');
+  if (!tbody) return;
   
-  const newAvailability = counselorProfile.availability === 'available' ? 'busy' : 'available';
-  const btn = document.getElementById('toggleAvailabilityBtn');
+  if (!sessions || sessions.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6" class="text-center py-5">
+          <i class="fas fa-calendar-check fa-2x text-muted mb-3"></i>
+          <p class="text-muted">Tidak ada sesi mendatang</p>
+          <small class="text-muted d-block mb-3">Semua sesi sudah selesai atau belum dijadwalkan</small>
+          <button class="btn btn-primary" onclick="navigateToPage('counselor_schedule')">
+            <i class="fas fa-plus"></i> Buat Sesi Baru
+          </button>
+        </td>
+      </tr>
+    `;
+    return;
+  }
   
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+  let html = '';
   
-  google.script.run
-    .withSuccessHandler(function(result) {
-      if (result.success) {
-        counselorProfile.availability = newAvailability;
-        
-        const availabilityText = newAvailability === 'available' ? 'Tersedia' : 'Sibuk';
-        document.getElementById('availabilityStatus').textContent = availabilityText;
-        
-        btn.innerHTML = newAvailability === 'available' 
-          ? '<i class="fas fa-toggle-on"></i> Ubah ke Sibuk'
-          : '<i class="fas fa-toggle-off"></i> Ubah ke Tersedia';
-        
-        showNotification(`Status ketersediaan diubah menjadi: ${availabilityText}`, 'success');
-      } else {
-        showNotification('Gagal mengubah status', 'danger');
-      }
-      btn.disabled = false;
-    })
-    .updateCounselorAvailability(counselorProfile.user_id, newAvailability);
+  sessions.forEach((session, index) => {
+    try {
+      const sessionDate = parseSessionDate(session.scheduled_date);
+      const formattedDate = formatSessionDate(sessionDate);
+      
+      const sessionType = (session.session_type === 'video_call' || session.session_type === 'online') ?
+        '<span class="badge bg-info"><i class="fas fa-video"></i> Video Call</span>' :
+        '<span class="badge bg-warning"><i class="fas fa-users"></i> Tatap Muka</span>';
+      
+      const statusBadge = getStatusBadge(session.status);
+      
+      const showJoinButton = session.meeting_link &&
+        session.meeting_link !== '#' &&
+        session.meeting_link.trim() !== '' &&
+        (session.session_type === 'video_call' || session.session_type === 'virtual' || session.session_type === 'online') &&
+        (session.status === 'scheduled' || session.status === 'pending' || session.status === 'confirmed');
+      
+      html += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>
+            <div class="fw-bold">${session.student_name || 'Mahasiswa'}</div>
+            ${session.student_nim ? `<div class="text-muted small">NIM: ${session.student_nim}</div>` : ''}
+          </td>
+          <td>${formattedDate}</td>
+          <td>${sessionType}</td>
+          <td>${statusBadge}</td>
+          <td>
+            <div class="action-buttons">
+              ${showJoinButton ? `
+                <button class="btn-action btn-join" onclick="joinSession('${session.session_id}', '${session.meeting_link}')">
+                  <i class="fas fa-video"></i> Join
+                </button>
+              ` : ''}
+              <button class="btn-action btn-detail" onclick="viewSessionDetail('${session.session_id}')">
+                <i class="fas fa-eye"></i> Detail
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    } catch (e) {
+      console.error('❌ Error formatting desktop session row:', e);
+    }
+  });
+  
+  tbody.innerHTML = html;
 }
 
-function loadNotifications() {
-  google.script.run
-    .withSuccessHandler(function(notifications) {
-      const countElement = document.getElementById('notificationCount');
-      if (notifications.length > 0) {
-        countElement.textContent = notifications.length;
-        countElement.style.display = 'flex';
-      } else {
-        countElement.style.display = 'none';
-      }
-    })
-    .getMyNotifications();
+function parseSessionDate(dateStr) {
+  if (!dateStr) return null;
+  
+  try {
+    // Try parsing as ISO string
+    if (typeof dateStr === 'string' && dateStr.includes('T')) {
+      const date = new Date(dateStr);
+      if (!isNaN(date.getTime())) return date;
+    }
+    
+    // Try parsing as regular string
+    const date = new Date(dateStr);
+    if (!isNaN(date.getTime())) return date;
+    
+    return null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function formatSessionDate(date) {
+  if (!date || isNaN(date.getTime())) return 'Tanggal tidak valid';
+  
+  return date.toLocaleDateString('id-ID', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+function getStatusBadge(status) {
+  const statusLower = (status || '').toString().toLowerCase();
+  
+  if (statusLower.includes('confirm') || statusLower.includes('setuju')) {
+    return '<span class="badge bg-success"><i class="fas fa-check-circle"></i> Dikonfirmasi</span>';
+  }
+  if (statusLower.includes('pend') || statusLower.includes('tunggu')) {
+    return '<span class="badge bg-warning text-dark"><i class="fas fa-clock"></i> Pending</span>';
+  }
+  if (statusLower.includes('sched') || statusLower.includes('jadwal')) {
+    return '<span class="badge bg-primary"><i class="fas fa-calendar-check"></i> Terjadwal</span>';
+  }
+  if (statusLower.includes('completed') || statusLower.includes('selesai')) {
+    return '<span class="badge bg-success"><i class="fas fa-check-circle"></i> Selesai</span>';
+  }
+  if (statusLower.includes('cancelled') || statusLower.includes('batal')) {
+    return '<span class="badge bg-danger"><i class="fas fa-times-circle"></i> Dibatalkan</span>';
+  }
+  
+  return '<span class="badge bg-secondary">' + (status || 'Unknown') + '</span>';
+}
+
+function updateNotificationCount(count) {
+  const badge = document.getElementById('desktopNotificationCount');
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = Math.min(count, 9);
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+function joinSession(sessionId, meetingLink) {
+  console.log('🎥 Joining session:', sessionId);
+  
+  if (!meetingLink || meetingLink === '#' || meetingLink.trim() === '') {
+    showNotification('Link meeting tidak tersedia', 'error');
+    return;
+  }
+  
+  window.open(meetingLink, '_blank');
+  showNotification('Membuka sesi video...', 'info');
+}
+
+// ========== SIDEBAR MENU FUNCTIONS ==========
+
+function setupMenu() {
+  const menuItems = [
+    { id: 'dashboard_counselor', title: 'Dashboard', icon: 'fas fa-home', active: true },
+    { id: 'counselor_schedule', title: 'Jadwal Konseling', icon: 'fas fa-calendar-alt' },
+    { id: 'counselor_students', title: 'Klien Saya', icon: 'fas fa-user-graduate' },
+    { id: 'counselor_assessments', title: 'Form Asesmen', icon: 'fas fa-clipboard-check' },
+    { id: 'counselor_video', title: 'Sesi Virtual', icon: 'fas fa-video' },
+    { id: 'counselor_profile', title: 'Profil & Pengaturan', icon: 'fas fa-user-cog' }
+  ];
+  
+  const menuHTML = menuItems.map(item => `
+    <li>
+      <a href="javascript:void(0);" class="${item.active ? 'active' : ''}" onclick="navigateToPage('${item.id}')">
+        <i class="${item.icon}"></i>
+        <span>${item.title}</span>
+      </a>
+    </li>
+  `).join('');
+  
+  const mobileMenu = document.getElementById('mobileSidebarMenu');
+  const desktopMenu = document.getElementById('desktopSidebarMenu');
+  
+  if (mobileMenu) mobileMenu.innerHTML = menuHTML;
+  if (desktopMenu) desktopMenu.innerHTML = menuHTML;
+}
+
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+function loadAllLogos() {
+  const logoUrls = [
+    'https://asakur.web.app/images/logo_asakur.png',
+    'https://i.imgur.com/2lQvY5F.png'
+  ];
+  
+  const logoContainers = [
+    { id: 'mobileLogoContainer', size: 50 },
+    { id: 'mobileSidebarLogo', size: 60 },
+    { id: 'desktopLogoContainer', size: 80 }
+  ];
+  
+  logoContainers.forEach(containerInfo => {
+    const container = document.getElementById(containerInfo.id);
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const img = new Image();
+    img.onload = function() {
+      container.innerHTML = '';
+      img.className = 'logo-img';
+      container.appendChild(img);
+    };
+    
+    img.onerror = function() {
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-hands-helping logo-icon';
+      icon.style.fontSize = containerInfo.size + 'px';
+      container.appendChild(icon);
+    };
+    
+    img.src = logoUrls[0] + '?t=' + new Date().getTime();
+  });
+}
+
+function handleWindowResize() {
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      console.log('📐 Window resized');
+      // Optional: Add responsive behavior here
+    }, 250);
+  });
+}
+
+function loadDashboard() {
+  location.reload();
 }
 
 function showNotifications() {
-  showNotification('Fitur notifikasi akan segera tersedia', 'info');
-}
-
-function viewSessionDetail(sessionId) {
-  showNotification('Lihat detail sesi ' + sessionId, 'info');
-}
-
-function showNotification(message, type) {
-  const notification = document.createElement('div');
-  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
-  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);';
-  notification.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
-  document.body.appendChild(notification);
-  setTimeout(() => notification.remove(), 5000);
-}
-
-function logout() {
-  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
-  modal.show();
-  
-  google.script.run
-    .withSuccessHandler(function(response) {
-      setTimeout(() => window.top.location.href = response.redirectUrl || baseUrl, 1500);
-    })
-    .withFailureHandler(function(error) {
-      setTimeout(() => window.top.location.href = baseUrl, 2000);
-    })
-    .serverLogout();
+  showNotification('Fitur notifikasi sedang dikembangkan', 'info');
 }
 </script>
+
 </body>
 </html>

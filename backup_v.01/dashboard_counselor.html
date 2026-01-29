@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Konselor - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
+      --dark-blue: #023047;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-brand p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 12px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      padding: 0 25px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      transition: all 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    .top-bar {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .top-bar h1 {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.9rem;
+      margin-bottom: 5px;
+    }
+    
+    .top-bar p {
+      color: #666;
+      margin-bottom: 0;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    }
+    
+    .card-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin-bottom: 25px;
+      color: white;
+    }
+    
+    .icon-blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
+    .icon-green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
+    .icon-light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
+    .icon-dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
+    
+    .stat-card h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--dark-blue);
+      margin-bottom: 5px;
+    }
+    
+    .stat-card p {
+      color: #666;
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+    
+    .table-container {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-top: 30px;
+    }
+    
+    .table-title {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .table {
+      margin-bottom: 0;
+    }
+    
+    .table thead th {
+      background-color: #f8f9fa;
+      color: var(--dark-blue);
+      font-weight: 600;
+      border: none;
+      padding: 18px 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .table tbody td {
+      padding: 18px 20px;
+      vertical-align: middle;
+      border-color: #f0f0f0;
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .badge-scheduled { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-completed { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-cancelled { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    
+    .sidebar-toggle {
+      display: none;
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.3rem;
+      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.3);
+      transition: all 0.3s;
+    }
+    
+    .notification-bell {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .notification-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #dc3545;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+      
+      .sidebar.active {
+        margin-left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 20px;
+      }
+      
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        padding: 20px;
+      }
+      
+      .user-info {
+        align-self: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p>Konselor Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" class="active" onclick="loadDashboard(); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_schedule'); return false;">
+      <i class="fas fa-calendar-alt"></i> Jadwal Konseling
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_students'); return false;">
+      <i class="fas fa-user-graduate"></i> Klien Saya
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_assessments'); return false;">
+      <i class="fas fa-clipboard-check"></i> Form Asesmen
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_video'); return false;">
+      <i class="fas fa-video"></i> Sesi Virtual
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_profile'); return false;">
+      <i class="fas fa-user-cog"></i> Profil & Pengaturan
+    </a></li>
+  </ul>
+  
+  <div class="sidebar-footer">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content" id="mainContent">
+  <div class="top-bar">
+    <div>
+      <button class="sidebar-toggle" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <h1>Dashboard Konselor</h1>
+      <p>Selamat datang, <span id="counselorName" class="fw-bold">Konselor</span></p>
+    </div>
+    
+    <div class="user-info">
+      <div class="notification-bell" onclick="showNotifications()">
+        <i class="fas fa-bell fs-5 text-secondary"></i>
+        <span class="notification-count" id="notificationCount" style="display: none;">0</span>
+      </div>
+      
+      <div class="user-avatar" id="userAvatar">
+        <i class="fas fa-user-md"></i>
+      </div>
+      <div>
+        <h6 class="mb-0 fw-bold" id="usernameDisplay">Konselor</h6>
+        <small class="text-muted" id="userRole">Professional Counselor</small>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-blue">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 id="todaySessions">0</h2>
+        <p>Sesi Hari Ini</p>
+        <small class="text-muted"><i class="fas fa-clock me-1"></i> <span id="pendingSessions">0</span> menunggu</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-green">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h2 id="totalClients">0</h2>
+        <p>Total Klien</p>
+        <small class="text-muted"><i class="fas fa-chart-line me-1"></i> <span id="activeClients">0</span> aktif</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-light">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h2 id="totalAssessments">0</h2>
+        <p>Total Asesmen</p>
+        <small class="text-muted"><i class="fas fa-check-circle me-1"></i> Bulan ini</small>
+      </div>
+    </div>
+    
+    <div class="col-xl-3 col-lg-6">
+      <div class="stat-card">
+        <div class="card-icon icon-dark">
+          <i class="fas fa-toggle-on"></i>
+        </div>
+        <h2 id="availabilityStatus">Tersedia</h2>
+        <p>Status Ketersediaan</p>
+        <button class="btn btn-sm btn-outline-primary mt-2" onclick="toggleAvailability()" id="toggleAvailabilityBtn">
+          <i class="fas fa-sync"></i> Ubah Status
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row mt-4">
+    <div class="col-lg-8">
+      <div class="table-container">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3 class="table-title mb-0">
+            <i class="fas fa-calendar-day"></i> Sesi Mendatang
+          </h3>
+          <button class="btn btn-primary btn-sm" onclick="navigateToPage('counselor_schedule')">
+            <i class="fas fa-plus"></i> Buat Sesi Baru
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Mahasiswa</th>
+                <th>Tanggal & Waktu</th>
+                <th>Jenis Sesi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="upcomingSessionsTable">
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2">Memuat data sesi...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-lg-4">
+      <div class="table-container h-100">
+        <h3 class="table-title">
+          <i class="fas fa-chart-pie"></i> Ringkasan Minggu Ini
+        </h3>
+        <div class="text-center">
+          <canvas id="statsChart" height="200"></canvas>
+        </div>
+        <div class="row mt-4">
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
+              <h4 class="fw-bold mb-0" id="weekSessions">0</h4>
+              <small>Total Sesi</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
+              <h4 class="fw-bold mb-0" id="weekCompleted">0</h4>
+              <small>Selesai</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+        <p class="text-muted">Mengalihkan ke halaman login</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let counselorProfile = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadUserInfo();
+      loadDashboard();
+    })
+    .getWebAppUrl();
+  
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.toggle('active');
+  });
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadUserInfo() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      if (session) {
+        document.getElementById('counselorName').textContent = session.fullname || session.username;
+        document.getElementById('usernameDisplay').textContent = session.username;
+        
+        const name = session.fullname || session.username;
+        const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+        document.getElementById('userAvatar').innerHTML = initials.substring(0, 2);
+        
+        loadCounselorProfile(session.id);
+        loadNotifications();
+      } else {
+        navigateToPage('');
+      }
+    })
+    .getSession();
+}
+
+function loadCounselorProfile(userId) {
+  google.script.run
+    .withSuccessHandler(function(profile) {
+      counselorProfile = profile;
+      if (profile) {
+        const availabilityText = profile.availability === 'available' ? 'Tersedia' : 'Sibuk';
+        document.getElementById('availabilityStatus').textContent = availabilityText;
+        
+        const btn = document.getElementById('toggleAvailabilityBtn');
+        btn.innerHTML = profile.availability === 'available' 
+          ? '<i class="fas fa-toggle-on"></i> Ubah ke Sibuk'
+          : '<i class="fas fa-toggle-off"></i> Ubah ke Tersedia';
+      }
+    })
+    .getCounselorProfile(userId);
+}
+
+function loadDashboard() {
+  loadStatistics();
+  loadUpcomingSessions();
+}
+
+function loadStatistics() {
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      document.getElementById('todaySessions').textContent = stats.todaySessions || 0;
+      document.getElementById('pendingSessions').textContent = stats.todayMySessions || 0;
+      document.getElementById('totalClients').textContent = stats.totalStudents || 0;
+      document.getElementById('activeClients').textContent = stats.activeStudents || 0;
+      document.getElementById('totalAssessments').textContent = stats.totalAssessments || 0;
+      
+      updateChart(stats);
+    })
+    .getDashboardStats('counselor');
+}
+
+function updateChart(stats) {
+  const ctx = document.getElementById('statsChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Terjadwal', 'Selesai', 'Dibatalkan'],
+      datasets: [{
+        data: [
+          stats.todayMySessions || 0,
+          stats.completedAssessments || 0,
+          stats.cancelledSessions || 0
+        ],
+        backgroundColor: ['#ffc107', '#28a745', '#dc3545']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+  
+  document.getElementById('weekSessions').textContent = stats.mySessions || 0;
+  document.getElementById('weekCompleted').textContent = stats.completedAssessments || 0;
+}
+
+function loadUpcomingSessions() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      if (!session) return;
+      
+      google.script.run
+        .withSuccessHandler(function(sessions) {
+          const tbody = document.getElementById('upcomingSessionsTable');
+          tbody.innerHTML = '';
+
+          if (!sessions || sessions.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <i class="fas fa-calendar-times fa-2x text-muted mb-3"></i>
+                  <p>Tidak ada sesi mendatang</p>
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          const now = new Date();
+          const upcoming = sessions
+            .filter(s => new Date(s.scheduled_date) > now && s.status === 'scheduled')
+            .sort((a, b) => new Date(a.scheduled_date) - new Date(b.scheduled_date))
+            .slice(0, 5);
+
+          if (upcoming.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="6" class="text-center py-5">
+                  <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+                  <p>Tidak ada sesi mendatang</p>
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          upcoming.forEach((s, index) => {
+            const sessionDate = new Date(s.scheduled_date);
+            const formattedDate = sessionDate.toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+
+            tbody.innerHTML += `
+              <tr>
+                <td>${index + 1}</td>
+                <td>
+                  <strong>${s.student_name || 'Mahasiswa'}</strong><br>
+                  <small class="text-muted">${s.student_nim || ''}</small>
+                </td>
+                <td>${formattedDate}</td>
+                <td>${s.session_type === 'video_call' ? 'Video Call' : s.session_type}</td>
+                <td><span class="badge badge-scheduled">Terjadwal</span></td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                    ${s.meeting_link ? 
+                      `<button class="btn btn-primary" onclick="window.open('${s.meeting_link}', '_blank')" title="Join">
+                        <i class="fas fa-video"></i>
+                      </button>` : ''
+                    }
+                    <button class="btn btn-info" onclick="viewSessionDetail('${s.session_id}')" title="Detail">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          });
+        })
+        .getCounselorSessions(session.id);
+    })
+    .getSession();
+}
+
+function toggleAvailability() {
+  if (!counselorProfile) return;
+  
+  const newAvailability = counselorProfile.availability === 'available' ? 'busy' : 'available';
+  const btn = document.getElementById('toggleAvailabilityBtn');
+  
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        counselorProfile.availability = newAvailability;
+        
+        const availabilityText = newAvailability === 'available' ? 'Tersedia' : 'Sibuk';
+        document.getElementById('availabilityStatus').textContent = availabilityText;
+        
+        btn.innerHTML = newAvailability === 'available' 
+          ? '<i class="fas fa-toggle-on"></i> Ubah ke Sibuk'
+          : '<i class="fas fa-toggle-off"></i> Ubah ke Tersedia';
+        
+        showNotification(`Status ketersediaan diubah menjadi: ${availabilityText}`, 'success');
+      } else {
+        showNotification('Gagal mengubah status', 'danger');
+      }
+      btn.disabled = false;
+    })
+    .updateCounselorAvailability(counselorProfile.user_id, newAvailability);
+}
+
+function loadNotifications() {
+  google.script.run
+    .withSuccessHandler(function(notifications) {
+      const countElement = document.getElementById('notificationCount');
+      if (notifications.length > 0) {
+        countElement.textContent = notifications.length;
+        countElement.style.display = 'flex';
+      } else {
+        countElement.style.display = 'none';
+      }
+    })
+    .getMyNotifications();
+}
+
+function showNotifications() {
+  showNotification('Fitur notifikasi akan segera tersedia', 'info');
+}
+
+function viewSessionDetail(sessionId) {
+  showNotification('Lihat detail sesi ' + sessionId, 'info');
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);';
+  notification.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+  document.body.appendChild(notification);
+  setTimeout(() => notification.remove(), 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(() => window.top.location.href = response.redirectUrl || baseUrl, 1500);
+    })
+    .withFailureHandler(function(error) {
+      setTimeout(() => window.top.location.href = baseUrl, 2000);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

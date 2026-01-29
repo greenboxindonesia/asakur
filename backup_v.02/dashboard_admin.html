@@ -4,12 +4,14 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Kontak Darurat - ASAKUR</title>
+  <title>Dashboard Admin - ASAKUR</title>
   
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
     :root {
@@ -26,8 +28,6 @@
       --success-color: #34c759;
       --warning-color: #ff9500;
       --error-color: #ff3b30;
-      --danger-color: #dc3545;
-      --danger-light: rgba(220, 53, 69, 0.1);
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
       --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
       --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
@@ -56,7 +56,7 @@
     }
     
     /* MOBILE VERSION */
-    .mobile-emergency {
+    .mobile-dashboard {
       display: block;
       min-height: 100vh;
       background-color: var(--surface-color);
@@ -64,7 +64,7 @@
     }
     
     /* DESKTOP VERSION */
-    .desktop-emergency {
+    .desktop-dashboard {
       display: none;
       min-height: 100vh;
     }
@@ -312,8 +312,8 @@
     /* MOBILE STATS CARDS */
     .mobile-stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
       margin-bottom: 25px;
     }
     
@@ -326,163 +326,51 @@
       transition: all 0.3s ease;
     }
     
-    .mobile-stat-card.emergency {
-      background: linear-gradient(135deg, #dc3545, #c82333);
-      color: white;
-      border: none;
-    }
-    
-    .mobile-stat-card.pending {
-      background: linear-gradient(135deg, #ffc107, #ff9800);
-      color: white;
-      border: none;
-    }
-    
-    .mobile-stat-card.handled {
-      background: linear-gradient(135deg, #28a745, #20c997);
-      color: white;
-      border: none;
-    }
-    
     .mobile-stat-card:hover {
       box-shadow: var(--shadow-md);
       transform: translateY(-3px);
     }
     
+    .mobile-stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+      color: white;
+    }
+    
+    .mobile-stat-icon.blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
+    .mobile-stat-icon.green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
+    .mobile-stat-icon.light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
+    .mobile-stat-icon.dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
+    
     .mobile-stat-card h3 {
       font-size: 1.8rem;
       font-weight: 700;
       margin-bottom: 5px;
-    }
-    
-    .mobile-stat-card.emergency h3,
-    .mobile-stat-card.pending h3,
-    .mobile-stat-card.handled h3 {
-      color: white;
+      color: var(--dark-blue);
     }
     
     .mobile-stat-card p {
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      opacity: 0.9;
-    }
-    
-    .mobile-stat-card.emergency p,
-    .mobile-stat-card.pending p,
-    .mobile-stat-card.handled p {
-      opacity: 0.95;
-    }
-    
-    /* MOBILE EMERGENCY LOGS */
-    .mobile-emergency-card {
-      background: var(--surface-color);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 15px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-      border-left: 4px solid #dc3545;
-      transition: all 0.3s ease;
-    }
-    
-    .mobile-emergency-card.handled {
-      border-left-color: #28a745;
-      opacity: 0.8;
-    }
-    
-    .mobile-emergency-card:hover {
-      transform: translateX(5px);
-      box-shadow: var(--shadow-md);
-    }
-    
-    .mobile-emergency-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 10px;
-    }
-    
-    .mobile-emergency-title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
-    .mobile-emergency-badge {
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      display: inline-block;
-    }
-    
-    .badge-pending { background-color: rgba(255, 193, 7, 0.2); color: #b88a00; }
-    .badge-handled { background-color: rgba(40, 167, 69, 0.2); color: #218838; }
-    .badge-urgent { background-color: rgba(220, 53, 69, 0.2); color: #c82333; }
-    
-    .mobile-emergency-info {
       color: var(--text-secondary);
       font-size: 0.9rem;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
     
-    .mobile-emergency-contact {
+    .mobile-stat-card small {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
       display: flex;
       align-items: center;
-      gap: 10px;
-      color: var(--dark-blue);
-      font-weight: 500;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-color);
+      gap: 5px;
     }
     
-    .mobile-emergency-actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    
-    .mobile-btn {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .mobile-btn-danger {
-      background-color: rgba(220, 53, 69, 0.1);
-      color: #dc3545;
-      border: 1px solid rgba(220, 53, 69, 0.3);
-    }
-    
-    .mobile-btn-danger:hover {
-      background-color: #dc3545;
-      color: white;
-    }
-    
-    .mobile-btn-primary {
-      background-color: rgba(13, 59, 102, 0.1);
-      color: var(--primary-blue);
-      border: 1px solid rgba(13, 59, 102, 0.3);
-    }
-    
-    .mobile-btn-primary:hover {
-      background-color: var(--primary-blue);
-      color: white;
-    }
-    
-    /* MOBILE CONTACT DIRECTORY */
-    .mobile-contact-list {
+    /* MOBILE TABLE CONTAINER */
+    .mobile-table-container {
       background: var(--surface-color);
       border-radius: 16px;
       padding: 20px;
@@ -491,45 +379,42 @@
       border: 1px solid var(--border-color);
     }
     
-    .mobile-contact-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 0;
+    .mobile-table-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .mobile-table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+    }
+    
+    .mobile-table thead th {
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      font-weight: 600;
+      padding: 15px;
+      text-align: left;
+      border-bottom: 2px solid var(--border-color);
+    }
+    
+    .mobile-table tbody td {
+      padding: 15px;
       border-bottom: 1px solid var(--border-color);
     }
     
-    .mobile-contact-item:last-child {
-      border-bottom: none;
+    .mobile-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: inline-block;
     }
     
-    .mobile-contact-details h6 {
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-    
-    .mobile-contact-details small {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-    }
-    
-    .mobile-call-btn {
-      background: rgba(13, 59, 102, 0.1);
-      border: 1px solid rgba(13, 59, 102, 0.3);
-      border-radius: 8px;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-blue);
-      cursor: pointer;
-    }
-    
-    .mobile-call-btn:hover {
-      background: var(--primary-blue);
-      color: white;
-    }
+    .badge-pending { background-color: rgba(255, 149, 0, 0.15); color: #cc7700; }
+    .badge-approved { background-color: rgba(52, 199, 89, 0.15); color: var(--success-color); }
+    .badge-rejected { background-color: rgba(255, 59, 48, 0.15); color: var(--error-color); }
     
     /* MOBILE BOTTOM NAV */
     .mobile-bottom-nav {
@@ -575,7 +460,7 @@
     }
     
     /* DESKTOP VERSION */
-    .desktop-emergency {
+    .desktop-dashboard {
       display: flex;
       min-height: 100vh;
     }
@@ -767,56 +652,76 @@
     /* DESKTOP STATS CARDS */
     .desktop-stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 25px;
       margin-bottom: 30px;
     }
     
     .desktop-stat-card {
+      background: var(--surface-color);
       border-radius: 18px;
       padding: 25px;
-      box-shadow: var(--shadow-md);
-      border: none;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      color: white;
-    }
-    
-    .desktop-stat-card.emergency {
-      background: linear-gradient(135deg, #dc3545, #c82333);
-    }
-    
-    .desktop-stat-card.pending {
-      background: linear-gradient(135deg, #ffc107, #ff9800);
-    }
-    
-    .desktop-stat-card.handled {
-      background: linear-gradient(135deg, #28a745, #20c997);
     }
     
     .desktop-stat-card:hover {
       transform: translateY(-5px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .desktop-stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    }
+    
+    .desktop-stat-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: white;
     }
     
     .desktop-stat-card h2 {
       font-size: 2.2rem;
       font-weight: 700;
+      color: var(--dark-blue);
       margin-bottom: 5px;
     }
     
     .desktop-stat-card p {
+      color: var(--text-secondary);
       font-size: 1rem;
-      margin-bottom: 0;
-      opacity: 0.9;
+      margin-bottom: 5px;
     }
     
-    /* DESKTOP EMERGENCY LOGS */
+    .desktop-stat-card small {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    /* DESKTOP CHARTS & TABLES */
     .desktop-content-row {
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 30px;
+      margin-top: 30px;
     }
     
     .desktop-table-container {
@@ -860,68 +765,13 @@
       border-bottom: 1px solid var(--border-color);
     }
     
-    .desktop-table tbody tr:hover {
-      background-color: rgba(13, 59, 102, 0.05);
-    }
-    
-    /* DESKTOP CONTACT DIRECTORY */
-    .desktop-contact-container {
+    .desktop-chart-container {
       background: var(--surface-color);
       border-radius: 18px;
       padding: 30px;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
       height: 100%;
-    }
-    
-    .desktop-contact-list {
-      margin-top: 20px;
-    }
-    
-    .desktop-contact-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px;
-      border-radius: 12px;
-      margin-bottom: 12px;
-      background-color: var(--background-color);
-      transition: all 0.2s ease;
-    }
-    
-    .desktop-contact-item:hover {
-      background-color: rgba(13, 59, 102, 0.1);
-      transform: translateX(5px);
-    }
-    
-    .desktop-contact-details h6 {
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-    
-    .desktop-contact-details small {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-    }
-    
-    .desktop-call-btn {
-      background: rgba(13, 59, 102, 0.1);
-      border: 1px solid rgba(13, 59, 102, 0.3);
-      border-radius: 8px;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-blue);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .desktop-call-btn:hover {
-      background: var(--primary-blue);
-      color: white;
-      transform: scale(1.1);
     }
     
     /* COMMON STYLES */
@@ -937,25 +787,25 @@
       transition: all 0.2s ease;
     }
     
-    .btn-handle {
-      background-color: rgba(40, 167, 69, 0.1);
-      color: #218838;
-      border: 1px solid rgba(40, 167, 69, 0.3);
+    .btn-approve {
+      background-color: rgba(52, 199, 89, 0.1);
+      color: var(--success-color);
+      border: 1px solid rgba(52, 199, 89, 0.3);
     }
     
-    .btn-handle:hover {
-      background-color: #28a745;
+    .btn-approve:hover {
+      background-color: var(--success-color);
       color: white;
     }
     
-    .btn-detail {
-      background-color: rgba(13, 59, 102, 0.1);
-      color: var(--primary-blue);
-      border: 1px solid rgba(13, 59, 102, 0.3);
+    .btn-reject {
+      background-color: rgba(255, 59, 48, 0.1);
+      color: var(--error-color);
+      border: 1px solid rgba(255, 59, 48, 0.3);
     }
     
-    .btn-detail:hover {
-      background-color: var(--primary-blue);
+    .btn-reject:hover {
+      background-color: var(--error-color);
       color: white;
     }
     
@@ -977,21 +827,21 @@
     
     /* Responsive Design */
     /* Mobile only */
-    .mobile-emergency {
+    .mobile-dashboard {
       display: block !important;
     }
     
-    .desktop-emergency {
+    .desktop-dashboard {
       display: none !important;
     }
     
     /* Desktop only */
     @media (min-width: 993px) {
-      .mobile-emergency {
+      .mobile-dashboard {
         display: none !important;
       }
       
-      .desktop-emergency {
+      .desktop-dashboard {
         display: flex !important;
       }
     }
@@ -999,8 +849,7 @@
     /* Mobile optimizations */
     @media (max-width: 768px) {
       .mobile-stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
+        grid-template-columns: repeat(2, 1fr);
       }
       
       .mobile-main {
@@ -1016,7 +865,7 @@
         font-size: 1.6rem;
       }
       
-      .mobile-emergency-card {
+      .mobile-table-container {
         padding: 16px;
       }
     }
@@ -1056,15 +905,15 @@
       }
       
       .desktop-stats-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
 </head>
 <body>
 
-<!-- MOBILE EMERGENCY CONTACTS -->
-<div class="mobile-emergency">
+<!-- MOBILE DASHBOARD -->
+<div class="mobile-dashboard">
   <!-- Mobile Header -->
   <header class="mobile-header">
     <div class="mobile-header-content">
@@ -1077,7 +926,7 @@
         </div>
         <div class="mobile-header-info">
           <h1>ASAKUR</h1>
-          <p>Kontak Darurat</p>
+          <p>Admin Dashboard</p>
         </div>
       </div>
       <div class="mobile-user-badge" style="display: none;">
@@ -1123,122 +972,101 @@
   <main class="mobile-main">
     <!-- Stats Section -->
     <h2 class="mobile-section-title">
-      <i class="fas fa-exclamation-circle"></i>
-      <span>Statistik Darurat</span>
+      <i class="fas fa-chart-line"></i>
+      <span>Dashboard Statistik</span>
     </h2>
     
     <div class="mobile-stats-grid">
-      <div class="mobile-stat-card emergency">
-        <h3 id="mobileTotalEmergencies">0</h3>
-        <p>Total Darurat</p>
+      <div class="mobile-stat-card">
+        <div class="mobile-stat-icon blue">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <h3 id="mobileTotalCounselors">0</h3>
+        <p>Total Konselor</p>
+        <small><i class="fas fa-clock"></i> <span id="mobilePendingCounselors">0</span> pending</small>
       </div>
       
-      <div class="mobile-stat-card pending">
-        <h3 id="mobilePendingEmergencies">0</h3>
-        <p>Menunggu</p>
+      <div class="mobile-stat-card">
+        <div class="mobile-stat-icon green">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h3 id="mobileTotalStudents">0</h3>
+        <p>Total Mahasiswa</p>
+        <small><i class="fas fa-chart-line"></i> <span id="mobileActiveStudents">0</span> aktif</small>
       </div>
       
-      <div class="mobile-stat-card handled">
-        <h3 id="mobileHandledEmergencies">0</h3>
-        <p>Ditangani</p>
+      <div class="mobile-stat-card">
+        <div class="mobile-stat-icon light">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h3 id="mobileTotalSessions">0</h3>
+        <p>Sesi Konseling</p>
+        <small><i class="fas fa-calendar-day"></i> <span id="mobileTodaySessions">0</span> hari ini</small>
+      </div>
+      
+      <div class="mobile-stat-card">
+        <div class="mobile-stat-icon dark">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3 id="mobileTotalAssessments">0</h3>
+        <p>Total Asesmen</p>
+        <small><i class="fas fa-check-circle"></i> <span id="mobileCompletedAssessments">0</span> selesai</small>
       </div>
     </div>
     
-    <!-- Emergency Logs -->
-    <h2 class="mobile-section-title">
-      <i class="fas fa-history"></i>
-      <span>Log Darurat Terbaru</span>
-    </h2>
-    
-    <div id="mobileEmergencyLogs">
-      <div class="mobile-emergency-card">
-        <div class="mobile-emergency-header">
-          <div class="mobile-emergency-title">
-            <i class="fas fa-exclamation-triangle text-danger"></i>
-            <span id="mobileStudentName">Ahmad Rifai</span>
-          </div>
-          <span class="mobile-emergency-badge badge-pending">Pending</span>
+    <!-- Chart Section -->
+    <div class="mobile-table-container">
+      <h3 class="mobile-section-title" style="margin-top: 0;">
+        <i class="fas fa-chart-pie"></i>
+        <span>Statistik Sistem</span>
+      </h3>
+      <canvas id="mobileStatsChart" height="200"></canvas>
+      <div style="display: flex; gap: 15px; margin-top: 20px;">
+        <div style="flex: 1; text-align: center; padding: 15px; background: rgba(13, 59, 102, 0.1); border-radius: 12px;">
+          <h4 style="margin: 0; font-weight: 700;" id="mobileChartCounselors">0</h4>
+          <small>Konselor</small>
         </div>
-        
-        <div class="mobile-emergency-info">
-          <div><i class="fas fa-clock me-1"></i> <span id="mobileEmergencyTime">Baru saja</span></div>
-          <div><i class="fas fa-user me-1"></i> <span id="mobileStudentId">student001</span></div>
+        <div style="flex: 1; text-align: center; padding: 15px; background: rgba(42, 157, 143, 0.1); border-radius: 12px;">
+          <h4 style="margin: 0; font-weight: 700;" id="mobileChartStudents">0</h4>
+          <small>Mahasiswa</small>
         </div>
-        
-        <div class="mobile-emergency-contact">
-          <i class="fas fa-phone text-primary"></i>
-          <span id="mobileContactNumber">081234567890</span>
-        </div>
-        
-        <div class="mobile-emergency-actions">
-          <button class="mobile-btn mobile-btn-danger" onclick="callEmergency('081234567890')">
-            <i class="fas fa-phone"></i>
-            <span>Hubungi</span>
-          </button>
-          <button class="mobile-btn mobile-btn-primary" onclick="viewEmergencyDetail()">
-            <i class="fas fa-eye"></i>
-            <span>Detail</span>
-          </button>
-        </div>
-      </div>
-      
-      <div class="text-center py-4">
-        <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;">
-          <span class="visually-hidden">Loading...</span>
-        </div>
-        <p style="margin-top: 10px; color: var(--text-secondary);">Memuat log darurat...</p>
       </div>
     </div>
     
-    <!-- Contact Directory -->
-    <div class="mobile-contact-list">
-      <h2 class="mobile-section-title" style="margin-top: 0;">
-        <i class="fas fa-address-book"></i>
-        <span>Kontak Darurat</span>
-      </h2>
-      
-      <div id="mobileContactsList">
-        <div class="mobile-contact-item">
-          <div class="mobile-contact-details">
-            <h6>Hotline Nasional</h6>
-            <small>119 (24/7)</small>
-          </div>
-          <button class="mobile-call-btn" onclick="callEmergency('119')">
-            <i class="fas fa-phone"></i>
-          </button>
-        </div>
-        
-        <div class="mobile-contact-item">
-          <div class="mobile-contact-details">
-            <h6>Ambulans</h6>
-            <small>118</small>
-          </div>
-          <button class="mobile-call-btn" onclick="callEmergency('118')">
-            <i class="fas fa-phone"></i>
-          </button>
-        </div>
-        
-        <div class="mobile-contact-item">
-          <div class="mobile-contact-details">
-            <h6>Polisi</h6>
-            <small>110</small>
-          </div>
-          <button class="mobile-call-btn" onclick="callEmergency('110')">
-            <i class="fas fa-phone"></i>
-          </button>
-        </div>
+    <!-- Counselors Table -->
+    <div class="mobile-table-container">
+      <h3 class="mobile-section-title" style="margin-top: 0;">
+        <i class="fas fa-user-clock"></i>
+        <span>Konselor Pending Approval</span>
+      </h3>
+      <div class="mobile-table-scroll">
+        <table class="mobile-table">
+          <thead>
+            <tr>
+              <th>Nama</th>
+              <th>Spesialisasi</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="mobileCounselorTableBody">
+            <tr>
+              <td colspan="4" style="text-align: center; padding: 30px;">
+                <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p style="margin-top: 10px; color: var(--text-secondary);">Memuat data konselor...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      
-      <button class="mobile-btn mobile-btn-primary" style="width: 100%; margin-top: 20px;" onclick="addNewContact()">
-        <i class="fas fa-plus"></i>
-        <span>Tambah Kontak</span>
-      </button>
     </div>
   </main>
   
   <!-- Mobile Bottom Navigation -->
   <nav class="mobile-bottom-nav">
-    <button class="mobile-nav-item" onclick="navigateToPage('admin')">
+    <button class="mobile-nav-item active" onclick="loadMobileDashboard()">
       <i class="fas fa-home"></i>
       <span>Dashboard</span>
     </button>
@@ -1250,15 +1078,15 @@
       <i class="fas fa-user-graduate"></i>
       <span>Mahasiswa</span>
     </button>
-    <button class="mobile-nav-item active" onclick="navigateToPage('emergency_contacts')">
-      <i class="fas fa-phone-alt"></i>
-      <span>Darurat</span>
+    <button class="mobile-nav-item" onclick="toggleMobileSidebar()">
+      <i class="fas fa-bars"></i>
+      <span>Menu</span>
     </button>
   </nav>
 </div>
 
-<!-- DESKTOP EMERGENCY CONTACTS -->
-<div class="desktop-emergency">
+<!-- DESKTOP DASHBOARD -->
+<div class="desktop-dashboard">
   <!-- Desktop Sidebar -->
   <aside class="desktop-sidebar">
     <div class="desktop-sidebar-header">
@@ -1293,8 +1121,8 @@
     <!-- Top Bar -->
     <div class="desktop-top-bar">
       <div>
-        <h1><i class="fas fa-phone-alt me-3"></i> Manajemen Kontak Darurat</h1>
-        <p>Monitor dan kelana permintaan darurat dari mahasiswa</p>
+        <h1>Dashboard Admin</h1>
+        <p>Selamat datang, <span id="desktopAdminName" class="fw-bold">Administrator</span></p>
       </div>
       
       <div class="desktop-user-badge">
@@ -1308,60 +1136,70 @@
     
     <!-- Stats Cards -->
     <div class="desktop-stats-grid">
-      <div class="desktop-stat-card emergency">
-        <h2 id="desktopTotalEmergencies">0</h2>
-        <p>Total Log Darurat</p>
+      <div class="desktop-stat-card">
+        <div class="desktop-stat-icon blue">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <h2 id="desktopTotalCounselors">0</h2>
+        <p>Total Konselor</p>
+        <small><i class="fas fa-clock"></i> <span id="desktopPendingCounselors">0</span> menunggu approval</small>
       </div>
       
-      <div class="desktop-stat-card pending">
-        <h2 id="desktopPendingEmergencies">0</h2>
-        <p>Menunggu Penanganan</p>
+      <div class="desktop-stat-card">
+        <div class="desktop-stat-icon green">
+          <i class="fas fa-user-graduate"></i>
+        </div>
+        <h2 id="desktopTotalStudents">0</h2>
+        <p>Total Mahasiswa</p>
+        <small><i class="fas fa-chart-line"></i> <span id="desktopActiveStudents">0</span> aktif</small>
       </div>
       
-      <div class="desktop-stat-card handled">
-        <h2 id="desktopHandledEmergencies">0</h2>
-        <p>Telah Ditangani</p>
+      <div class="desktop-stat-card">
+        <div class="desktop-stat-icon light">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h2 id="desktopTotalSessions">0</h2>
+        <p>Sesi Konseling</p>
+        <small><i class="fas fa-calendar-day"></i> <span id="desktopTodaySessions">0</span> hari ini</small>
+      </div>
+      
+      <div class="desktop-stat-card">
+        <div class="desktop-stat-icon dark">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h2 id="desktopTotalAssessments">0</h2>
+        <p>Total Asesmen</p>
+        <small><i class="fas fa-check-circle"></i> <span id="desktopCompletedAssessments">0</span> selesai</small>
       </div>
     </div>
     
-    <!-- Content Row -->
+    <!-- Charts & Tables -->
     <div class="desktop-content-row">
       <div class="desktop-table-container">
         <h3 class="desktop-table-title">
-          <i class="fas fa-history"></i>
-          <span>Riwayat Log Darurat</span>
+          <i class="fas fa-user-clock"></i>
+          <span>Konselor Menunggu Approval</span>
         </h3>
-        
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <div class="btn-group" role="group">
-            <button type="button" class="btn btn-outline-primary active" onclick="filterLogs('all')">Semua</button>
-            <button type="button" class="btn btn-outline-warning" onclick="filterLogs('pending')">Pending</button>
-            <button type="button" class="btn btn-outline-success" onclick="filterLogs('handled')">Ditangani</button>
-          </div>
-          <button class="btn btn-primary" onclick="refreshLogs()">
-            <i class="fas fa-sync me-2"></i> Refresh
-          </button>
-        </div>
-        
         <div class="table-responsive">
           <table class="desktop-table">
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Mahasiswa</th>
-                <th>Kontak Darurat</th>
-                <th>Waktu</th>
+                <th>Nama</th>
+                <th>Email</th>
+                <th>Telepon</th>
+                <th>Spesialisasi</th>
                 <th>Status</th>
                 <th>Aksi</th>
               </tr>
             </thead>
-            <tbody id="desktopEmergencyTableBody">
+            <tbody id="desktopCounselorTableBody">
               <tr>
-                <td colspan="6" class="text-center py-5">
+                <td colspan="7" class="text-center py-5">
                   <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                   </div>
-                  <p class="mt-2">Memuat data darurat...</p>
+                  <p class="mt-2">Memuat data konselor...</p>
                 </td>
               </tr>
             </tbody>
@@ -1369,102 +1207,31 @@
         </div>
       </div>
       
-      <div class="desktop-contact-container">
+      <div class="desktop-chart-container">
         <h3 class="desktop-table-title">
-          <i class="fas fa-address-book"></i>
-          <span>Direktori Kontak</span>
+          <i class="fas fa-chart-pie"></i>
+          <span>Statistik Sistem</span>
         </h3>
-        
-        <div class="desktop-contact-list">
-          <div class="desktop-contact-item">
-            <div class="desktop-contact-details">
-              <h6>Hotline Nasional</h6>
-              <small>119 (24/7)</small>
-            </div>
-            <button class="desktop-call-btn" onclick="callEmergency('119')">
-              <i class="fas fa-phone"></i>
-            </button>
-          </div>
-          
-          <div class="desktop-contact-item">
-            <div class="desktop-contact-details">
-              <h6>Ambulans</h6>
-              <small>118</small>
-            </div>
-            <button class="desktop-call-btn" onclick="callEmergency('118')">
-              <i class="fas fa-phone"></i>
-            </button>
-          </div>
-          
-          <div class="desktop-contact-item">
-            <div class="desktop-contact-details">
-              <h6>Polisi</h6>
-              <small>110</small>
-            </div>
-            <button class="desktop-call-btn" onclick="callEmergency('110')">
-              <i class="fas fa-phone"></i>
-            </button>
-          </div>
-          
-          <div class="desktop-contact-item">
-            <div class="desktop-contact-details">
-              <h6>Mental Health Crisis</h6>
-              <small>021-500-454</small>
-            </div>
-            <button class="desktop-call-btn" onclick="callEmergency('021500454')">
-              <i class="fas fa-phone"></i>
-            </button>
-          </div>
+        <div class="text-center">
+          <canvas id="desktopStatsChart" height="250"></canvas>
         </div>
-        
-        <button class="btn btn-outline-primary w-100 mt-4" onclick="addNewContact()">
-          <i class="fas fa-plus me-2"></i> Tambah Kontak Baru
-        </button>
-        
-        <!-- Quick Actions -->
-        <div class="mt-4 pt-4 border-top">
-          <h5 class="mb-3"><i class="fas fa-bolt me-2"></i> Aksi Cepat</h5>
-          <div class="d-grid gap-2">
-            <button class="btn btn-danger" onclick="viewAllPending()">
-              <i class="fas fa-exclamation-triangle me-2"></i>
-              Lihat Semua Pending
-            </button>
-            
-            <button class="btn btn-outline-info" onclick="sendBroadcastAlert()">
-              <i class="fas fa-bullhorn me-2"></i>
-              Kirim Alert Broadcast
-            </button>
-            
-            <button class="btn btn-outline-secondary" onclick="exportEmergencyLogs()">
-              <i class="fas fa-download me-2"></i>
-              Export Logs
-            </button>
+        <div class="row mt-4">
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
+              <h4 class="fw-bold mb-0" id="desktopChartCounselors">0</h4>
+              <small>Konselor</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
+              <h4 class="fw-bold mb-0" id="desktopChartStudents">0</h4>
+              <small>Mahasiswa</small>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </main>
-</div>
-
-<!-- Emergency Detail Modal -->
-<div class="modal fade" id="emergencyDetailModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i> Detail Log Darurat</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body" id="emergencyDetailBody">
-        <p>Memuat detail...</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-        <button type="button" class="btn btn-success" onclick="markAsHandled()">
-          <i class="fas fa-check me-2"></i> Tandai Ditangani
-        </button>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Loading Modal -->
@@ -1485,10 +1252,10 @@
 // Global variables
 let baseUrl = '';
 let currentSession = null;
-let allEmergencyLogs = [];
-let currentEmergencyLog = null;
+let mobileChart = null;
+let desktopChart = null;
 
-// Logo loading with CORS fix
+// Logo loading with CORS fix (same as login_mobile.html)
 function loadLogos() {
   const logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
   
@@ -1554,7 +1321,7 @@ function tryProxyImage(container, url, size) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Emergency Contacts initializing...');
+  console.log('Dashboard Admin initializing...');
   
   // Force mobile view if needed
   forceMobileViewIfNeeded();
@@ -1571,8 +1338,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Load session and user info
       loadUserInfo();
       
-      // Load emergency data
-      loadEmergencyData();
+      // Load dashboard data
+      loadDashboard();
       
       // Setup menu
       setupMenu();
@@ -1584,7 +1351,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .getWebAppUrl();
 });
 
-// Force mobile view if needed
+// Force mobile view if needed (same as login_mobile.html)
 function forceMobileViewIfNeeded() {
   const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
   const screenWidth = window.innerWidth;
@@ -1610,12 +1377,12 @@ function toggleMobileSidebar() {
 // Setup menu items
 function setupMenu() {
   const menuItems = [
-    { id: 'admin', title: 'Dashboard', icon: 'fas fa-home' },
+    { id: 'dashboard', title: 'Dashboard', icon: 'fas fa-home', active: true },
     { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md' },
     { id: 'student_management', title: 'Manajemen Mahasiswa', icon: 'fas fa-user-graduate' },
     { id: 'appointment_schedule', title: 'Jadwal & Laporan', icon: 'fas fa-calendar-alt' },
     { id: 'system_settings', title: 'Pengaturan Sistem', icon: 'fas fa-cogs' },
-    { id: 'emergency_contacts', title: 'Kontak Darurat', icon: 'fas fa-phone-alt', active: true }
+    { id: 'emergency_contacts', title: 'Kontak Darurat', icon: 'fas fa-phone-alt' }
   ];
   
   // Mobile menu
@@ -1678,6 +1445,7 @@ function updateUserInfo(session) {
   // Desktop
   document.getElementById('desktopUserName').textContent = name;
   document.getElementById('desktopUserRole').textContent = role;
+  document.getElementById('desktopAdminName').textContent = name;
   document.getElementById('desktopUsernameDisplay').textContent = session.username || name;
   document.getElementById('desktopUserRoleBadge').textContent = role;
   document.getElementById('desktopUserAvatar').textContent = initials;
@@ -1711,179 +1479,197 @@ function navigateToPage(pageName) {
   }
 }
 
-// Load emergency data
-function loadEmergencyData() {
-  loadEmergencyStatistics();
-  loadEmergencyLogs();
+// Load dashboard data
+function loadDashboard() {
+  loadStatistics();
+  loadCounselorsTable();
 }
 
-function loadEmergencyStatistics() {
-  // Simulate loading statistics
-  // In real implementation, this would call a server function
-  setTimeout(() => {
-    const stats = {
-      totalEmergencies: 12,
-      pendingEmergencies: 3,
-      handledEmergencies: 9
-    };
-    
-    updateEmergencyStatistics(stats);
-  }, 1000);
+function loadMobileDashboard() {
+  // Just reload the current dashboard view
+  loadStatistics();
+  loadCounselorsTable();
 }
 
-function updateEmergencyStatistics(stats) {
+// Load statistics
+function loadStatistics() {
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      updateStatistics(stats);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading statistics:', error);
+      showNotification('Gagal memuat statistik', 'error');
+    })
+    .getDashboardStats('admin');
+}
+
+function updateStatistics(stats) {
+  const statValues = {
+    totalCounselors: stats.totalCounselors || 0,
+    pendingCounselors: stats.pendingCounselors || 0,
+    totalStudents: stats.totalStudents || 0,
+    activeStudents: stats.activeStudents || 0,
+    totalSessions: stats.totalSessions || 0,
+    todaySessions: stats.todaySessions || 0,
+    totalAssessments: stats.totalAssessments || 0,
+    completedAssessments: stats.completedAssessments || 0
+  };
+  
   // Mobile
-  document.getElementById('mobileTotalEmergencies').textContent = stats.totalEmergencies;
-  document.getElementById('mobilePendingEmergencies').textContent = stats.pendingEmergencies;
-  document.getElementById('mobileHandledEmergencies').textContent = stats.handledEmergencies;
+  document.getElementById('mobileTotalCounselors').textContent = statValues.totalCounselors;
+  document.getElementById('mobilePendingCounselors').textContent = statValues.pendingCounselors;
+  document.getElementById('mobileTotalStudents').textContent = statValues.totalStudents;
+  document.getElementById('mobileActiveStudents').textContent = statValues.activeStudents;
+  document.getElementById('mobileTotalSessions').textContent = statValues.totalSessions;
+  document.getElementById('mobileTodaySessions').textContent = statValues.todaySessions;
+  document.getElementById('mobileTotalAssessments').textContent = statValues.totalAssessments;
+  document.getElementById('mobileCompletedAssessments').textContent = statValues.completedAssessments;
+  document.getElementById('mobileChartCounselors').textContent = statValues.totalCounselors;
+  document.getElementById('mobileChartStudents').textContent = statValues.totalStudents;
   
   // Desktop
-  document.getElementById('desktopTotalEmergencies').textContent = stats.totalEmergencies;
-  document.getElementById('desktopPendingEmergencies').textContent = stats.pendingEmergencies;
-  document.getElementById('desktopHandledEmergencies').textContent = stats.handledEmergencies;
+  document.getElementById('desktopTotalCounselors').textContent = statValues.totalCounselors;
+  document.getElementById('desktopPendingCounselors').textContent = statValues.pendingCounselors;
+  document.getElementById('desktopTotalStudents').textContent = statValues.totalStudents;
+  document.getElementById('desktopActiveStudents').textContent = statValues.activeStudents;
+  document.getElementById('desktopTotalSessions').textContent = statValues.totalSessions;
+  document.getElementById('desktopTodaySessions').textContent = statValues.todaySessions;
+  document.getElementById('desktopTotalAssessments').textContent = statValues.totalAssessments;
+  document.getElementById('desktopCompletedAssessments').textContent = statValues.completedAssessments;
+  document.getElementById('desktopChartCounselors').textContent = statValues.totalCounselors;
+  document.getElementById('desktopChartStudents').textContent = statValues.totalStudents;
+  
+  // Update charts
+  updateMobileChart(statValues.totalCounselors, statValues.totalStudents, statValues.totalSessions);
+  updateDesktopChart(statValues.totalCounselors, statValues.totalStudents, statValues.totalSessions);
 }
 
-function loadEmergencyLogs() {
-  // Simulate loading emergency logs
-  setTimeout(() => {
-    const logs = [
-      {
-        log_id: 1,
-        user_id: 101,
-        username: 'student001',
-        fullname: 'Ahmad Rifai',
-        emergency_contact: '081234567890',
-        timestamp: new Date(),
-        status: 'pending',
-        handled_by: null,
-        notes: ''
-      },
-      {
-        log_id: 2,
-        user_id: 102,
-        username: 'student002',
-        fullname: 'Siti Nurhaliza',
-        emergency_contact: '081298765432',
-        timestamp: new Date(Date.now() - 3600000),
-        status: 'handled',
-        handled_by: 'Konselor Budi',
-        notes: 'Sudah dihubungi dan dalam kondisi baik'
-      },
-      {
-        log_id: 3,
-        user_id: 103,
-        username: 'student003',
-        fullname: 'Budi Santoso',
-        emergency_contact: '081277788899',
-        timestamp: new Date(Date.now() - 7200000),
-        status: 'handled',
-        handled_by: 'Konselor Sari',
-        notes: 'Ditemani konselor dan sudah tenang'
-      },
-      {
-        log_id: 4,
-        user_id: 104,
-        username: 'student004',
-        fullname: 'Dewi Lestari',
-        emergency_contact: '081266677788',
-        timestamp: new Date(Date.now() - 1800000),
-        status: 'pending',
-        handled_by: null,
-        notes: ''
+// Update mobile chart
+function updateMobileChart(counselors, students, sessions) {
+  const ctx = document.getElementById('mobileStatsChart');
+  if (!ctx) return;
+  
+  if (mobileChart) {
+    mobileChart.destroy();
+  }
+  
+  mobileChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Konselor', 'Mahasiswa', 'Sesi'],
+      datasets: [{
+        data: [counselors, students, sessions],
+        backgroundColor: [
+          'rgba(13, 59, 102, 0.8)',
+          'rgba(42, 157, 143, 0.8)',
+          'rgba(142, 202, 230, 0.8)'
+        ],
+        borderColor: [
+          'rgb(13, 59, 102)',
+          'rgb(42, 157, 143)',
+          'rgb(142, 202, 230)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
       }
-    ];
-    
-    allEmergencyLogs = logs;
-    updateEmergencyLogs(logs);
-  }, 1500);
-}
-
-function updateEmergencyLogs(logs) {
-  updateMobileEmergencyLogs(logs);
-  updateDesktopEmergencyLogs(logs);
-}
-
-function updateMobileEmergencyLogs(logs) {
-  const container = document.getElementById('mobileEmergencyLogs');
-  if (!container) return;
-  
-  if (!logs || logs.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-5">
-        <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-        <p>Tidak ada log darurat</p>
-      </div>
-    `;
-    return;
-  }
-  
-  // Show only pending logs on mobile for quick action
-  const pendingLogs = logs.filter(l => l.status === 'pending');
-  
-  if (pendingLogs.length === 0) {
-    container.innerHTML = `
-      <div class="text-center py-5">
-        <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-        <p>Tidak ada darurat yang menunggu</p>
-      </div>
-    `;
-    return;
-  }
-  
-  let logsHTML = '';
-  
-  pendingLogs.slice(0, 3).forEach(log => {
-    const timeAgo = getTimeAgo(new Date(log.timestamp));
-    
-    logsHTML += `
-      <div class="mobile-emergency-card ${log.status === 'handled' ? 'handled' : ''}" onclick='viewEmergencyDetail(${JSON.stringify(log)})' style="cursor: pointer;">
-        <div class="mobile-emergency-header">
-          <div class="mobile-emergency-title">
-            <i class="fas fa-exclamation-triangle ${log.status === 'pending' ? 'text-danger' : 'text-success'}"></i>
-            <span>${log.fullname || log.username}</span>
-          </div>
-          <span class="mobile-emergency-badge ${log.status === 'pending' ? 'badge-pending' : 'badge-handled'}">
-            ${log.status === 'pending' ? 'Pending' : 'Ditangani'}
-          </span>
-        </div>
-        
-        <div class="mobile-emergency-info">
-          <div><i class="fas fa-clock me-1"></i> ${timeAgo}</div>
-          <div><i class="fas fa-user me-1"></i> ${log.username}</div>
-        </div>
-        
-        <div class="mobile-emergency-contact">
-          <i class="fas fa-phone text-primary"></i>
-          <span>${log.emergency_contact}</span>
-        </div>
-        
-        <div class="mobile-emergency-actions">
-          <button class="mobile-btn mobile-btn-danger" onclick="callEmergency('${log.emergency_contact}'); event.stopPropagation();">
-            <i class="fas fa-phone"></i>
-            <span>Hubungi</span>
-          </button>
-          <button class="mobile-btn mobile-btn-primary" onclick='viewEmergencyDetail(${JSON.stringify(log)}); event.stopPropagation();'>
-            <i class="fas fa-eye"></i>
-            <span>Detail</span>
-          </button>
-        </div>
-      </div>
-    `;
+    }
   });
-  
-  container.innerHTML = logsHTML;
 }
 
-function updateDesktopEmergencyLogs(logs) {
-  const tbody = document.getElementById('desktopEmergencyTableBody');
+// Update desktop chart
+function updateDesktopChart(counselors, students, sessions) {
+  const ctx = document.getElementById('desktopStatsChart');
+  if (!ctx) return;
+  
+  if (desktopChart) {
+    desktopChart.destroy();
+  }
+  
+  desktopChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Konselor', 'Mahasiswa', 'Sesi'],
+      datasets: [{
+        data: [counselors, students, sessions],
+        backgroundColor: [
+          'rgba(13, 59, 102, 0.8)',
+          'rgba(42, 157, 143, 0.8)',
+          'rgba(142, 202, 230, 0.8)'
+        ],
+        borderColor: [
+          'rgb(13, 59, 102)',
+          'rgb(42, 157, 143)',
+          'rgb(142, 202, 230)'
+        ],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom'
+        }
+      }
+    }
+  });
+}
+
+// Load counselors table
+function loadCounselorsTable() {
+  google.script.run
+    .withSuccessHandler(function(data) {
+      updateCounselorsTable(data);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading counselors:', error);
+      showNotification('Gagal memuat data konselor', 'error');
+    })
+    .getAllCounselors();
+}
+
+function updateCounselorsTable(data) {
+  // Mobile table
+  const mobileTbody = document.getElementById('mobileCounselorTableBody');
+  updateTableBody(mobileTbody, data, true);
+  
+  // Desktop table
+  const desktopTbody = document.getElementById('desktopCounselorTableBody');
+  updateTableBody(desktopTbody, data, false);
+}
+
+function updateTableBody(tbody, data, isMobile) {
   if (!tbody) return;
   
-  if (!logs || logs.length === 0) {
+  if (!data || data.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="6" class="text-center py-5">
+        <td colspan="${isMobile ? '4' : '7'}" class="text-center py-5">
+          <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
+          <p>Tidak ada data konselor</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  const pendingCounselors = data.filter(item => item.status === 'pending');
+  
+  if (pendingCounselors.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="${isMobile ? '4' : '7'}" class="text-center py-5">
           <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
-          <p>Tidak ada log darurat</p>
+          <p>Tidak ada konselor yang menunggu persetujuan</p>
         </td>
       </tr>
     `;
@@ -1892,187 +1678,86 @@ function updateDesktopEmergencyLogs(logs) {
   
   let rowsHTML = '';
   
-  logs.forEach(log => {
-    const timeAgo = getTimeAgo(new Date(log.timestamp));
-    const formattedDate = new Date(log.timestamp).toLocaleDateString('id-ID', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+  pendingCounselors.forEach(function(item) {
+    const badgeClass = 'badge-pending';
+    const badgeText = 'Pending';
     
-    rowsHTML += `
-      <tr>
-        <td class="fw-bold">${log.log_id}</td>
-        <td>
-          <div>
-            <strong>${log.fullname || log.username}</strong><br>
-            <small class="text-muted">${log.username}</small>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex align-items-center gap-2">
-            <i class="fas fa-phone text-primary"></i>
-            <span>${log.emergency_contact}</span>
-          </div>
-        </td>
-        <td>
-          <div>
-            <div>${formattedDate}</div>
-            <small class="text-muted">${timeAgo}</small>
-          </div>
-        </td>
-        <td>
-          <span class="mobile-emergency-badge ${log.status === 'pending' ? 'badge-pending' : 'badge-handled'}">
-            ${log.status === 'pending' ? 'Pending' : 'Ditangani'}
-          </span>
-        </td>
-        <td>
-          <div class="action-buttons">
-            <button class="btn-action btn-detail" onclick='viewEmergencyDetail(${JSON.stringify(log)})' title="Detail">
-              <i class="fas fa-eye"></i>
-            </button>
-            <button class="btn-action btn-handle" onclick="markAsHandledPrompt('${log.log_id}')" title="Tandai Ditangani">
-              <i class="fas fa-check"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
-    `;
+    if (isMobile) {
+      rowsHTML += `
+        <tr>
+          <td>${item.name || '-'}</td>
+          <td>${item.specialization || 'Umum'}</td>
+          <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    } else {
+      rowsHTML += `
+        <tr>
+          <td class="fw-bold">${item.user_id}</td>
+          <td>${item.name}</td>
+          <td>${item.email || '-'}</td>
+          <td>${item.phone || '-'}</td>
+          <td>${item.specialization || 'Umum'}</td>
+          <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
+          <td>
+            <div class="action-buttons">
+              <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
   });
   
   tbody.innerHTML = rowsHTML;
 }
 
-function getTimeAgo(date) {
-  const seconds = Math.floor((new Date() - date) / 1000);
-  
-  if (seconds < 60) return 'Baru saja';
-  if (seconds < 3600) return Math.floor(seconds / 60) + ' menit yang lalu';
-  if (seconds < 86400) return Math.floor(seconds / 3600) + ' jam yang lalu';
-  return Math.floor(seconds / 86400) + ' hari yang lalu';
-}
-
-function filterLogs(status) {
-  const filtered = status === 'all' ? allEmergencyLogs : allEmergencyLogs.filter(l => l.status === status);
-  updateDesktopEmergencyLogs(filtered);
-}
-
-function refreshLogs() {
-  showNotification('Memuat ulang data...', 'info');
-  loadEmergencyData();
-}
-
-function callEmergency(number) {
-  window.open(`tel:${number}`, '_blank');
-}
-
-function viewAllPending() {
-  filterLogs('pending');
-}
-
-function sendBroadcastAlert() {
-  if (confirm('Kirim alert broadcast ke semua konselor?')) {
-    showNotification('Broadcast alert terkirim', 'success');
+// Approve counselor
+function approveCounselor(userId) {
+  if (confirm(`Setujui konselor ID ${userId}?`)) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (res.success) {
+          showNotification('Konselor berhasil disetujui', 'success');
+          loadStatistics();
+          loadCounselorsTable();
+        } else {
+          showNotification(res.message || 'Gagal approve konselor', 'error');
+        }
+      })
+      .updateCounselorStatus(userId, 'approved');
   }
 }
 
-function exportEmergencyLogs() {
-  showNotification('Export emergency logs - Fitur akan segera tersedia', 'info');
-}
-
-function addNewContact() {
-  showNotification('Tambah kontak baru - Fitur akan segera tersedia', 'info');
-}
-
-function viewEmergencyDetail(log) {
-  currentEmergencyLog = log;
-  
-  const detailBody = document.getElementById('emergencyDetailBody');
-  const formattedDate = new Date(log.timestamp).toLocaleDateString('id-ID', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-  
-  detailBody.innerHTML = `
-    <div class="alert ${log.status === 'pending' ? 'alert-danger' : 'alert-success'}">
-      <h5><i class="fas fa-exclamation-circle me-2"></i> ${log.status === 'pending' ? 'DARURAT - MENUNGGU' : 'DARURAT - DITANGANI'}</h5>
-      <p class="mb-0">Log darurat dari mahasiswa ${log.status === 'pending' ? 'yang membutuhkan bantuan segera' : 'yang telah ditangani'}</p>
-    </div>
-    
-    <h5>Informasi Mahasiswa</h5>
-    <div class="row mb-3">
-      <div class="col-md-6">
-        <p><strong>ID:</strong> ${log.user_id}</p>
-        <p><strong>Username:</strong> ${log.username}</p>
-        <p><strong>Nama Lengkap:</strong> ${log.fullname || '-'}</p>
-      </div>
-      <div class="col-md-6">
-        <p><strong>Waktu:</strong> ${formattedDate}</p>
-        <p><strong>Status:</strong> <span class="mobile-emergency-badge ${log.status === 'pending' ? 'badge-pending' : 'badge-handled'}">${log.status === 'pending' ? 'Pending' : 'Ditangani'}</span></p>
-      </div>
-    </div>
-    
-    <h5>Kontak Darurat</h5>
-    <div class="alert alert-info">
-      <h4 class="mb-0">
-        <i class="fas fa-phone me-2"></i>
-        <a href="tel:${log.emergency_contact}" class="text-decoration-none">${log.emergency_contact}</a>
-      </h4>
-    </div>
-    
-    ${log.handled_by ? `
-      <h5>Penanganan</h5>
-      <p><strong>Ditangani oleh:</strong> ${log.handled_by}</p>
-      <p><strong>Catatan:</strong> ${log.notes || 'Tidak ada catatan'}</p>
-    ` : ''}
-    
-    <div class="alert alert-warning">
-      <strong>Prosedur:</strong>
-      <ol class="mb-0">
-        <li>Hubungi nomor darurat di atas</li>
-        <li>Verifikasi kondisi mahasiswa</li>
-        <li>Notifikasi konselor yang bertugas</li>
-        <li>Dokumentasikan tindakan yang diambil</li>
-      </ol>
-    </div>
-  `;
-  
-  const modal = new bootstrap.Modal(document.getElementById('emergencyDetailModal'));
-  modal.show();
-}
-
-function markAsHandled() {
-  if (!currentEmergencyLog) return;
-  
-  const notes = prompt('Masukkan catatan penanganan:');
-  if (notes === null) return;
-  
-  // Update status
-  // In real implementation, this would call server function
-  showNotification('Log darurat berhasil ditandai sebagai ditangani', 'success');
-  bootstrap.Modal.getInstance(document.getElementById('emergencyDetailModal')).hide();
-  
-  setTimeout(() => {
-    refreshLogs();
-  }, 1000);
-}
-
-function markAsHandledPrompt(logId) {
-  if (confirm(`Tandai log darurat ID ${logId} sebagai ditangani?`)) {
-    const notes = prompt('Masukkan catatan penanganan:');
-    if (notes === null) return;
-    
-    // Update status
-    showNotification('Log darurat berhasil ditandai sebagai ditangani', 'success');
-    setTimeout(() => {
-      refreshLogs();
-    }, 1000);
+// Reject counselor
+function rejectCounselor(userId) {
+  if (confirm(`Tolak konselor ID ${userId}?`)) {
+    google.script.run
+      .withSuccessHandler(function(res) {
+        if (res.success) {
+          showNotification('Konselor berhasil ditolak', 'success');
+          loadStatistics();
+          loadCounselorsTable();
+        } else {
+          showNotification(res.message || 'Gagal reject konselor', 'error');
+        }
+      })
+      .updateCounselorStatus(userId, 'rejected');
   }
 }
 

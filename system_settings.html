@@ -3,10 +3,12 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pengaturan Sistem - ASAKUR</title>
   
+  <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -14,396 +16,1360 @@
       --primary-blue: #0d3b66;
       --secondary-blue: #1a5f7a;
       --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
       --dark-blue: #023047;
-      --sidebar-width: 280px;
+      --surface-color: #ffffff;
+      --background-color: #f5f7fa;
+      --text-primary: #1a1a1a;
+      --text-secondary: #666666;
+      --border-color: #e0e0e0;
+      --success-color: #34c759;
+      --warning-color: #ff9500;
+      --error-color: #ff3b30;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
     }
     
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif;
+    }
+    
+    html {
+      font-size: 16px;
+      height: 100%;
     }
     
     body {
-      background-color: #f5f7fb;
-      color: #333;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: var(--sidebar-width);
-      height: 100vh;
-      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+    /* MOBILE VERSION */
+    .mobile-container {
+      display: block;
+      min-height: 100vh;
+      background-color: var(--surface-color);
+      position: relative;
+    }
+    
+    /* DESKTOP VERSION */
+    .desktop-container {
+      display: none;
+      min-height: 100vh;
+    }
+    
+    /* MOBILE HEADER */
+    .mobile-header {
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      padding: 20px;
       color: white;
-      padding: 25px 0;
+      position: sticky;
+      top: 0;
       z-index: 1000;
-      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--shadow-md);
     }
     
-    .sidebar-brand {
-      padding: 0 25px 30px;
-      text-align: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      margin-bottom: 25px;
+    .mobile-header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     
-    .sidebar-brand h3 {
-      font-weight: 700;
-      font-size: 1.6rem;
+    .mobile-header-left {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .mobile-logo-container {
+      width: 50px;
+      height: 50px;
+      background: white;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
     
-    .sidebar-menu {
+    .mobile-logo-container img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .mobile-logo-container i {
+      font-size: 28px;
+      color: var(--primary-blue);
+    }
+    
+    .mobile-header-info h1 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+    }
+    
+    .mobile-header-info p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+      margin: 2px 0 0 0;
+    }
+    
+    .mobile-menu-toggle {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 10px;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+    }
+    
+    /* MOBILE SIDEBAR */
+    .mobile-sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 280px;
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      z-index: 2000;
+      transition: left 0.3s ease;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.25);
+    }
+    
+    .mobile-sidebar.active {
+      left: 0;
+    }
+    
+    .mobile-sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1999;
+      display: none;
+    }
+    
+    .mobile-sidebar-overlay.active {
+      display: block;
+    }
+    
+    .mobile-sidebar-header {
+      padding: 25px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .mobile-sidebar-logo {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .mobile-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .mobile-sidebar-logo i {
+      font-size: 32px;
+      color: var(--primary-blue);
+    }
+    
+    .mobile-sidebar-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    
+    .mobile-sidebar-menu {
+      padding: 20px 0;
       list-style: none;
-      padding: 0 15px;
     }
     
-    .sidebar-menu a {
+    .mobile-sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .mobile-sidebar-menu a {
       display: flex;
       align-items: center;
       padding: 16px 20px;
       color: rgba(255, 255, 255, 0.85);
       text-decoration: none;
-      border-radius: 12px;
-      margin: 5px;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 0 12px 12px 0;
+      margin: 0 5px;
       cursor: pointer;
     }
     
-    .sidebar-menu a:hover, .sidebar-menu a.active {
+    .mobile-sidebar-menu a:hover,
+    .mobile-sidebar-menu a.active {
       background-color: rgba(255, 255, 255, 0.15);
+      color: white;
       transform: translateX(5px);
     }
     
-    .sidebar-menu i {
+    .mobile-sidebar-menu i {
       width: 25px;
+      font-size: 1.2rem;
       margin-right: 15px;
+      text-align: center;
     }
     
-    .main-content {
-      margin-left: var(--sidebar-width);
-      padding: 30px;
-      min-height: 100vh;
+    .mobile-sidebar-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .page-header {
-      background: white;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      margin-bottom: 30px;
-    }
-    
-    .content-card {
-      background: white;
-      border-radius: 18px;
-      padding: 35px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-      margin-bottom: 30px;
-    }
-    
-    .settings-section {
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 30px;
-      margin-bottom: 30px;
-    }
-    
-    .settings-section:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-    .settings-section h4 {
-      color: var(--dark-blue);
+    .mobile-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
       margin-bottom: 20px;
+    }
+    
+    .mobile-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .mobile-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
+    .mobile-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    
+    /* MOBILE MAIN CONTENT */
+    .mobile-main {
+      padding: 20px;
+      padding-bottom: 80px;
+    }
+    
+    .mobile-section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 10px;
     }
     
-    .color-preview {
-      width: 50px;
-      height: 50px;
-      border-radius: 8px;
-      border: 2px solid #dee2e6;
+    .mobile-section-title i {
+      color: var(--accent-blue);
     }
     
-    .form-label {
+    /* MOBILE SETTINGS CARDS */
+    .mobile-settings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    
+    .mobile-settings-card {
+      background: var(--surface-color);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+    
+    .mobile-settings-section {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .mobile-settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .mobile-settings-section h4 {
+      font-size: 1.1rem;
+      color: var(--dark-blue);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .mobile-settings-section h4 i {
+      color: var(--accent-blue);
+    }
+    
+    /* MOBILE FORM ELEMENTS */
+    .mobile-form-group {
+      margin-bottom: 15px;
+    }
+    
+    .mobile-form-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: block;
+      font-weight: 500;
+    }
+    
+    .mobile-form-control {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: var(--surface-color);
+      color: var(--text-primary);
+    }
+    
+    .mobile-form-control:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+    }
+    
+    .mobile-color-preview {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      margin-left: 10px;
+    }
+    
+    .mobile-form-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    
+    .mobile-form-check-input {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--border-color);
+    }
+    
+    .mobile-form-check-label {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+    }
+    
+    .mobile-alert {
+      padding: 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+    }
+    
+    .mobile-alert-warning {
+      background-color: rgba(255, 149, 0, 0.1);
+      border: 1px solid rgba(255, 149, 0, 0.3);
+      color: var(--warning-color);
+    }
+    
+    .mobile-alert-danger {
+      background-color: rgba(255, 59, 48, 0.1);
+      border: 1px solid rgba(255, 59, 48, 0.3);
+      color: var(--error-color);
+    }
+    
+    /* MOBILE BOTTOM NAV */
+    .mobile-bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      background: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 10px;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      min-width: 60px;
+    }
+    
+    .mobile-nav-item i {
+      font-size: 1.3rem;
+    }
+    
+    .mobile-nav-item.active {
+      color: var(--accent-blue);
+      background: rgba(42, 157, 143, 0.1);
+    }
+    
+    /* DESKTOP VERSION */
+    .desktop-container {
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* DESKTOP SIDEBAR */
+    .desktop-sidebar {
+      width: 280px;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      z-index: 100;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .desktop-sidebar-header {
+      padding: 30px 25px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+    
+    .desktop-sidebar-logo {
+      width: 80px;
+      height: 80px;
+      background: white;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+    
+    .desktop-sidebar-logo img {
+      width: 85%;
+      height: 85%;
+      object-fit: contain;
+    }
+    
+    .desktop-sidebar-logo i {
+      font-size: 40px;
+      color: var(--primary-blue);
+    }
+    
+    .desktop-sidebar-header h3 {
+      font-weight: 700;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .desktop-sidebar-header p {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .desktop-sidebar-menu {
+      flex: 1;
+      padding: 25px 0;
+      list-style: none;
+      overflow-y: auto;
+    }
+    
+    .desktop-sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .desktop-sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 25px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 0 12px 12px 0;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .desktop-sidebar-menu a:hover,
+    .desktop-sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .desktop-sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .desktop-sidebar-footer {
+      padding: 20px 25px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .desktop-user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .desktop-user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    .desktop-user-details h5 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    
+    .desktop-user-details small {
+      opacity: 0.8;
+      font-size: 0.85rem;
+    }
+    
+    /* DESKTOP MAIN CONTENT */
+    .desktop-main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 30px;
+      min-height: 100vh;
+      background-color: var(--background-color);
+    }
+    
+    .desktop-header {
+      background: var(--surface-color);
+      padding: 25px 30px;
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 30px;
+    }
+    
+    .desktop-header h1 {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .desktop-header p {
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+    
+    /* DESKTOP CONTENT CARDS */
+    .desktop-content-card {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      margin-bottom: 30px;
+    }
+    
+    .desktop-settings-section {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 25px;
+      margin-bottom: 25px;
+    }
+    
+    .desktop-settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .desktop-settings-section h4 {
+      color: var(--dark-blue);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .desktop-settings-section h4 i {
+      color: var(--accent-blue);
+    }
+    
+    /* DESKTOP FORM ELEMENTS */
+    .desktop-form-label {
       font-weight: 600;
       color: var(--dark-blue);
       margin-bottom: 8px;
     }
     
-    .btn-primary {
-      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
-      border: none;
-      padding: 12px 30px;
-      font-weight: 600;
+    .desktop-color-preview {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 2px solid var(--border-color);
+      margin-left: 15px;
     }
     
-    .btn-primary:hover {
+    .desktop-alert {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      border-left: 4px solid;
+    }
+    
+    .desktop-alert-warning {
+      background-color: rgba(255, 149, 0, 0.1);
+      border-color: var(--warning-color);
+      color: var(--warning-color);
+    }
+    
+    .desktop-alert-danger {
+      background-color: rgba(255, 59, 48, 0.1);
+      border-color: var(--error-color);
+      color: var(--error-color);
+    }
+    
+    /* COMMON STYLES */
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
       background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
       transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
     }
     
-    .btn-danger {
-      background: linear-gradient(135deg, #dc3545, #c82333);
-      border: none;
-      padding: 12px 30px;
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--secondary-blue);
+      border: 2px solid var(--secondary-blue);
+      padding: 10px 20px;
+      border-radius: 10px;
       font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
     
-    .alert-warning {
-      border-left: 4px solid #ffc107;
+    .btn-outline-custom:hover {
+      background: var(--secondary-blue);
+      color: white;
+    }
+    
+    .btn-danger-custom {
+      background: linear-gradient(135deg, var(--error-color), #c82333);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-danger-custom:hover {
+      background: linear-gradient(135deg, #c82333, #b21f2d);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    /* Loading animation untuk logo */
+    .logo-loading {
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+    
+    /* Responsive Design */
+    /* Mobile only */
+    .mobile-container {
+      display: block !important;
+    }
+    
+    .desktop-container {
+      display: none !important;
+    }
+    
+    /* Desktop only */
+    @media (min-width: 993px) {
+      .mobile-container {
+        display: none !important;
+      }
+      
+      .desktop-container {
+        display: flex !important;
+      }
+    }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .mobile-main {
+        padding: 16px;
+        padding-bottom: 80px;
+      }
+      
+      .mobile-settings-grid {
+        gap: 12px;
+      }
+      
+      .mobile-settings-card {
+        padding: 16px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .mobile-header {
+        padding: 16px;
+      }
+      
+      .mobile-logo-container {
+        width: 45px;
+        height: 45px;
+      }
+      
+      .mobile-header-info h1 {
+        font-size: 1.2rem;
+      }
+      
+      .mobile-nav-item {
+        min-width: 55px;
+        padding: 8px;
+        font-size: 0.75rem;
+      }
+      
+      .mobile-nav-item i {
+        font-size: 1.2rem;
+      }
     }
   </style>
 </head>
 <body>
 
-<nav class="sidebar">
-  <div class="sidebar-brand">
-    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+<!-- MOBILE VERSION -->
+<div class="mobile-container">
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-header-content">
+      <div class="mobile-header-left">
+        <button class="mobile-menu-toggle" onclick="toggleMobileSidebar()">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="mobile-logo-container" id="mobileLogoContainer">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <div class="mobile-header-info">
+          <h1>ASAKUR</h1>
+          <p>Pengaturan Sistem</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Mobile Sidebar -->
+  <div class="mobile-sidebar" id="mobileSidebar">
+    <div class="mobile-sidebar-header">
+      <div class="mobile-sidebar-logo" id="mobileSidebarLogo">
+        <i class="fas fa-hands-helping"></i>
+      </div>
+      <button class="mobile-sidebar-close" onclick="toggleMobileSidebar()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="mobile-user-info">
+      <div class="mobile-user-avatar" id="mobileUserAvatar">A</div>
+      <div class="mobile-user-details">
+        <h5 id="mobileUserName">Administrator</h5>
+        <small id="mobileUserRole">Super Admin</small>
+      </div>
+    </div>
+    
+    <ul class="mobile-sidebar-menu" id="mobileSidebarMenu">
+      <!-- Menu items will be loaded by JavaScript -->
+    </ul>
+    
+    <div class="mobile-sidebar-footer">
+      <button class="btn btn-logout" onclick="logout()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
   </div>
   
-  <ul class="sidebar-menu">
-    <li><a href="#" onclick="navigateToPage('admin'); return false;">
-      <i class="fas fa-home"></i> Dashboard
-    </a></li>
-    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
-      <i class="fas fa-user-md"></i> Manajemen Konselor
-    </a></li>
-    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
-      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
-    </a></li>
-    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
-      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
-    </a></li>
-    <li><a href="#" class="active" onclick="navigateToPage('system_settings'); return false;">
-      <i class="fas fa-cogs"></i> Pengaturan Sistem
-    </a></li>
-    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
-      <i class="fas fa-phone-alt"></i> Kontak Darurat
-    </a></li>
-  </ul>
+  <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="toggleMobileSidebar()"></div>
   
-  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
-    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
-      <i class="fas fa-sign-out-alt"></i> Logout
-    </a>
-  </div>
-</nav>
-
-<div class="main-content">
-  <div class="page-header">
-    <h1><i class="fas fa-cogs me-3"></i> Pengaturan Sistem</h1>
-    <p class="text-muted mb-0">Konfigurasi aplikasi ASAKUR</p>
-  </div>
-  
-  <div class="row">
-    <div class="col-lg-8">
-      <div class="content-card">
-        <form id="settingsForm">
+  <!-- Mobile Main Content -->
+  <main class="mobile-main">
+    <!-- Page Title -->
+    <h2 class="mobile-section-title">
+      <i class="fas fa-cogs"></i>
+      <span>Pengaturan Sistem</span>
+    </h2>
+    
+    <!-- Settings Form -->
+    <div class="mobile-settings-grid">
+      <div class="mobile-settings-card">
+        <form id="mobileSettingsForm">
           
           <!-- General Settings -->
-          <div class="settings-section">
+          <div class="mobile-settings-section">
             <h4><i class="fas fa-info-circle"></i> Informasi Umum</h4>
             
-            <div class="mb-3">
-              <label class="form-label">Nama Aplikasi</label>
-              <input type="text" class="form-control" id="site_name" value="ASAKUR">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Nama Aplikasi</label>
+              <input type="text" class="mobile-form-control" id="mobileSiteName" value="ASAKUR">
             </div>
             
-            <div class="mb-3">
-              <label class="form-label">Deskripsi</label>
-              <textarea class="form-control" id="site_description" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Deskripsi</label>
+              <textarea class="mobile-form-control" id="mobileSiteDescription" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
             </div>
             
-            <div class="mb-3">
-              <label class="form-label">Email Kontak Admin</label>
-              <input type="email" class="form-control" id="contact_email" value="admin@asakur.com">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Email Kontak Admin</label>
+              <input type="email" class="mobile-form-control" id="mobileContactEmail" value="admin@asakur.com">
             </div>
           </div>
           
           <!-- Session Settings -->
-          <div class="settings-section">
+          <div class="mobile-settings-section">
             <h4><i class="fas fa-calendar-alt"></i> Pengaturan Sesi</h4>
             
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Durasi Sesi (menit)</label>
-                <input type="number" class="form-control" id="session_duration" value="60" min="15" max="180">
-                <small class="text-muted">Default: 60 menit</small>
-              </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Maksimal Sesi per Hari</label>
-                <input type="number" class="form-control" id="max_sessions_per_day" value="5" min="1" max="20">
-                <small class="text-muted">Per konselor</small>
-              </div>
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Durasi Sesi (menit)</label>
+              <input type="number" class="mobile-form-control" id="mobileSessionDuration" value="60" min="15" max="180">
+              <small class="text-muted">Default: 60 menit</small>
             </div>
             
-            <div class="mb-3">
-              <label class="form-label">Waktu Mulai Operasional</label>
-              <input type="time" class="form-control" id="operation_start_time" value="08:00">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Maksimal Sesi per Hari</label>
+              <input type="number" class="mobile-form-control" id="mobileMaxSessionsPerDay" value="5" min="1" max="20">
+              <small class="text-muted">Per konselor</small>
             </div>
             
-            <div class="mb-3">
-              <label class="form-label">Waktu Selesai Operasional</label>
-              <input type="time" class="form-control" id="operation_end_time" value="17:00">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Waktu Mulai Operasional</label>
+              <input type="time" class="mobile-form-control" id="mobileOperationStartTime" value="08:00">
+            </div>
+            
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Waktu Selesai Operasional</label>
+              <input type="time" class="mobile-form-control" id="mobileOperationEndTime" value="17:00">
             </div>
           </div>
           
           <!-- Appearance Settings -->
-          <div class="settings-section">
+          <div class="mobile-settings-section">
             <h4><i class="fas fa-palette"></i> Tampilan</h4>
             
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Warna Utama</label>
-                <div class="d-flex gap-2 align-items-center">
-                  <input type="color" class="form-control form-control-color" id="main_color" value="#0d3b66">
-                  <div class="color-preview" id="main_color_preview" style="background-color: #0d3b66;"></div>
-                </div>
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Warna Utama</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="color" class="mobile-form-control" id="mobileMainColor" value="#0d3b66" style="width: 60px; height: 40px; padding: 5px;">
+                <div class="mobile-color-preview" id="mobileMainColorPreview" style="background-color: #0d3b66;"></div>
               </div>
-              
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Warna Aksen</label>
-                <div class="d-flex gap-2 align-items-center">
-                  <input type="color" class="form-control form-control-color" id="accent_color" value="#2a9d8f">
-                  <div class="color-preview" id="accent_color_preview" style="background-color: #2a9d8f;"></div>
-                </div>
+            </div>
+            
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Warna Aksen</label>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <input type="color" class="mobile-form-control" id="mobileAccentColor" value="#2a9d8f" style="width: 60px; height: 40px; padding: 5px;">
+                <div class="mobile-color-preview" id="mobileAccentColorPreview" style="background-color: #2a9d8f;"></div>
               </div>
             </div>
           </div>
           
           <!-- Emergency Settings -->
-          <div class="settings-section">
+          <div class="mobile-settings-section">
             <h4><i class="fas fa-exclamation-triangle"></i> Kontak Darurat</h4>
             
-            <div class="mb-3">
-              <label class="form-label">Nomor Darurat Default</label>
-              <input type="text" class="form-control" id="emergency_contact" value="112">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Nomor Darurat Default</label>
+              <input type="text" class="mobile-form-control" id="mobileEmergencyContact" value="112">
               <small class="text-muted">Nomor yang akan ditampilkan jika mahasiswa tidak memiliki kontak darurat</small>
             </div>
             
-            <div class="mb-3">
-              <label class="form-label">Email Notifikasi Darurat</label>
-              <input type="email" class="form-control" id="emergency_email" value="emergency@asakur.com">
+            <div class="mobile-form-group">
+              <label class="mobile-form-label">Email Notifikasi Darurat</label>
+              <input type="email" class="mobile-form-control" id="mobileEmergencyEmail" value="emergency@asakur.com">
             </div>
           </div>
           
           <!-- Notification Settings -->
-          <div class="settings-section">
+          <div class="mobile-settings-section">
             <h4><i class="fas fa-bell"></i> Notifikasi</h4>
             
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" id="email_notifications" checked>
-              <label class="form-check-label" for="email_notifications">
+            <div class="mobile-form-check">
+              <input type="checkbox" class="mobile-form-check-input" id="mobileEmailNotifications" checked>
+              <label class="mobile-form-check-label" for="mobileEmailNotifications">
                 Aktifkan notifikasi email
               </label>
             </div>
             
-            <div class="form-check form-switch mb-3">
-              <input class="form-check-input" type="checkbox" id="sms_notifications">
-              <label class="form-check-label" for="sms_notifications">
+            <div class="mobile-form-check">
+              <input type="checkbox" class="mobile-form-check-input" id="mobileSmsNotifications">
+              <label class="mobile-form-check-label" for="mobileSmsNotifications">
                 Aktifkan notifikasi SMS (jika tersedia)
               </label>
             </div>
           </div>
           
-          <!-- Save Button -->
-          <div class="d-flex gap-2">
-            <button type="button" class="btn btn-primary" onclick="saveSettings()">
-              <i class="fas fa-save me-2"></i> Simpan Pengaturan
+          <!-- Save Buttons -->
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+            <button type="button" class="btn-primary-custom" onclick="saveSettings()" style="width: 100%;">
+              <i class="fas fa-save"></i> Simpan Pengaturan
             </button>
-            <button type="button" class="btn btn-outline-secondary" onclick="resetToDefault()">
-              <i class="fas fa-undo me-2"></i> Reset ke Default
+            <button type="button" class="btn-outline-custom" onclick="resetToDefault()" style="width: 100%;">
+              <i class="fas fa-undo"></i> Reset ke Default
             </button>
           </div>
         </form>
       </div>
-    </div>
-    
-    <!-- Side Panel -->
-    <div class="col-lg-4">
-      <!-- System Info -->
-      <div class="content-card">
-        <h4 class="mb-4"><i class="fas fa-info-circle me-2"></i> Informasi Sistem</h4>
+      
+      <!-- System Info Card -->
+      <div class="mobile-settings-card">
+        <h4 class="mobile-settings-section-title"><i class="fas fa-info-circle"></i> Informasi Sistem</h4>
         
-        <div class="mb-3">
-          <small class="text-muted">Versi Aplikasi</small>
-          <p class="fw-bold mb-0">ASAKUR v1.0.0</p>
+        <div class="mobile-form-group">
+          <label class="mobile-form-label">Versi Aplikasi</label>
+          <p style="font-weight: 600;">ASAKUR v1.0.0</p>
         </div>
         
-        <div class="mb-3">
-          <small class="text-muted">Database</small>
-          <p class="fw-bold mb-0">Google Sheets</p>
+        <div class="mobile-form-group">
+          <label class="mobile-form-label">Database</label>
+          <p style="font-weight: 600;">Google Sheets</p>
         </div>
         
-        <div class="mb-3">
-          <small class="text-muted">Terakhir Update</small>
-          <p class="fw-bold mb-0" id="lastUpdate">-</p>
+        <div class="mobile-form-group">
+          <label class="mobile-form-label">Terakhir Update</label>
+          <p style="font-weight: 600;" id="mobileLastUpdate">-</p>
         </div>
         
-        <hr>
-        
-        <button class="btn btn-outline-primary w-100 mb-2" onclick="testDatabase()">
-          <i class="fas fa-database me-2"></i> Test Database
-        </button>
-        
-        <button class="btn btn-outline-info w-100" onclick="viewLogs()">
-          <i class="fas fa-file-alt me-2"></i> Lihat Logs
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+          <button type="button" class="btn-outline-custom" onclick="testDatabase()" style="width: 100%;">
+            <i class="fas fa-database"></i> Test Database
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="viewLogs()" style="width: 100%;">
+            <i class="fas fa-file-alt"></i> Lihat Logs
+          </button>
+        </div>
       </div>
       
-      <!-- Backup & Restore -->
-      <div class="content-card">
-        <h4 class="mb-4"><i class="fas fa-save me-2"></i> Backup & Restore</h4>
+      <!-- Backup & Restore Card -->
+      <div class="mobile-settings-card">
+        <h4 class="mobile-settings-section-title"><i class="fas fa-save"></i> Backup & Restore</h4>
         
-        <p class="text-muted small">Backup data sistem secara berkala untuk keamanan</p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">
+          Backup data sistem secara berkala untuk keamanan
+        </p>
         
-        <button class="btn btn-success w-100 mb-2" onclick="createBackup()">
-          <i class="fas fa-download me-2"></i> Buat Backup
-        </button>
-        
-        <button class="btn btn-outline-warning w-100" onclick="restoreBackup()">
-          <i class="fas fa-upload me-2"></i> Restore Backup
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button type="button" class="btn-primary-custom" onclick="createBackup()" style="width: 100%; background: linear-gradient(135deg, #28a745, #20c997);">
+            <i class="fas fa-download"></i> Buat Backup
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="restoreBackup()" style="width: 100%;">
+            <i class="fas fa-upload"></i> Restore Backup
+          </button>
+        </div>
       </div>
       
-      <!-- Danger Zone -->
-      <div class="content-card border-danger">
-        <h4 class="mb-4 text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Danger Zone</h4>
+      <!-- Danger Zone Card -->
+      <div class="mobile-settings-card" style="border: 2px solid var(--error-color);">
+        <h4 class="mobile-settings-section-title" style="color: var(--error-color);">
+          <i class="fas fa-exclamation-triangle"></i> Danger Zone
+        </h4>
         
-        <div class="alert alert-warning">
-          <i class="fas fa-info-circle me-2"></i>
-          <small>Tindakan di bawah ini bersifat permanen!</small>
+        <div class="mobile-alert mobile-alert-warning">
+          <i class="fas fa-info-circle"></i>
+          <span>Tindakan di bawah ini bersifat permanen!</span>
         </div>
         
-        <button class="btn btn-danger w-100 mb-2" onclick="clearAllData()">
-          <i class="fas fa-trash me-2"></i> Hapus Semua Data
-        </button>
-        
-        <button class="btn btn-outline-danger w-100" onclick="resetSystem()">
-          <i class="fas fa-sync me-2"></i> Reset Sistem
-        </button>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <button type="button" class="btn-danger-custom" onclick="clearAllData()" style="width: 100%;">
+            <i class="fas fa-trash"></i> Hapus Semua Data
+          </button>
+          <button type="button" class="btn-outline-custom" onclick="resetSystem()" style="width: 100%; border-color: var(--error-color); color: var(--error-color);">
+            <i class="fas fa-sync"></i> Reset Sistem
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
+  
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <button class="mobile-nav-item" onclick="navigateToPage('admin')">
+      <i class="fas fa-home"></i>
+      <span>Dashboard</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('counselor_management')">
+      <i class="fas fa-user-md"></i>
+      <span>Konselor</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('student_management')">
+      <i class="fas fa-user-graduate"></i>
+      <span>Mahasiswa</span>
+    </button>
+    <button class="mobile-nav-item" onclick="navigateToPage('appointment_schedule')">
+      <i class="fas fa-calendar-alt"></i>
+      <span>Jadwal</span>
+    </button>
+    <button class="mobile-nav-item active">
+      <i class="fas fa-cogs"></i>
+      <span>Pengaturan</span>
+    </button>
+  </nav>
 </div>
 
-<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+<!-- DESKTOP VERSION -->
+<div class="desktop-container">
+  <!-- Desktop Sidebar -->
+  <aside class="desktop-sidebar">
+    <div class="desktop-sidebar-header">
+      <div class="desktop-sidebar-logo" id="desktopLogoContainer">
+        <i class="fas fa-hands-helping"></i>
+      </div>
+      <h3>ASAKUR</h3>
+      <p>Admin Panel</p>
+    </div>
+    
+    <ul class="desktop-sidebar-menu" id="desktopSidebarMenu">
+      <!-- Menu items will be loaded by JavaScript -->
+    </ul>
+    
+    <div class="desktop-sidebar-footer">
+      <div class="desktop-user-info">
+        <div class="desktop-user-avatar" id="desktopUserAvatar">A</div>
+        <div class="desktop-user-details">
+          <h5 id="desktopUserName">Administrator</h5>
+          <small id="desktopUserRole">Super Admin</small>
+        </div>
+      </div>
+      <button class="btn btn-logout" onclick="logout()" style="width: 100%; padding: 15px; background: rgba(255,255,255,0.1); border: none; border-radius: 12px; color: white; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </aside>
+  
+  <!-- Desktop Main Content -->
+  <main class="desktop-main">
+    <!-- Header -->
+    <div class="desktop-header">
+      <div>
+        <h1>
+          <i class="fas fa-cogs"></i> Pengaturan Sistem
+        </h1>
+        <p>Konfigurasi aplikasi ASAKUR</p>
+      </div>
+    </div>
+    
+    <div class="row">
+      <!-- Main Settings -->
+      <div class="col-lg-8">
+        <!-- Settings Form -->
+        <div class="desktop-content-card">
+          <form id="desktopSettingsForm">
+            
+            <!-- General Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-info-circle"></i> Informasi Umum</h4>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Nama Aplikasi</label>
+                  <input type="text" class="form-control" id="desktopSiteName" value="ASAKUR">
+                </div>
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Email Kontak Admin</label>
+                  <input type="email" class="form-control" id="desktopContactEmail" value="admin@asakur.com">
+                </div>
+              </div>
+              
+              <div class="mb-3">
+                <label class="desktop-form-label">Deskripsi</label>
+                <textarea class="form-control" id="desktopSiteDescription" rows="3">Compassion Focused Gratitude Cybercounseling</textarea>
+              </div>
+            </div>
+            
+            <!-- Session Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-calendar-alt"></i> Pengaturan Sesi</h4>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Durasi Sesi (menit)</label>
+                  <input type="number" class="form-control" id="desktopSessionDuration" value="60" min="15" max="180">
+                  <small class="text-muted">Default: 60 menit</small>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Maksimal Sesi per Hari</label>
+                  <input type="number" class="form-control" id="desktopMaxSessionsPerDay" value="5" min="1" max="20">
+                  <small class="text-muted">Per konselor</small>
+                </div>
+              </div>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Waktu Mulai Operasional</label>
+                  <input type="time" class="form-control" id="desktopOperationStartTime" value="08:00">
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Waktu Selesai Operasional</label>
+                  <input type="time" class="form-control" id="desktopOperationEndTime" value="17:00">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Appearance Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-palette"></i> Tampilan</h4>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Warna Utama</label>
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="color" class="form-control form-control-color" id="desktopMainColor" value="#0d3b66">
+                    <div class="desktop-color-preview" id="desktopMainColorPreview" style="background-color: #0d3b66;"></div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Warna Aksen</label>
+                  <div class="d-flex gap-2 align-items-center">
+                    <input type="color" class="form-control form-control-color" id="desktopAccentColor" value="#2a9d8f">
+                    <div class="desktop-color-preview" id="desktopAccentColorPreview" style="background-color: #2a9d8f;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Emergency Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-exclamation-triangle"></i> Kontak Darurat</h4>
+              
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Nomor Darurat Default</label>
+                  <input type="text" class="form-control" id="desktopEmergencyContact" value="112">
+                  <small class="text-muted">Nomor yang akan ditampilkan jika mahasiswa tidak memiliki kontak darurat</small>
+                </div>
+                
+                <div class="col-md-6">
+                  <label class="desktop-form-label">Email Notifikasi Darurat</label>
+                  <input type="email" class="form-control" id="desktopEmergencyEmail" value="emergency@asakur.com">
+                </div>
+              </div>
+            </div>
+            
+            <!-- Notification Settings -->
+            <div class="desktop-settings-section">
+              <h4><i class="fas fa-bell"></i> Notifikasi</h4>
+              
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="desktopEmailNotifications" checked>
+                <label class="form-check-label" for="desktopEmailNotifications">
+                  Aktifkan notifikasi email
+                </label>
+              </div>
+              
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="desktopSmsNotifications">
+                <label class="form-check-label" for="desktopSmsNotifications">
+                  Aktifkan notifikasi SMS (jika tersedia)
+                </label>
+              </div>
+            </div>
+            
+            <!-- Save Buttons -->
+            <div class="d-flex gap-2">
+              <button type="button" class="btn-primary-custom" onclick="saveSettings()">
+                <i class="fas fa-save me-2"></i> Simpan Pengaturan
+              </button>
+              <button type="button" class="btn-outline-custom" onclick="resetToDefault()">
+                <i class="fas fa-undo me-2"></i> Reset ke Default
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Side Panel -->
+      <div class="col-lg-4">
+        <!-- System Info -->
+        <div class="desktop-content-card">
+          <h4><i class="fas fa-info-circle me-2"></i> Informasi Sistem</h4>
+          
+          <div class="mb-3">
+            <small class="text-muted">Versi Aplikasi</small>
+            <p class="fw-bold mb-0">ASAKUR v1.0.0</p>
+          </div>
+          
+          <div class="mb-3">
+            <small class="text-muted">Database</small>
+            <p class="fw-bold mb-0">Google Sheets</p>
+          </div>
+          
+          <div class="mb-3">
+            <small class="text-muted">Terakhir Update</small>
+            <p class="fw-bold mb-0" id="desktopLastUpdate">-</p>
+          </div>
+          
+          <hr>
+          
+          <div class="d-grid gap-2">
+            <button class="btn-outline-custom" onclick="testDatabase()">
+              <i class="fas fa-database me-2"></i> Test Database
+            </button>
+            
+            <button class="btn-outline-custom" onclick="viewLogs()">
+              <i class="fas fa-file-alt me-2"></i> Lihat Logs
+            </button>
+          </div>
+        </div>
+        
+        <!-- Backup & Restore -->
+        <div class="desktop-content-card">
+          <h4><i class="fas fa-save me-2"></i> Backup & Restore</h4>
+          
+          <p class="text-muted small mb-3">Backup data sistem secara berkala untuk keamanan</p>
+          
+          <div class="d-grid gap-2">
+            <button class="btn-primary-custom" onclick="createBackup()" style="background: linear-gradient(135deg, #28a745, #20c997);">
+              <i class="fas fa-download me-2"></i> Buat Backup
+            </button>
+            
+            <button class="btn-outline-custom" onclick="restoreBackup()">
+              <i class="fas fa-upload me-2"></i> Restore Backup
+            </button>
+          </div>
+        </div>
+        
+        <!-- Danger Zone -->
+        <div class="desktop-content-card" style="border: 2px solid var(--error-color);">
+          <h4 class="text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Danger Zone</h4>
+          
+          <div class="desktop-alert desktop-alert-warning mb-3">
+            <i class="fas fa-info-circle me-2"></i>
+            <small>Tindakan di bawah ini bersifat permanen!</small>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button class="btn-danger-custom" onclick="clearAllData()">
+              <i class="fas fa-trash me-2"></i> Hapus Semua Data
+            </button>
+            
+            <button class="btn-outline-custom" onclick="resetSystem()" style="border-color: var(--error-color); color: var(--error-color);">
+              <i class="fas fa-sync me-2"></i> Reset Sistem
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Loading Modal -->
+<div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-body text-center p-5">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-        <h5 class="mt-4">Sedang logout...</h5>
+        <h5 class="mt-4">Memuat...</h5>
       </div>
     </div>
   </div>
@@ -412,86 +1378,375 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+// Global variables
 let baseUrl = '';
+let currentSession = null;
 
+// Logo loading with CORS fix
+function loadLogos() {
+  const logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
+  
+  // Load mobile logos
+  const mobileLogoContainer = document.getElementById('mobileLogoContainer');
+  const mobileSidebarLogo = document.getElementById('mobileSidebarLogo');
+  if (mobileLogoContainer) loadLogoImage(mobileLogoContainer, logoUrl, 50);
+  if (mobileSidebarLogo) loadLogoImage(mobileSidebarLogo, logoUrl, 60);
+  
+  // Load desktop logo
+  const desktopLogoContainer = document.getElementById('desktopLogoContainer');
+  if (desktopLogoContainer) loadLogoImage(desktopLogoContainer, logoUrl, 80);
+}
+
+function loadLogoImage(container, url, size) {
+  const img = new Image();
+  img.alt = 'ASAKUR Logo';
+  img.style.width = '85%';
+  img.style.height = '85%';
+  img.style.objectFit = 'contain';
+  
+  container.classList.add('logo-loading');
+  
+  img.onload = function() {
+    container.classList.remove('logo-loading');
+    container.innerHTML = '';
+    container.appendChild(img);
+  };
+  
+  img.onerror = function() {
+    container.classList.remove('logo-loading');
+    container.innerHTML = '';
+    
+    const icon = document.createElement('i');
+    icon.className = 'fas fa-hands-helping';
+    icon.style.fontSize = size === 50 ? '24px' : size === 60 ? '28px' : '36px';
+    icon.style.color = 'var(--primary-blue)';
+    container.appendChild(icon);
+  };
+  
+  img.src = url + '?t=' + new Date().getTime();
+}
+
+// Initialize
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('Pengaturan Sistem initializing...');
+  
+  // Force mobile view if needed
+  forceMobileViewIfNeeded();
+  
+  // Load logos
+  loadLogos();
+  
+  // Get base URL
   google.script.run
     .withSuccessHandler(function(url) {
       baseUrl = url;
+      console.log('Base URL loaded:', baseUrl);
+      
+      // Load user info
+      loadUserInfo();
+      
+      // Load settings
       loadSettings();
+      
+      // Setup menu
+      setupMenu();
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading base URL:', error);
+      showNotification('Gagal memuat konfigurasi sistem', 'error');
     })
     .getWebAppUrl();
   
-  // Color preview update
-  document.getElementById('main_color').addEventListener('input', function(e) {
-    document.getElementById('main_color_preview').style.backgroundColor = e.target.value;
-  });
-  
-  document.getElementById('accent_color').addEventListener('input', function(e) {
-    document.getElementById('accent_color_preview').style.backgroundColor = e.target.value;
-  });
+  // Initialize color previews
+  initColorPreviews();
 });
 
-function navigateToPage(pageName) {
-  if (!baseUrl) return;
-  window.top.location.href = baseUrl + '?page=' + pageName;
+// Force mobile view if needed
+function forceMobileViewIfNeeded() {
+  const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+  const screenWidth = window.innerWidth;
+  
+  if (isMobileDevice || screenWidth < 993) {
+    document.body.classList.add('mobile-view');
+  } else {
+    document.body.classList.add('desktop-view');
+  }
 }
 
+// Initialize color previews
+function initColorPreviews() {
+  // Mobile color previews
+  const mobileMainColor = document.getElementById('mobileMainColor');
+  const mobileAccentColor = document.getElementById('mobileAccentColor');
+  
+  if (mobileMainColor) {
+    mobileMainColor.addEventListener('input', function(e) {
+      document.getElementById('mobileMainColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  if (mobileAccentColor) {
+    mobileAccentColor.addEventListener('input', function(e) {
+      document.getElementById('mobileAccentColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  // Desktop color previews
+  const desktopMainColor = document.getElementById('desktopMainColor');
+  const desktopAccentColor = document.getElementById('desktopAccentColor');
+  
+  if (desktopMainColor) {
+    desktopMainColor.addEventListener('input', function(e) {
+      document.getElementById('desktopMainColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+  
+  if (desktopAccentColor) {
+    desktopAccentColor.addEventListener('input', function(e) {
+      document.getElementById('desktopAccentColorPreview').style.backgroundColor = e.target.value;
+    });
+  }
+}
+
+// Toggle mobile sidebar
+function toggleMobileSidebar() {
+  const sidebar = document.getElementById('mobileSidebar');
+  const overlay = document.getElementById('mobileSidebarOverlay');
+  
+  sidebar.classList.toggle('active');
+  overlay.classList.toggle('active');
+}
+
+// Setup menu items
+function setupMenu() {
+  const menuItems = [
+    { id: 'admin', title: 'Dashboard', icon: 'fas fa-home' },
+    { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md' },
+    { id: 'student_management', title: 'Manajemen Mahasiswa', icon: 'fas fa-user-graduate' },
+    { id: 'appointment_schedule', title: 'Jadwal & Laporan', icon: 'fas fa-calendar-alt' },
+    { id: 'system_settings', title: 'Pengaturan Sistem', icon: 'fas fa-cogs', active: true },
+    { id: 'emergency_contacts', title: 'Kontak Darurat', icon: 'fas fa-phone-alt' }
+  ];
+  
+  // Mobile menu
+  const mobileMenu = document.getElementById('mobileSidebarMenu');
+  if (mobileMenu) {
+    mobileMenu.innerHTML = menuItems.map(item => `
+      <li>
+        <a href="#" class="${item.active ? 'active' : ''}" onclick="navigateToPage('${item.id}'); return false;">
+          <i class="${item.icon}"></i>
+          <span>${item.title}</span>
+        </a>
+      </li>
+    `).join('');
+  }
+  
+  // Desktop menu
+  const desktopMenu = document.getElementById('desktopSidebarMenu');
+  if (desktopMenu) {
+    desktopMenu.innerHTML = menuItems.map(item => `
+      <li>
+        <a href="#" class="${item.active ? 'active' : ''}" onclick="navigateToPage('${item.id}'); return false;">
+          <i class="${item.icon}"></i>
+          <span>${item.title}</span>
+        </a>
+      </li>
+    `).join('');
+  }
+}
+
+// Load user info
+function loadUserInfo() {
+  google.script.run
+    .withSuccessHandler(function(session) {
+      currentSession = session;
+      if (session) {
+        updateUserInfo(session);
+      } else {
+        logout();
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading session:', error);
+      showNotification('Gagal memuat data pengguna', 'error');
+    })
+    .getSession();
+}
+
+function updateUserInfo(session) {
+  const name = session.fullname || session.username;
+  const role = session.role || 'Administrator';
+  const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+  
+  // Mobile
+  document.getElementById('mobileUserName').textContent = name;
+  document.getElementById('mobileUserRole').textContent = role;
+  document.getElementById('mobileUserAvatar').textContent = initials;
+  
+  // Desktop
+  document.getElementById('desktopUserName').textContent = name;
+  document.getElementById('desktopUserRole').textContent = role;
+  document.getElementById('desktopUserAvatar').textContent = initials;
+}
+
+// Navigate to page
+function navigateToPage(pageName) {
+  if (!baseUrl) {
+    showNotification('Sistem belum siap, coba lagi', 'warning');
+    return;
+  }
+  
+  // Close mobile sidebar if open
+  if (window.innerWidth < 993) {
+    toggleMobileSidebar();
+  }
+  
+  const targetUrl = baseUrl + '?page=' + pageName;
+  
+  try {
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = targetUrl;
+    } else {
+      window.location.href = targetUrl;
+    }
+  } catch (e) {
+    console.error('Redirect error:', e);
+    window.open(targetUrl, '_top');
+  }
+}
+
+// Load settings
 function loadSettings() {
   google.script.run
     .withSuccessHandler(function(settings) {
-      // Populate form with settings
+      // Populate mobile form with settings
       Object.keys(settings).forEach(key => {
-        const element = document.getElementById(key);
-        if (element) {
-          if (element.type === 'checkbox') {
-            element.checked = settings[key] === 'true';
+        const mobileElement = document.getElementById('mobile' + key.charAt(0).toUpperCase() + key.slice(1));
+        const desktopElement = document.getElementById('desktop' + key.charAt(0).toUpperCase() + key.slice(1));
+        
+        if (mobileElement) {
+          if (mobileElement.type === 'checkbox') {
+            mobileElement.checked = settings[key] === 'true' || settings[key] === true;
           } else {
-            element.value = settings[key];
+            mobileElement.value = settings[key];
+          }
+        }
+        
+        if (desktopElement) {
+          if (desktopElement.type === 'checkbox') {
+            desktopElement.checked = settings[key] === 'true' || settings[key] === true;
+          } else {
+            desktopElement.value = settings[key];
           }
         }
       });
       
       // Update color previews
-      document.getElementById('main_color_preview').style.backgroundColor = settings.main_color || '#0d3b66';
-      document.getElementById('accent_color_preview').style.backgroundColor = settings.accent_color || '#2a9d8f';
+      updateColorPreviews(settings);
       
       // Update last update time
-      document.getElementById('lastUpdate').textContent = new Date().toLocaleDateString('id-ID');
+      const now = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      document.getElementById('mobileLastUpdate').textContent = now;
+      document.getElementById('desktopLastUpdate').textContent = now;
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading settings:', error);
+      showNotification('Gagal memuat pengaturan', 'error');
     })
     .getSystemSettings();
 }
 
-function saveSettings() {
-  const settings = {
-    site_name: document.getElementById('site_name').value,
-    site_description: document.getElementById('site_description').value,
-    contact_email: document.getElementById('contact_email').value,
-    session_duration: document.getElementById('session_duration').value,
-    max_sessions_per_day: document.getElementById('max_sessions_per_day').value,
-    operation_start_time: document.getElementById('operation_start_time').value,
-    operation_end_time: document.getElementById('operation_end_time').value,
-    main_color: document.getElementById('main_color').value,
-    accent_color: document.getElementById('accent_color').value,
-    emergency_contact: document.getElementById('emergency_contact').value,
-    emergency_email: document.getElementById('emergency_email').value,
-    email_notifications: document.getElementById('email_notifications').checked,
-    sms_notifications: document.getElementById('sms_notifications').checked
-  };
+// Update color previews
+function updateColorPreviews(settings) {
+  // Mobile
+  const mobileMainColorPreview = document.getElementById('mobileMainColorPreview');
+  const mobileAccentColorPreview = document.getElementById('mobileAccentColorPreview');
   
-  // Save each setting
-  let savePromises = [];
-  Object.keys(settings).forEach(key => {
-    google.script.run
-      .withSuccessHandler(function() {
-        console.log(`Saved ${key}`);
-      })
-      .updateSystemSetting(key, settings[key]);
-  });
+  if (mobileMainColorPreview && settings.main_color) {
+    mobileMainColorPreview.style.backgroundColor = settings.main_color;
+  }
   
-  showNotification('Pengaturan berhasil disimpan', 'success');
+  if (mobileAccentColorPreview && settings.accent_color) {
+    mobileAccentColorPreview.style.backgroundColor = settings.accent_color;
+  }
+  
+  // Desktop
+  const desktopMainColorPreview = document.getElementById('desktopMainColorPreview');
+  const desktopAccentColorPreview = document.getElementById('desktopAccentColorPreview');
+  
+  if (desktopMainColorPreview && settings.main_color) {
+    desktopMainColorPreview.style.backgroundColor = settings.main_color;
+  }
+  
+  if (desktopAccentColorPreview && settings.accent_color) {
+    desktopAccentColorPreview.style.backgroundColor = settings.accent_color;
+  }
 }
 
+// Save settings
+function saveSettings() {
+  const isMobile = window.innerWidth < 993;
+  
+  let settings = {};
+  
+  if (isMobile) {
+    settings = {
+      site_name: document.getElementById('mobileSiteName').value,
+      site_description: document.getElementById('mobileSiteDescription').value,
+      contact_email: document.getElementById('mobileContactEmail').value,
+      session_duration: document.getElementById('mobileSessionDuration').value,
+      max_sessions_per_day: document.getElementById('mobileMaxSessionsPerDay').value,
+      operation_start_time: document.getElementById('mobileOperationStartTime').value,
+      operation_end_time: document.getElementById('mobileOperationEndTime').value,
+      main_color: document.getElementById('mobileMainColor').value,
+      accent_color: document.getElementById('mobileAccentColor').value,
+      emergency_contact: document.getElementById('mobileEmergencyContact').value,
+      emergency_email: document.getElementById('mobileEmergencyEmail').value,
+      email_notifications: document.getElementById('mobileEmailNotifications').checked,
+      sms_notifications: document.getElementById('mobileSmsNotifications').checked
+    };
+  } else {
+    settings = {
+      site_name: document.getElementById('desktopSiteName').value,
+      site_description: document.getElementById('desktopSiteDescription').value,
+      contact_email: document.getElementById('desktopContactEmail').value,
+      session_duration: document.getElementById('desktopSessionDuration').value,
+      max_sessions_per_day: document.getElementById('desktopMaxSessionsPerDay').value,
+      operation_start_time: document.getElementById('desktopOperationStartTime').value,
+      operation_end_time: document.getElementById('desktopOperationEndTime').value,
+      main_color: document.getElementById('desktopMainColor').value,
+      accent_color: document.getElementById('desktopAccentColor').value,
+      emergency_contact: document.getElementById('desktopEmergencyContact').value,
+      emergency_email: document.getElementById('desktopEmergencyEmail').value,
+      email_notifications: document.getElementById('desktopEmailNotifications').checked,
+      sms_notifications: document.getElementById('desktopSmsNotifications').checked
+    };
+  }
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        showNotification('Pengaturan berhasil disimpan', 'success');
+        // Update color previews
+        updateColorPreviews(settings);
+      } else {
+        showNotification('Gagal menyimpan pengaturan', 'error');
+      }
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error saving settings:', error);
+      showNotification('Gagal menyimpan pengaturan', 'error');
+    })
+    .saveSystemSettings(settings);
+}
+
+// Reset to default
 function resetToDefault() {
   if (confirm('Reset semua pengaturan ke default? Tindakan ini tidak dapat dibatalkan.')) {
     google.script.run
@@ -499,56 +1754,94 @@ function resetToDefault() {
         showNotification('Pengaturan direset ke default', 'success');
         loadSettings();
       })
+      .withFailureHandler(function(error) {
+        console.error('Error resetting settings:', error);
+        showNotification('Gagal mereset pengaturan', 'error');
+      })
       .initializeDefaultSettings();
   }
 }
 
+// Test database
 function testDatabase() {
+  const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+  modal.show();
+  
   google.script.run
     .withSuccessHandler(function(results) {
+      modal.hide();
       let message = 'Status Database:\n\n';
       results.forEach(r => {
         message += `${r.name}: ${r.exists ? '✓' : '✗'} (${r.rowCount} rows)\n`;
       });
       alert(message);
     })
+    .withFailureHandler(function(error) {
+      modal.hide();
+      console.error('Error testing database:', error);
+      showNotification('Gagal menguji database', 'error');
+    })
     .testDatabase();
 }
 
+// View logs
 function viewLogs() {
   alert('Fitur logs akan segera tersedia');
 }
 
+// Create backup
 function createBackup() {
   if (confirm('Buat backup data sistem?')) {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
     google.script.run
       .withSuccessHandler(function(result) {
+        modal.hide();
         if (result.success) {
           showNotification(`Backup berhasil dibuat: ${result.fileName}`, 'success');
           alert(`File backup: ${result.fileName}\nDownload URL: ${result.downloadUrl}`);
         } else {
-          showNotification('Gagal membuat backup', 'danger');
+          showNotification('Gagal membuat backup', 'error');
         }
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error creating backup:', error);
+        showNotification('Gagal membuat backup', 'error');
       })
       .createBackup();
   }
 }
 
+// Restore backup
 function restoreBackup() {
   alert('Fitur restore backup akan segera tersedia.\nSilakan upload file backup JSON Anda.');
 }
 
+// Clear all data
 function clearAllData() {
   const confirmation = prompt('PERINGATAN: Ini akan menghapus SEMUA data!\nKetik "HAPUS SEMUA" untuk konfirmasi:');
   
   if (confirmation === 'HAPUS SEMUA') {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
     google.script.run
       .withSuccessHandler(function(result) {
+        modal.hide();
         if (result.success) {
           showNotification('Semua data berhasil dihapus', 'success');
           alert('Sistem akan diinisialisasi ulang...');
           google.script.run.initializeDatabase();
+        } else {
+          showNotification('Gagal menghapus data', 'error');
         }
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error clearing data:', error);
+        showNotification('Gagal menghapus data', 'error');
       })
       .clearAllData();
   } else {
@@ -556,32 +1849,48 @@ function clearAllData() {
   }
 }
 
+// Reset system
 function resetSystem() {
   const confirmation = prompt('Reset sistem ke pengaturan awal?\nKetik "RESET" untuk konfirmasi:');
   
   if (confirmation === 'RESET') {
+    const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
+    modal.show();
+    
     google.script.run
       .withSuccessHandler(function() {
+        modal.hide();
         showNotification('Sistem berhasil direset', 'success');
         setTimeout(() => location.reload(), 2000);
+      })
+      .withFailureHandler(function(error) {
+        modal.hide();
+        console.error('Error resetting system:', error);
+        showNotification('Gagal mereset sistem', 'error');
       })
       .initializeDatabase();
   }
 }
 
+// Show notification
 function showNotification(message, type) {
   const notification = document.createElement('div');
-  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
   notification.style.cssText = `
     top: 20px;
     right: 20px;
     z-index: 9999;
     min-width: 300px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    max-width: 90%;
+    box-shadow: var(--shadow-md);
+    border-radius: 12px;
   `;
   notification.innerHTML = `
-    ${message}
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle'}"></i>
+      <div>${message}</div>
+    </div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" style="position: absolute; top: 15px; right: 15px;"></button>
   `;
   
   document.body.appendChild(notification);
@@ -593,17 +1902,121 @@ function showNotification(message, type) {
   }, 5000);
 }
 
+// Logout
 function logout() {
-  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  if (!confirm('Apakah Anda yakin ingin logout?')) {
+    return;
+  }
+  
+  const modal = new bootstrap.Modal(document.getElementById('loadingModal'));
   modal.show();
   
   google.script.run
     .withSuccessHandler(function(response) {
       setTimeout(function() {
-        window.top.location.href = response.redirectUrl || baseUrl;
+        let redirectUrl = baseUrl;
+        if (response && response.redirectUrl) {
+          redirectUrl = response.redirectUrl;
+        }
+        
+        try {
+          if (window.top && window.top !== window.self) {
+            window.top.location.href = redirectUrl;
+          } else {
+            window.location.href = redirectUrl;
+          }
+        } catch (e) {
+          window.open(redirectUrl, '_top');
+        }
+      }, 1000);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Logout error:', error);
+      setTimeout(function() {
+        window.location.href = baseUrl || window.location.href.split('?')[0];
       }, 1500);
     })
     .serverLogout();
+}
+
+// Handle window resize
+let resizeTimeout;
+window.addEventListener('resize', function() {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(function() {
+    forceMobileViewIfNeeded();
+  }, 250);
+});
+
+// Handle orientation change
+window.addEventListener('orientationchange', function() {
+  setTimeout(function() {
+    forceMobileViewIfNeeded();
+  }, 300);
+});
+
+// Fungsi untuk mengelola folder foto di system_settings.html
+function setupPhotoStorageSettings() {
+  // Load current folder info
+  google.script.run
+    .withSuccessHandler(function(info) {
+      if (info.success) {
+        document.getElementById('currentFolderName').textContent = info.folderName;
+        document.getElementById('currentFolderId').textContent = info.folderId;
+        document.getElementById('currentFolderUrl').href = info.folderUrl;
+        document.getElementById('currentFolderUrl').textContent = 'Buka Folder';
+        document.getElementById('totalFiles').textContent = info.totalFiles;
+      }
+    })
+    .getPhotoStorageInfo();
+  
+  // Setup change folder button
+  document.getElementById('changeFolderBtn').addEventListener('click', function() {
+    const newFolderId = document.getElementById('newFolderId').value.trim();
+    
+    if (!newFolderId) {
+      alert('Masukkan Folder ID terlebih dahulu');
+      return;
+    }
+    
+    if (confirm('Apakah Anda yakin ingin mengubah folder penyimpanan foto?')) {
+      google.script.run
+        .withSuccessHandler(function(result) {
+          if (result.success) {
+            alert(result.message);
+            setupPhotoStorageSettings(); // Refresh info
+          } else {
+            alert('Gagal: ' + result.message);
+          }
+        })
+        .withFailureHandler(function(error) {
+          alert('Error: ' + error.toString());
+        })
+        .changePhotoStorageFolder(newFolderId);
+    }
+  });
+  
+  // Setup migrate button
+  document.getElementById('migrateBtn').addEventListener('click', function() {
+    const newFolderId = document.getElementById('newFolderId').value.trim();
+    
+    if (!newFolderId) {
+      alert('Masukkan Folder ID tujuan terlebih dahulu');
+      return;
+    }
+    
+    if (confirm('Migrasi akan menyalin semua file foto ke folder baru. Lanjutkan?')) {
+      google.script.run
+        .withSuccessHandler(function(result) {
+          alert(result.message);
+          setupPhotoStorageSettings(); // Refresh info
+        })
+        .withFailureHandler(function(error) {
+          alert('Error: ' + error.toString());
+        })
+        .migratePhotosToNewFolder(newFolderId);
+    }
+  });
 }
 </script>
 </body>

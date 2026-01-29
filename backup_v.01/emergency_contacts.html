@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kontak Darurat - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --dark-blue: #023047;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      border-radius: 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      margin-right: 15px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+    }
+    
+    .emergency-stat {
+      background: linear-gradient(135deg, #dc3545, #c82333);
+      color: white;
+      padding: 25px;
+      border-radius: 15px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .emergency-stat h3 {
+      font-size: 2.5rem;
+      margin-bottom: 5px;
+    }
+    
+    .emergency-log-card {
+      border-left: 4px solid #dc3545;
+      padding: 20px;
+      background: #fff5f5;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+    
+    .emergency-log-card:hover {
+      box-shadow: 0 5px 15px rgba(220, 53, 69, 0.2);
+      transform: translateX(5px);
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+    }
+    
+    .badge-pending { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-handled { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-urgent { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    
+    .table thead th {
+      background-color: #f8f9fa;
+      color: var(--dark-blue);
+      font-weight: 600;
+      border: none;
+      padding: 18px 20px;
+    }
+    
+    .table tbody td {
+      padding: 18px 20px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('admin'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
+      <i class="fas fa-user-md"></i> Manajemen Konselor
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('student_management'); return false;">
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
+      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
+    </a></li>
+    <li><a href="#" onclick="navigateToPage('system_settings'); return false;">
+      <i class="fas fa-cogs"></i> Pengaturan Sistem
+    </a></li>
+    <li><a href="#" class="active" onclick="navigateToPage('emergency_contacts'); return false;">
+      <i class="fas fa-phone-alt"></i> Kontak Darurat
+    </a></li>
+  </ul>
+  
+  <div style="position: absolute; bottom: 30px; left: 0; right: 0; padding: 0 25px;">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <div class="page-header">
+    <h1><i class="fas fa-phone-alt me-3"></i> Manajemen Kontak Darurat</h1>
+    <p class="text-muted mb-0">Monitor dan kelola permintaan darurat dari mahasiswa</p>
+  </div>
+  
+  <!-- Statistics -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="emergency-stat">
+        <h3 id="totalEmergencies">0</h3>
+        <p class="mb-0">Total Log Darurat</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="emergency-stat" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+        <h3 id="pendingEmergencies">0</h3>
+        <p class="mb-0">Menunggu Penanganan</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="emergency-stat" style="background: linear-gradient(135deg, #28a745, #20c997);">
+        <h3 id="handledEmergencies">0</h3>
+        <p class="mb-0">Telah Ditangani</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row">
+    <!-- Emergency Logs -->
+    <div class="col-lg-8">
+      <div class="content-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="fas fa-exclamation-circle me-2"></i> Log Darurat Terbaru</h4>
+          <div>
+            <select class="form-select d-inline-block w-auto me-2" id="statusFilter" onchange="filterLogs()">
+              <option value="">Semua Status</option>
+              <option value="pending">Pending</option>
+              <option value="handled">Ditangani</option>
+            </select>
+            <button class="btn btn-outline-primary" onclick="refreshLogs()">
+              <i class="fas fa-sync"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div id="emergencyLogsList">
+          <div class="text-center py-5">
+            <div class="spinner-border text-danger"></div>
+            <p class="mt-2">Memuat log darurat...</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Emergency History Table -->
+      <div class="content-card mt-4">
+        <h4 class="mb-4"><i class="fas fa-history me-2"></i> Riwayat Lengkap</h4>
+        
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tanggal</th>
+                <th>Mahasiswa</th>
+                <th>Kontak Darurat</th>
+                <th>Status</th>
+                <th>Ditangani Oleh</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="emergencyTableBody">
+              <tr>
+                <td colspan="7" class="text-center py-5">
+                  <div class="spinner-border text-primary"></div>
+                  <p class="mt-2">Memuat data...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quick Actions & Info -->
+    <div class="col-lg-4">
+      <!-- Quick Actions -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-bolt me-2"></i> Aksi Cepat</h4>
+        
+        <div class="d-grid gap-2">
+          <button class="btn btn-danger" onclick="viewAllPending()">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            Lihat Semua Pending
+          </button>
+          
+          <button class="btn btn-outline-primary" onclick="exportEmergencyLogs()">
+            <i class="fas fa-download me-2"></i>
+            Export Logs
+          </button>
+          
+          <button class="btn btn-outline-info" onclick="sendBroadcastAlert()">
+            <i class="fas fa-bullhorn me-2"></i>
+            Kirim Alert Broadcast
+          </button>
+        </div>
+      </div>
+      
+      <!-- Emergency Contacts Directory -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-address-book me-2"></i> Direktori Kontak</h4>
+        
+        <div class="list-group">
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-0">Hotline Nasional</h6>
+                <small class="text-muted">119 (24/7)</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="callNumber('119')">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-0">Ambulans</h6>
+                <small class="text-muted">118</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="callNumber('118')">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-0">Polisi</h6>
+                <small class="text-muted">110</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="callNumber('110')">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h6 class="mb-0">Mental Health Crisis</h6>
+                <small class="text-muted">021-500-454</small>
+              </div>
+              <button class="btn btn-sm btn-outline-primary" onclick="callNumber('021500454')">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn btn-outline-secondary w-100 mt-3" onclick="addNewContact()">
+          <i class="fas fa-plus me-2"></i> Tambah Kontak
+        </button>
+      </div>
+      
+      <!-- Guidelines -->
+      <div class="content-card">
+        <h4 class="mb-4"><i class="fas fa-book me-2"></i> Panduan</h4>
+        
+        <div class="alert alert-warning">
+          <h6><i class="fas fa-info-circle me-2"></i> Prosedur Darurat</h6>
+          <ol class="mb-0 ps-3">
+            <li>Hubungi mahasiswa segera</li>
+            <li>Kontak nomor darurat yang terdaftar</li>
+            <li>Notifikasi konselor yang bertugas</li>
+            <li>Dokumentasikan semua tindakan</li>
+            <li>Follow up dalam 24 jam</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Emergency Detail Modal -->
+<div class="modal fade" id="emergencyDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-danger text-white">
+        <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i> Detail Log Darurat</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="emergencyDetailBody">
+        <p>Memuat detail...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-success" onclick="markAsHandled()">
+          <i class="fas fa-check me-2"></i> Tandai Ditangani
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let allEmergencyLogs = [];
+let currentEmergencyLog = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadEmergencyLogs();
+    })
+    .getWebAppUrl();
+  
+  // Auto refresh every 30 seconds
+  setInterval(refreshLogs, 30000);
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadEmergencyLogs() {
+  // Simulate loading emergency logs
+  // In real implementation, this would call a server function
+  setTimeout(() => {
+    const sampleLogs = [
+      {
+        log_id: 1,
+        user_id: 101,
+        username: 'student001',
+        fullname: 'Ahmad Rifai',
+        emergency_contact: '081234567890',
+        timestamp: new Date(),
+        status: 'pending',
+        handled_by: null,
+        notes: ''
+      },
+      {
+        log_id: 2,
+        user_id: 102,
+        username: 'student002',
+        fullname: 'Siti Nurhaliza',
+        emergency_contact: '081298765432',
+        timestamp: new Date(Date.now() - 3600000),
+        status: 'handled',
+        handled_by: 'Konselor Budi',
+        notes: 'Sudah dihubungi dan dalam kondisi baik'
+      }
+    ];
+    
+    allEmergencyLogs = sampleLogs;
+    displayEmergencyLogs(sampleLogs);
+    updateStatistics(sampleLogs);
+  }, 1000);
+}
+
+function updateStatistics(logs) {
+  document.getElementById('totalEmergencies').textContent = logs.length;
+  document.getElementById('pendingEmergencies').textContent = logs.filter(l => l.status === 'pending').length;
+  document.getElementById('handledEmergencies').textContent = logs.filter(l => l.status === 'handled').length;
+}
+
+function displayEmergencyLogs(logs) {
+  const logsList = document.getElementById('emergencyLogsList');
+  const tableBody = document.getElementById('emergencyTableBody');
+  
+  if (!logs || logs.length === 0) {
+    logsList.innerHTML = `
+      <div class="text-center py-5">
+        <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+        <p>Tidak ada log darurat</p>
+      </div>
+    `;
+    
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center py-5">
+          <i class="fas fa-check-circle fa-2x text-success mb-3"></i>
+          <p>Tidak ada log darurat</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  // Display recent logs (last 5)
+  logsList.innerHTML = '';
+  logs.slice(0, 5).forEach(log => {
+    const statusBadge = log.status === 'pending' ? 'badge-pending' : 'badge-handled';
+    const statusText = log.status === 'pending' ? 'Pending' : 'Ditangani';
+    const timeAgo = getTimeAgo(new Date(log.timestamp));
+    
+    logsList.innerHTML += `
+      <div class="emergency-log-card" onclick='viewEmergencyDetail(${JSON.stringify(log)})' style="cursor: pointer;">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h6 class="mb-0">
+            <i class="fas fa-exclamation-triangle text-danger me-2"></i>
+            ${log.fullname || log.username}
+          </h6>
+          <span class="badge ${statusBadge}">${statusText}</span>
+        </div>
+        <p class="mb-1 text-muted small">Kontak: ${log.emergency_contact}</p>
+        <p class="mb-0 text-muted small">
+          <i class="fas fa-clock me-1"></i> ${timeAgo}
+        </p>
+      </div>
+    `;
+  });
+  
+  // Display full table
+  tableBody.innerHTML = '';
+  logs.forEach(log => {
+    const statusBadge = log.status === 'pending' ? 'badge-pending' : 'badge-handled';
+    const statusText = log.status === 'pending' ? 'Pending' : 'Ditangani';
+    const formattedDate = new Date(log.timestamp).toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    tableBody.innerHTML += `
+      <tr>
+        <td class="fw-bold">${log.log_id}</td>
+        <td>${formattedDate}</td>
+        <td>${log.fullname || log.username}</td>
+        <td>${log.emergency_contact}</td>
+        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+        <td>${log.handled_by || '-'}</td>
+        <td>
+          <button class="btn btn-sm btn-info" onclick='viewEmergencyDetail(${JSON.stringify(log)})'>
+            <i class="fas fa-eye"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function getTimeAgo(date) {
+  const seconds = Math.floor((new Date() - date) / 1000);
+  
+  if (seconds < 60) return 'Baru saja';
+  if (seconds < 3600) return Math.floor(seconds / 60) + ' menit yang lalu';
+  if (seconds < 86400) return Math.floor(seconds / 3600) + ' jam yang lalu';
+  return Math.floor(seconds / 86400) + ' hari yang lalu';
+}
+
+function viewEmergencyDetail(log) {
+  currentEmergencyLog = log;
+  
+  const detailBody = document.getElementById('emergencyDetailBody');
+  const formattedDate = new Date(log.timestamp).toLocaleDateString('id-ID', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  
+  detailBody.innerHTML = `
+    <div class="alert alert-danger">
+      <h5><i class="fas fa-exclamation-circle me-2"></i> DARURAT</h5>
+      <p class="mb-0">Log darurat dari mahasiswa yang membutuhkan bantuan segera</p>
+    </div>
+    
+    <h5>Informasi Mahasiswa</h5>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <p><strong>ID:</strong> ${log.user_id}</p>
+        <p><strong>Username:</strong> ${log.username}</p>
+        <p><strong>Nama Lengkap:</strong> ${log.fullname || '-'}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Waktu:</strong> ${formattedDate}</p>
+        <p><strong>Status:</strong> <span class="badge ${log.status === 'pending' ? 'badge-pending' : 'badge-handled'}">${log.status === 'pending' ? 'Pending' : 'Ditangani'}</span></p>
+      </div>
+    </div>
+    
+    <h5>Kontak Darurat</h5>
+    <div class="alert alert-info">
+      <h4 class="mb-0">
+        <i class="fas fa-phone me-2"></i>
+        <a href="tel:${log.emergency_contact}" class="text-decoration-none">${log.emergency_contact}</a>
+      </h4>
+    </div>
+    
+    ${log.handled_by ? `
+      <h5>Penanganan</h5>
+      <p><strong>Ditangani oleh:</strong> ${log.handled_by}</p>
+      <p><strong>Catatan:</strong> ${log.notes || 'Tidak ada catatan'}</p>
+    ` : ''}
+    
+    <div class="alert alert-warning">
+      <strong>Prosedur:</strong>
+      <ol class="mb-0">
+        <li>Hubungi nomor darurat di atas</li>
+        <li>Verifikasi kondisi mahasiswa</li>
+        <li>Notifikasi konselor yang bertugas</li>
+        <li>Dokumentasikan tindakan yang diambil</li>
+      </ol>
+    </div>
+  `;
+  
+  const modal = new bootstrap.Modal(document.getElementById('emergencyDetailModal'));
+  modal.show();
+}
+
+function markAsHandled() {
+  if (!currentEmergencyLog) return;
+  
+  const notes = prompt('Masukkan catatan penanganan:');
+  if (notes === null) return;
+  
+  // Update status
+  // In real implementation, this would call server function
+  showNotification('Log darurat berhasil ditandai sebagai ditangani', 'success');
+  bootstrap.Modal.getInstance(document.getElementById('emergencyDetailModal')).hide();
+  
+  setTimeout(() => {
+    refreshLogs();
+  }, 1000);
+}
+
+function filterLogs() {
+  const status = document.getElementById('statusFilter').value;
+  const filtered = status ? allEmergencyLogs.filter(l => l.status === status) : allEmergencyLogs;
+  displayEmergencyLogs(filtered);
+}
+
+function refreshLogs() {
+  loadEmergencyLogs();
+  showNotification('Data berhasil dimuat ulang', 'info');
+}
+
+function viewAllPending() {
+  document.getElementById('statusFilter').value = 'pending';
+  filterLogs();
+}
+
+function exportEmergencyLogs() {
+  alert('Export emergency logs - Fitur akan segera tersedia');
+}
+
+function sendBroadcastAlert() {
+  if (confirm('Kirim alert broadcast ke semua konselor?')) {
+    showNotification('Broadcast alert terkirim', 'success');
+  }
+}
+
+function callNumber(number) {
+  window.open(`tel:${number}`, '_blank');
+}
+
+function addNewContact() {
+  alert('Tambah kontak baru - Fitur akan segera tersedia');
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = `
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  `;
+  notification.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(function() {
+        window.top.location.href = response.redirectUrl || baseUrl;
+      }, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

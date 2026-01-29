@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manajemen Mahasiswa - ASAKUR</title>
+  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
+      --dark-blue: #023047;
+      --sidebar-width: 280px;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fb;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: linear-gradient(180deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      color: white;
+      padding: 25px 0;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .sidebar-brand {
+      padding: 0 25px 30px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-brand h3 {
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .sidebar-brand p {
+      font-size: 0.85rem;
+      opacity: 0.8;
+    }
+    
+    .sidebar-menu {
+      list-style: none;
+      padding: 0 15px;
+    }
+    
+    .sidebar-menu li {
+      margin-bottom: 5px;
+    }
+    
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 16px 20px;
+      color: rgba(255, 255, 255, 0.85);
+      text-decoration: none;
+      transition: all 0.3s;
+      font-weight: 500;
+      border-radius: 12px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(5px);
+    }
+    
+    .sidebar-menu i {
+      width: 25px;
+      font-size: 1.2rem;
+      margin-right: 15px;
+      text-align: center;
+    }
+    
+    .sidebar-footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      right: 0;
+      padding: 0 25px;
+    }
+    
+    .main-content {
+      margin-left: var(--sidebar-width);
+      padding: 30px;
+      transition: all 0.3s ease;
+      min-height: 100vh;
+    }
+    
+    .page-header {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .page-header h1 {
+      color: var(--dark-blue);
+      font-weight: 700;
+      font-size: 2rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .content-card {
+      background: white;
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    }
+    
+    .stat-box {
+      background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue));
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .stat-box h3 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .stat-box p {
+      margin: 0;
+      opacity: 0.9;
+    }
+    
+    .table thead th {
+      background-color: #f8f9fa;
+      color: var(--dark-blue);
+      font-weight: 600;
+      border: none;
+      padding: 18px 20px;
+      border-bottom: 2px solid #e9ecef;
+    }
+    
+    .table tbody td {
+      padding: 18px 20px;
+      vertical-align: middle;
+      border-color: #f0f0f0;
+    }
+    
+    .badge {
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 500;
+      font-size: 0.85rem;
+    }
+    
+    .badge-active { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-inactive { background-color: rgba(108, 117, 125, 0.15); color: #495057; }
+    .badge-low { background-color: rgba(40, 167, 69, 0.15); color: #218838; }
+    .badge-medium { background-color: rgba(255, 193, 7, 0.15); color: #b88a00; }
+    .badge-high { background-color: rgba(220, 53, 69, 0.15); color: #c82333; }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      border: none;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+    }
+    
+    .sidebar-toggle {
+      display: none;
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+    }
+    
+    @media (max-width: 992px) {
+      .sidebar {
+        margin-left: -280px;
+      }
+      
+      .sidebar.active {
+        margin-left: 0;
+      }
+      
+      .main-content {
+        margin-left: 0;
+      }
+      
+      .sidebar-toggle {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h3><i class="fas fa-hands-helping"></i> ASAKUR</h3>
+    <p>Admin Panel</p>
+  </div>
+  
+  <ul class="sidebar-menu">
+    <li><a href="#" onclick="navigateToPage('admin'); return false;">
+      <i class="fas fa-home"></i> Dashboard
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('counselor_management'); return false;">
+      <i class="fas fa-user-md"></i> Manajemen Konselor
+    </a></li>
+    
+    <li><a href="#" class="active" onclick="navigateToPage('student_management'); return false;">
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('appointment_schedule'); return false;">
+      <i class="fas fa-chart-bar"></i> Jadwal & Laporan
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('system_settings'); return false;">
+      <i class="fas fa-cogs"></i> Pengaturan Sistem
+    </a></li>
+    
+    <li><a href="#" onclick="navigateToPage('emergency_contacts'); return false;">
+      <i class="fas fa-phone-alt"></i> Kontak Darurat
+    </a></li>
+  </ul>
+  
+  <div class="sidebar-footer">
+    <a href="#" onclick="logout(); return false;" style="background-color: rgba(255, 255, 255, 0.1);">
+      <i class="fas fa-sign-out-alt"></i> Logout
+    </a>
+  </div>
+</nav>
+
+<div class="main-content">
+  <button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <div class="page-header">
+    <h1>
+      <i class="fas fa-user-graduate"></i> Manajemen Mahasiswa
+    </h1>
+    <button class="btn btn-primary" onclick="addNewStudent()">
+      <i class="fas fa-plus me-2"></i> Tambah Mahasiswa
+    </button>
+  </div>
+  
+  <!-- Statistics Row -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="stat-box" style="background: linear-gradient(135deg, #0d3b66, #1a5f7a);">
+        <h3 id="totalStudents">0</h3>
+        <p>Total Mahasiswa</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-box" style="background: linear-gradient(135deg, #2a9d8f, #28a745);">
+        <h3 id="activeStudents">0</h3>
+        <p>Mahasiswa Aktif</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-box" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+        <h3 id="mediumRiskStudents">0</h3>
+        <p>Risiko Sedang</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="stat-box" style="background: linear-gradient(135deg, #dc3545, #c82333);">
+        <h3 id="highRiskStudents">0</h3>
+        <p>Risiko Tinggi</p>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Filter & Search -->
+  <div class="content-card mb-4">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-search"></i></span>
+          <input type="text" class="form-control" id="searchInput" placeholder="Cari mahasiswa..." onkeyup="filterTable()">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" id="statusFilter" onchange="filterTable()">
+          <option value="">Semua Status</option>
+          <option value="active">Aktif</option>
+          <option value="inactive">Tidak Aktif</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" id="riskFilter" onchange="filterTable()">
+          <option value="">Semua Risiko</option>
+          <option value="low">Rendah</option>
+          <option value="medium">Sedang</option>
+          <option value="high">Tinggi</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" id="facultyFilter" onchange="filterTable()">
+          <option value="">Semua Fakultas</option>
+          <option value="Teknik">Teknik</option>
+          <option value="Ekonomi">Ekonomi</option>
+          <option value="MIPA">MIPA</option>
+          <option value="Sosial">Sosial</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" onclick="exportData()">
+          <i class="fas fa-download me-2"></i> Export
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Students Table -->
+  <div class="content-card">
+    <h4 class="mb-4"><i class="fas fa-list me-2"></i> Daftar Mahasiswa</h4>
+    <div class="table-responsive">
+      <table class="table table-hover" id="studentsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NIM</th>
+            <th>Nama</th>
+            <th>Email</th>
+            <th>Fakultas/Program</th>
+            <th>Tahun</th>
+            <th>Status</th>
+            <th>Tingkat Risiko</th>
+            <th>Sesi Aktif</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="studentsTableBody">
+          <tr>
+            <td colspan="10" class="text-center py-5">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Memuat data mahasiswa...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Student Detail Modal -->
+<div class="modal fade" id="studentDetailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-user-graduate me-2"></i> Detail Mahasiswa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="studentDetailBody">
+        <p class="text-center">Memuat data...</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="editCurrentStudent()">
+          <i class="fas fa-edit me-2"></i> Edit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Student Modal -->
+<div class="modal fade" id="editStudentModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fas fa-edit me-2"></i> Edit Mahasiswa</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editStudentForm">
+          <input type="hidden" id="edit_user_id">
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nama Lengkap</label>
+              <input type="text" class="form-control" id="edit_fullname" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">NIM</label>
+              <input type="text" class="form-control" id="edit_nim" required>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-control" id="edit_email" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Telepon</label>
+              <input type="tel" class="form-control" id="edit_phone">
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Fakultas</label>
+              <select class="form-select" id="edit_faculty">
+                <option value="">Pilih Fakultas</option>
+                <option value="Teknik">Teknik</option>
+                <option value="Ekonomi">Ekonomi</option>
+                <option value="MIPA">MIPA</option>
+                <option value="Sosial">Sosial</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Program Studi</label>
+              <input type="text" class="form-control" id="edit_program">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Tahun</label>
+              <input type="number" class="form-control" id="edit_year" min="1" max="8">
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Kontak Darurat</label>
+            <input type="text" class="form-control" id="edit_emergency_contact">
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" id="edit_status">
+                <option value="active">Aktif</option>
+                <option value="inactive">Tidak Aktif</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Catatan</label>
+            <textarea class="form-control" id="edit_notes" rows="3"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="saveStudentData()">
+          <i class="fas fa-save me-2"></i> Simpan
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" data-bs-backdrop="static">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center p-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <h5 class="mt-4">Sedang logout...</h5>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+let baseUrl = '';
+let allStudents = [];
+let currentStudent = null;
+
+document.addEventListener('DOMContentLoaded', function() {
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      loadStudents();
+    })
+    .getWebAppUrl();
+  
+  document.getElementById('sidebarToggle').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.toggle('active');
+  });
+});
+
+function navigateToPage(pageName) {
+  if (!baseUrl) return;
+  window.top.location.href = baseUrl + '?page=' + pageName;
+}
+
+function loadStudents() {
+  google.script.run
+    .withSuccessHandler(function(data) {
+      allStudents = data;
+      displayStudents(data);
+      updateStatistics(data);
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error:', error);
+      showNotification('Gagal memuat data mahasiswa', 'danger');
+    })
+    .getAllStudents();
+}
+
+function updateStatistics(students) {
+  document.getElementById('totalStudents').textContent = students.length;
+  document.getElementById('activeStudents').textContent = students.filter(s => s.status === 'active').length;
+  document.getElementById('mediumRiskStudents').textContent = students.filter(s => s.risk_level === 'medium').length;
+  document.getElementById('highRiskStudents').textContent = students.filter(s => s.risk_level === 'high').length;
+}
+
+function displayStudents(students) {
+  const tbody = document.getElementById('studentsTableBody');
+  
+  if (!students || students.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="10" class="text-center py-5">
+          <i class="fas fa-user-graduate fa-2x text-muted mb-3"></i>
+          <p>Belum ada data mahasiswa</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tbody.innerHTML = '';
+  
+  students.forEach(function(student) {
+    const statusBadge = student.status === 'active' ? 'badge-active' : 'badge-inactive';
+    const statusText = student.status === 'active' ? 'Aktif' : 'Tidak Aktif';
+    
+    let riskBadge = 'badge-low';
+    let riskText = 'Rendah';
+    if (student.risk_level === 'medium') {
+      riskBadge = 'badge-medium';
+      riskText = 'Sedang';
+    } else if (student.risk_level === 'high') {
+      riskBadge = 'badge-high';
+      riskText = 'Tinggi';
+    }
+    
+    tbody.innerHTML += `
+      <tr>
+        <td class="fw-bold">${student.user_id}</td>
+        <td>${student.nim || '-'}</td>
+        <td>${student.fullname}</td>
+        <td>${student.email || '-'}</td>
+        <td>
+          ${student.faculty || '-'}<br>
+          <small class="text-muted">${student.program || ''}</small>
+        </td>
+        <td>${student.year || '-'}</td>
+        <td><span class="badge ${statusBadge}">${statusText}</span></td>
+        <td><span class="badge ${riskBadge}">${riskText}</span></td>
+        <td><span class="badge bg-info">${student.active_sessions || 0}</span></td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-info" onclick='viewDetail(${JSON.stringify(student)})' title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="btn btn-warning" onclick='editStudent(${JSON.stringify(student)})' title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-${student.status === 'active' ? 'secondary' : 'success'}" onclick="toggleStatus('${student.user_id}', '${student.status}')" title="Toggle Status">
+              <i class="fas fa-toggle-${student.status === 'active' ? 'on' : 'off'}"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function filterTable() {
+  const searchValue = document.getElementById('searchInput').value.toLowerCase();
+  const statusFilter = document.getElementById('statusFilter').value;
+  const riskFilter = document.getElementById('riskFilter').value;
+  const facultyFilter = document.getElementById('facultyFilter').value;
+  
+  let filtered = allStudents;
+  
+  if (searchValue) {
+    filtered = filtered.filter(s => 
+      s.fullname.toLowerCase().includes(searchValue) ||
+      (s.nim && s.nim.toLowerCase().includes(searchValue)) ||
+      (s.email && s.email.toLowerCase().includes(searchValue))
+    );
+  }
+  
+  if (statusFilter) {
+    filtered = filtered.filter(s => s.status === statusFilter);
+  }
+  
+  if (riskFilter) {
+    filtered = filtered.filter(s => s.risk_level === riskFilter);
+  }
+  
+  if (facultyFilter) {
+    filtered = filtered.filter(s => s.faculty === facultyFilter);
+  }
+  
+  displayStudents(filtered);
+}
+
+function viewDetail(student) {
+  currentStudent = student;
+  
+  const detailBody = document.getElementById('studentDetailBody');
+  detailBody.innerHTML = `
+    <div class="row">
+      <div class="col-md-6">
+        <p><strong>ID:</strong> ${student.user_id}</p>
+        <p><strong>NIM:</strong> ${student.nim || '-'}</p>
+        <p><strong>Nama:</strong> ${student.fullname}</p>
+        <p><strong>Email:</strong> ${student.email || '-'}</p>
+        <p><strong>Telepon:</strong> ${student.phone || '-'}</p>
+      </div>
+      <div class="col-md-6">
+        <p><strong>Fakultas:</strong> ${student.faculty || '-'}</p>
+        <p><strong>Program:</strong> ${student.program || '-'}</p>
+        <p><strong>Tahun:</strong> ${student.year || '-'}</p>
+        <p><strong>Status:</strong> <span class="badge ${student.status === 'active' ? 'badge-active' : 'badge-inactive'}">${student.status === 'active' ? 'Aktif' : 'Tidak Aktif'}</span></p>
+        <p><strong>Tingkat Risiko:</strong> <span class="badge badge-${student.risk_level}">${student.risk_level || 'low'}</span></p>
+      </div>
+    </div>
+    <hr>
+    <p><strong>Kontak Darurat:</strong> ${student.emergency_contact || '-'}</p>
+    <p><strong>Sesi Aktif:</strong> ${student.active_sessions || 0}</p>
+    <p><strong>Total Asesmen:</strong> ${student.total_assessments || 0}</p>
+    <p><strong>Catatan:</strong></p>
+    <p>${student.notes || 'Tidak ada catatan'}</p>
+  `;
+  
+  const modal = new bootstrap.Modal(document.getElementById('studentDetailModal'));
+  modal.show();
+}
+
+function editCurrentStudent() {
+  bootstrap.Modal.getInstance(document.getElementById('studentDetailModal')).hide();
+  editStudent(currentStudent);
+}
+
+function editStudent(student) {
+  document.getElementById('edit_user_id').value = student.user_id;
+  document.getElementById('edit_fullname').value = student.fullname;
+  document.getElementById('edit_nim').value = student.nim || '';
+  document.getElementById('edit_email').value = student.email || '';
+  document.getElementById('edit_phone').value = student.phone || '';
+  document.getElementById('edit_faculty').value = student.faculty || '';
+  document.getElementById('edit_program').value = student.program || '';
+  document.getElementById('edit_year').value = student.year || '';
+  document.getElementById('edit_emergency_contact').value = student.emergency_contact || '';
+  document.getElementById('edit_status').value = student.status || 'active';
+  document.getElementById('edit_notes').value = student.notes || '';
+  
+  const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+  modal.show();
+}
+
+function saveStudentData() {
+  const formData = {
+    user_id: document.getElementById('edit_user_id').value,
+    fullname: document.getElementById('edit_fullname').value,
+    nim: document.getElementById('edit_nim').value,
+    email: document.getElementById('edit_email').value,
+    phone: document.getElementById('edit_phone').value,
+    faculty: document.getElementById('edit_faculty').value,
+    program: document.getElementById('edit_program').value,
+    year: document.getElementById('edit_year').value,
+    emergency_contact: document.getElementById('edit_emergency_contact').value,
+    status: document.getElementById('edit_status').value,
+    notes: document.getElementById('edit_notes').value
+  };
+  
+  google.script.run
+    .withSuccessHandler(function(result) {
+      if (result.success) {
+        showNotification('Data mahasiswa berhasil disimpan', 'success');
+        bootstrap.Modal.getInstance(document.getElementById('editStudentModal')).hide();
+        loadStudents();
+      } else {
+        showNotification(result.message || 'Gagal menyimpan data', 'danger');
+      }
+    })
+    .saveStudentData(formData);
+}
+
+function addNewStudent() {
+  // Clear form
+  document.getElementById('edit_user_id').value = '';
+  document.getElementById('edit_fullname').value = '';
+  document.getElementById('edit_nim').value = '';
+  document.getElementById('edit_email').value = '';
+  document.getElementById('edit_phone').value = '';
+  document.getElementById('edit_faculty').value = '';
+  document.getElementById('edit_program').value = '';
+  document.getElementById('edit_year').value = '';
+  document.getElementById('edit_emergency_contact').value = '';
+  document.getElementById('edit_status').value = 'active';
+  document.getElementById('edit_notes').value = '';
+  
+  // Change modal title
+  document.querySelector('#editStudentModal .modal-title').innerHTML = '<i class="fas fa-plus me-2"></i> Tambah Mahasiswa Baru';
+  
+  const modal = new bootstrap.Modal(document.getElementById('editStudentModal'));
+  modal.show();
+}
+
+function toggleStatus(userId, currentStatus) {
+  const newStatus = currentStatus === 'active' ? 'inactive' : 'active';
+  
+  if (confirm(`Ubah status mahasiswa menjadi ${newStatus === 'active' ? 'Aktif' : 'Tidak Aktif'}?`)) {
+    google.script.run
+      .withSuccessHandler(function(result) {
+        if (result.success) {
+          showNotification('Status berhasil diubah', 'success');
+          loadStudents();
+        } else {
+          showNotification(result.message || 'Gagal mengubah status', 'danger');
+        }
+      })
+      .updateStudentStatus(userId, newStatus);
+  }
+}
+
+function exportData() {
+  google.script.run
+    .withSuccessHandler(function(csvData) {
+      const blob = new Blob([csvData], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'mahasiswa_data_' + new Date().toISOString().split('T')[0] + '.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      showNotification('Data berhasil diexport', 'success');
+    })
+    .exportStudentsData();
+}
+
+function showNotification(message, type) {
+  const notification = document.createElement('div');
+  notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+  notification.style.cssText = `
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  `;
+  notification.innerHTML = `
+    ${message}
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.remove();
+    }
+  }, 5000);
+}
+
+function logout() {
+  const modal = new bootstrap.Modal(document.getElementById('logoutModal'));
+  modal.show();
+  
+  google.script.run
+    .withSuccessHandler(function(response) {
+      setTimeout(function() {
+        window.top.location.href = response.redirectUrl || baseUrl;
+      }, 1500);
+    })
+    .serverLogout();
+}
+</script>
+</body>
+</html>

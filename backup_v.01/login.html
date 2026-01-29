@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASAKUR - Login</title>
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    /* [STYLE YANG SAMA SEPERTI SEBELUMNYA - TIDAK PERLU DIUBAH] */
+    :root {
+      --primary-blue: #0d3b66;
+      --secondary-blue: #1a5f7a;
+      --accent-blue: #2a9d8f;
+      --light-blue: #8ecae6;
+      --dark-blue: #023047;
+      --light-bg: #f8f9fa;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+    
+    .login-wrapper {
+      width: 100%;
+      max-width: 450px;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+    
+    .login-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card-header {
+      background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .logo-icon {
+      font-size: 3.5rem;
+      color: var(--light-blue);
+      margin-bottom: 15px;
+      display: block;
+    }
+    
+    .card-header h1 {
+      font-weight: 700;
+      font-size: 2.2rem;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+    
+    .card-header p {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    .card-body {
+      padding: 40px 35px;
+    }
+    
+    .form-group {
+      margin-bottom: 25px;
+      position: relative;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: var(--dark-blue);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    
+    .form-label i {
+      margin-right: 8px;
+      color: var(--secondary-blue);
+    }
+    
+    .form-control {
+      border: 2px solid #e1e5eb;
+      border-radius: 12px;
+      padding: 15px 20px;
+      font-size: 1rem;
+      transition: all 0.3s;
+      background-color: #f8fafc;
+    }
+    
+    .form-control:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+      background-color: white;
+    }
+    
+    .btn-login {
+      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 16px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      width: 100%;
+      transition: all 0.3s;
+      margin-top: 10px;
+      letter-spacing: 0.5px;
+    }
+    
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 15px rgba(42, 157, 143, 0.3);
+      background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+    }
+    
+    .btn-login:disabled {
+      opacity: 0.7;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .register-options {
+      margin-top: 30px;
+      text-align: center;
+    }
+    
+    .register-title {
+      color: #666;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      position: relative;
+      display: inline-block;
+      padding: 0 15px;
+      background: white;
+    }
+    
+    .btn-register-option {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: all 0.3s;
+      text-align: center;
+      border: 2px solid transparent;
+      background-color: transparent;
+      cursor: pointer;
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    .btn-student {
+      background-color: rgba(13, 59, 102, 0.1);
+      color: var(--primary-blue);
+      border-color: var(--light-blue);
+    }
+    
+    .btn-student:hover {
+      background-color: var(--primary-blue);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .btn-counselor {
+      background-color: rgba(42, 157, 143, 0.1);
+      color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    
+    .btn-counselor:hover {
+      background-color: var(--accent-blue);
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .status-message {
+      text-align: center;
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 500;
+      display: none;
+    }
+    
+    .status-success {
+      background-color: rgba(46, 204, 113, 0.1);
+      color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+    
+    .status-error {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: #c0392b;
+      border: 1px solid #e74c3c;
+    }
+    
+    .footer-links {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    
+    .footer-links a {
+      color: var(--secondary-blue);
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="card-header">
+      <div class="logo-container">
+        <i class="fas fa-hands-helping logo-icon"></i>
+      </div>
+      <h1>ASAKUR</h1>
+      <p>Compassion Focused Gratitude Cybercounseling</p>
+    </div>
+    
+    <div class="card-body">
+      <form id="loginForm" onsubmit="event.preventDefault(); doLogin();">
+        <div class="form-group">
+          <label class="form-label" for="username">
+            <i class="fas fa-user"></i> Username
+          </label>
+          <input type="text" id="username" class="form-control" 
+                 placeholder="Masukkan username Anda" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label" for="password">
+            <i class="fas fa-lock"></i> Password
+          </label>
+          <input type="password" id="password" class="form-control" 
+                 placeholder="Masukkan password Anda" required>
+        </div>
+        
+        <button type="submit" id="btnLogin" class="btn-login">
+          <span id="loginText">Masuk ke Akun</span>
+          <span id="loginLoading" class="loading-spinner" style="display:none;"></span>
+        </button>
+        
+        <div id="statusMessage" class="status-message"></div>
+      </form>
+      
+      <div class="register-options">
+        <div class="register-title">Belum memiliki akun?</div>
+        
+        <button id="btnRegisterStudent" class="btn-register-option btn-student">
+          <i class="fas fa-user-graduate"></i> Daftar sebagai Mahasiswa
+        </button>
+        
+        <button id="btnRegisterCounselor" class="btn-register-option btn-counselor">
+          <i class="fas fa-user-md"></i> Daftar sebagai Konselor
+        </button>
+      </div>
+      
+      <div class="footer-links">
+        <p>
+          <a href="mailto:asakur@gmail.com?subject=Bantuan%20ASAKUR" id="contactAdmin">
+            <i class="fas fa-headset"></i> Hubungi Admin
+          </a> 
+          | 
+          <a id="forgotPassword">
+            <i class="fas fa-key"></i> Lupa Password?
+          </a>
+        </p>
+        <p>&copy; 2025 ASAKUR. Seluruh hak cipta dilindungi.<br> 
+          Dev by <a href="https://greenbox.web.id" target="_blank">Greenboxindonesia</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// SISTEM NAVIGASI YANG DIPERBAIKI
+// =============================================
+
+let appBaseUrl = '';
+
+// Fungsi untuk mendapatkan base URL dari server
+function getBaseUrlFromServer() {
+  return new Promise((resolve, reject) => {
+    console.log("🔍 Requesting base URL from server...");
+    
+    google.script.run
+      .withSuccessHandler(function(url) {
+        console.log("✅ Base URL received:", url);
+        appBaseUrl = url;
+        
+        // Simpan ke sessionStorage untuk penggunaan berikutnya
+        try {
+          sessionStorage.setItem('asakur_base_url', url);
+        } catch (e) {
+          console.warn("Cannot save to sessionStorage:", e);
+        }
+        
+        resolve(url);
+      })
+      .withFailureHandler(function(error) {
+        console.error("❌ Failed to get base URL:", error);
+        
+        // Gunakan fallback dari URL saat ini
+        const fallbackUrl = getFallbackUrl();
+        console.log("⚠️ Using fallback URL:", fallbackUrl);
+        appBaseUrl = fallbackUrl;
+        resolve(fallbackUrl);
+      })
+      .getBaseUrl();
+  });
+}
+
+// Fungsi fallback untuk mendapatkan URL dari window.location
+function getFallbackUrl() {
+  try {
+    const currentUrl = window.location.href;
+    console.log("Current URL:", currentUrl);
+    
+    // Extract base URL dari URL saat ini
+    const match = currentUrl.match(/(https:\/\/script\.google\.com\/macros\/s\/[^\/]+\/exec)/);
+    if (match) {
+      return match[1];
+    }
+    
+    // Jika tidak ada match, gunakan base URL tanpa parameter
+    return currentUrl.split('?')[0].split('#')[0];
+  } catch (e) {
+    console.error("Fallback URL extraction failed:", e);
+    return '';
+  }
+}
+
+// Fungsi untuk navigasi ke halaman tertentu
+function navigateToPage(page) {
+  console.log("🔗 Navigating to page:", page);
+  
+  // Pastikan base URL sudah ada
+  if (!appBaseUrl) {
+    console.warn("⚠️ Base URL not ready, fetching...");
+    getBaseUrlFromServer().then(function() {
+      performNavigation(page);
+    });
+  } else {
+    performNavigation(page);
+  }
+}
+
+// Fungsi untuk melakukan navigasi sebenarnya
+function performNavigation(page) {
+  let targetUrl = appBaseUrl;
+  
+  // Tambahkan parameter page jika ada
+  if (page && page !== '') {
+    targetUrl += '?page=' + page;
+  }
+  
+  console.log("🚀 Redirecting to:", targetUrl);
+  
+  try {
+    // Gunakan window.top untuk keluar dari iframe
+    if (window.top && window.top !== window.self) {
+      window.top.location.href = targetUrl;
+    } else {
+      window.location.href = targetUrl;
+    }
+  } catch (e) {
+    console.error("Redirect error:", e);
+    // Fallback
+    window.open(targetUrl, '_top');
+  }
+}
+
+// =============================================
+// FUNGSI LOGIN
+// =============================================
+
+function doLogin() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  console.log("🔐 Login attempt for username:", username);
+
+  // Validasi input
+  if (!username || !password) {
+    showStatus("Username dan password harus diisi", "error");
+    return;
+  }
+
+  // Tampilkan loading
+  const btnLogin = document.getElementById("btnLogin");
+  const loginText = document.getElementById("loginText");
+  const loginLoading = document.getElementById("loginLoading");
+  
+  btnLogin.disabled = true;
+  loginText.textContent = "Memproses...";
+  loginLoading.style.display = "inline-block";
+  document.getElementById("statusMessage").style.display = "none";
+
+  // Timeout untuk login
+  const loginTimeout = setTimeout(function() {
+    showStatus("Waktu login habis. Silakan coba lagi.", "error");
+    resetLoginButton();
+  }, 15000); // 15 detik timeout
+
+  // Panggil fungsi login di server
+  google.script.run
+    .withSuccessHandler(function(response) {
+      clearTimeout(loginTimeout);
+      console.log("✅ Login response:", response);
+      
+      if (response && response.success) {
+        showStatus("Login berhasil! Mengalihkan...", "success");
+        
+        // Redirect ke halaman sesuai role
+        setTimeout(function() {
+          if (response.redirectUrl) {
+            console.log("🎯 Redirecting to:", response.redirectUrl);
+            performNavigation(response.user.role);
+          } else {
+            navigateToPage(response.user.role);
+          }
+        }, 1000);
+      } else {
+        showStatus(response?.message || "Login gagal", "error");
+        resetLoginButton();
+      }
+    })
+    .withFailureHandler(function(error) {
+      clearTimeout(loginTimeout);
+      console.error("❌ Login error:", error);
+      showStatus("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+      resetLoginButton();
+    })
+    .login(username, password);
+}
+
+function showStatus(message, type) {
+  const statusMessage = document.getElementById("statusMessage");
+  statusMessage.textContent = message;
+  statusMessage.className = `status-message status-${type}`;
+  statusMessage.style.display = "block";
+  
+  // Auto-hide untuk error setelah 5 detik
+  if (type === 'error') {
+    setTimeout(() => {
+      statusMessage.style.display = 'none';
+    }, 5000);
+  }
+}
+
+function resetLoginButton() {
+  const btnLogin = document.getElementById("btnLogin");
+  const loginText = document.getElementById("loginText");
+  const loginLoading = document.getElementById("loginLoading");
+  
+  btnLogin.disabled = false;
+  loginText.textContent = "Masuk ke Akun";
+  loginLoading.style.display = "none";
+}
+
+// =============================================
+// SETUP EVENT LISTENERS
+// =============================================
+
+function setupEventListeners() {
+  console.log("⚙️ Setting up event listeners...");
+  
+  // Tombol Registrasi Mahasiswa
+  const btnStudent = document.getElementById('btnRegisterStudent');
+  if (btnStudent) {
+    btnStudent.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log("📝 Register Student clicked");
+      navigateToPage('register_student');
+    });
+  }
+  
+  // Tombol Registrasi Konselor
+  const btnCounselor = document.getElementById('btnRegisterCounselor');
+  if (btnCounselor) {
+    btnCounselor.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log("📝 Register Counselor clicked");
+      navigateToPage('register_counselor');
+    });
+  }
+  
+  // Link Lupa Password
+  const forgotLink = document.getElementById('forgotPassword');
+  if (forgotLink) {
+    forgotLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      console.log("🔑 Forgot Password clicked");
+      navigateToPage('forgot_password');
+    });
+  }
+  
+  // Enter key untuk submit
+  const passwordField = document.getElementById("password");
+  if (passwordField) {
+    passwordField.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        doLogin();
+      }
+    });
+  }
+  
+  const usernameField = document.getElementById("username");
+  if (usernameField) {
+    usernameField.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        document.getElementById("password").focus();
+      }
+    });
+  }
+}
+
+// =============================================
+// INISIALISASI
+// =============================================
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("🚀 ASAKUR Login page loaded");
+  
+  // Cek apakah ada base URL di sessionStorage
+  try {
+    const savedUrl = sessionStorage.getItem('asakur_base_url');
+    if (savedUrl) {
+      console.log("📦 Using saved base URL:", savedUrl);
+      appBaseUrl = savedUrl;
+    }
+  } catch (e) {
+    console.warn("Cannot read from sessionStorage:", e);
+  }
+  
+  // Dapatkan base URL dari server
+  getBaseUrlFromServer()
+    .then(function(url) {
+      console.log("✅ Base URL ready:", url);
+      
+      // Setup event listeners setelah base URL siap
+      setupEventListeners();
+      
+      // Fokus ke username field
+      const usernameField = document.getElementById("username");
+      if (usernameField) {
+        setTimeout(() => usernameField.focus(), 100);
+      }
+    })
+    .catch(function(error) {
+      console.error("❌ Failed to initialize:", error);
+      
+      // Tetap setup listeners meskipun gagal
+      setupEventListeners();
+    });
+});
+</script>
+
+</body>
+</html>

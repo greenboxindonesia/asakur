@@ -40,7 +40,6 @@
     html {
       font-size: 16px;
       height: 100%;
-      scroll-behavior: smooth;
     }
     
     body {
@@ -54,21 +53,17 @@
     }
 
     a {
-      color: var(--accent-blue);
+      color: black;
       text-decoration: none;
-      transition: color 0.2s ease;
     }
     
-    a:hover {
-      color: var(--primary-blue);
-    }
-    
-    /* DEFAULT - MOBILE VERSION */
+    /* DEFAULT - MOBILE VERSION (ALWAYS SHOWN UNLESS DESKTOP) */
     .mobile-container {
       display: block;
       min-height: 100vh;
       background-color: var(--surface-color);
       position: relative;
+      font-size: 18px;
     }
     
     /* DESKTOP VERSION - HIDDEN BY DEFAULT */
@@ -76,39 +71,44 @@
       display: none;
     }
     
-    /* ========================================
-       MOBILE VERSION STYLES
-       ======================================== */
-    
-    /* Modern Header with Video */
+    /* MOBILE VERSION STYLES */
     .app-header {
       background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
-      padding: 20px;
+      padding: 25px 20px;
       color: white;
       position: relative;
       overflow: hidden;
     }
     
+    .app-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    
     .header-content {
       position: relative;
-      z-index: 2;
+      z-index: 1;
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
+      gap: 20px;
     }
     
     .logo-container {
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       background: white;
-      border-radius: 14px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      flex-shrink: 0;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     
     .logo-container img {
@@ -118,7 +118,7 @@
     }
     
     .logo-container i {
-      font-size: 32px;
+      font-size: 40px;
       color: var(--primary-blue);
     }
     
@@ -127,142 +127,53 @@
     }
     
     .app-title h1 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 700;
       margin: 0;
       line-height: 1.2;
     }
     
     .app-title p {
-      font-size: 0.9rem;
+      font-size: 1rem;
       opacity: 0.9;
-      margin: 4px 0 0 0;
-    }
-    
-    /* Video Container Mobile */
-    .mobile-video-container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%; /* 16:9 aspect ratio */
-      margin-top: 15px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
-      background: #000;
-    }
-    
-    .mobile-video-player {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .video-thumbnail {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: pointer;
-      transition: opacity 0.3s ease;
-    }
-    
-    .video-thumbnail.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .play-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
-      background: rgba(255, 0, 0, 0.8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 5;
-      transition: all 0.3s ease;
-    }
-    
-    .play-button:hover {
-      background: rgba(255, 0, 0, 1);
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-    
-    .play-button i {
-      color: white;
-      font-size: 24px;
-      margin-left: 4px;
-    }
-    
-    .video-badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.85);
-      backdrop-filter: blur(10px);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      z-index: 10;
-      pointer-events: none;
-    }
-    
-    .video-badge i {
-      color: #ff0000;
-      font-size: 0.85rem;
+      margin: 5px 0 0 0;
     }
     
     /* Main Content */
     .main-content {
-      padding: 25px 20px 90px;
+      padding: 30px 20px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+      padding-bottom: 80px;
     }
     
     /* Welcome Section */
     .welcome-section {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
     }
     
     .welcome-section h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
+      font-size: 2rem;
+      font-weight: 600;
       color: var(--text-primary);
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     
     .welcome-section p {
       color: var(--text-secondary);
-      font-size: 1rem;
+      font-size: 1.1rem;
       line-height: 1.6;
     }
     
-    /* ========================================
-       DESKTOP VERSION STYLES
-       ======================================== */
-    
+    /* DESKTOP VERSION STYLES */
     .desktop-container {
       display: flex;
       min-height: 100vh;
       background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
     }
     
-    /* Left Column - Video & Info */
+    /* Left Column - Logo & Description */
     .left-column {
       flex: 1;
       background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
@@ -279,34 +190,23 @@
     .left-column::before {
       content: '';
       position: absolute;
-      top: -30%;
-      right: -20%;
+      top: -50%;
+      right: -50%;
       width: 600px;
       height: 600px;
-      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-      border-radius: 50%;
-    }
-    
-    .left-column::after {
-      content: '';
-      position: absolute;
-      bottom: -30%;
-      left: -20%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, rgba(42,157,143,0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
       border-radius: 50%;
     }
     
     .desktop-logo-container {
-      width: 120px;
-      height: 120px;
+      width: 180px;
+      height: 180px;
       background: white;
       border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 30px;
+      margin-bottom: 40px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.2);
       position: relative;
       z-index: 2;
@@ -319,7 +219,7 @@
     }
     
     .desktop-logo-container i {
-      font-size: 64px;
+      font-size: 80px;
       color: var(--primary-blue);
     }
     
@@ -327,153 +227,51 @@
       text-align: center;
       position: relative;
       z-index: 2;
-      max-width: 600px;
-      width: 100%;
+      max-width: 500px;
     }
     
     .desktop-app-info h1 {
-      font-size: 2.8rem;
+      font-size: 3rem;
       font-weight: 800;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       letter-spacing: 1px;
     }
     
     .desktop-app-info .tagline {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-weight: 300;
-      opacity: 0.95;
-      margin-bottom: 30px;
-    }
-    
-    /* Desktop Video Container */
-    .desktop-video-wrapper {
-      position: relative;
-      width: 100%;
-      max-width: 560px;
-      margin: 0 auto 30px;
-    }
-    
-    .desktop-video-container {
-      position: relative;
-      width: 100%;
-      height: 0;
-      padding-bottom: 56.25%;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-      background: #000;
-    }
-    
-    .desktop-video-player {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .desktop-video-thumbnail {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: pointer;
-      transition: opacity 0.3s ease;
-    }
-    
-    .desktop-video-thumbnail.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .desktop-play-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80px;
-      height: 80px;
-      background: rgba(255, 0, 0, 0.8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 5;
-      transition: all 0.3s ease;
-    }
-    
-    .desktop-play-button:hover {
-      background: rgba(255, 0, 0, 1);
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-    
-    .desktop-play-button i {
-      color: white;
-      font-size: 32px;
-      margin-left: 5px;
-    }
-    
-    .desktop-video-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: rgba(0,0,0,0.9);
-      backdrop-filter: blur(10px);
-      padding: 8px 16px;
-      border-radius: 25px;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      z-index: 10;
-      pointer-events: none;
-    }
-    
-    .desktop-video-badge i {
-      color: #ff0000;
+      opacity: 0.9;
+      margin-bottom: 32px;
     }
     
     .desktop-app-info .description {
-      font-size: 1rem;
-      line-height: 1.7;
-      opacity: 0.9;
-      margin-bottom: 30px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 40px;
     }
     
     .desktop-features {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
     }
     
     .feature-item {
-      background: rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.1);
       backdrop-filter: blur(10px);
       border-radius: 12px;
-      padding: 15px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       gap: 12px;
-      transition: all 0.3s ease;
-    }
-    
-    .feature-item:hover {
-      background: rgba(255,255,255,0.18);
-      transform: translateY(-2px);
+      min-width: 200px;
     }
     
     .feature-item i {
       font-size: 1.5rem;
       color: var(--light-blue);
-    }
-    
-    .feature-item span {
-      font-size: 0.95rem;
     }
     
     /* Right Column - Login Form */
@@ -483,7 +281,6 @@
       align-items: center;
       justify-content: center;
       padding: 40px;
-      background: var(--background-color);
     }
     
     .desktop-login-card {
@@ -509,15 +306,14 @@
       font-size: 1rem;
     }
     
-    /* ========================================
-       COMMON STYLES
-       ======================================== */
+    /* COMMON STYLES */
     
+    /* Login Card */
     .login-card {
       background: var(--surface-color);
-      border-radius: 20px;
-      padding: 28px;
-      margin-bottom: 25px;
+      border-radius: 24px;
+      padding: 30px;
+      margin-bottom: 30px;
       box-shadow: var(--shadow-md);
     }
     
@@ -525,10 +321,11 @@
       box-shadow: none;
       margin-bottom: 0;
       padding: 0;
+      border-radius: 20px;
     }
     
     .card-title {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 600;
       margin-bottom: 25px;
       color: var(--text-primary);
@@ -539,12 +336,12 @@
     
     .card-title i {
       color: var(--accent-blue);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
     
     /* Form Styles */
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
     
     .input-container {
@@ -557,20 +354,21 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--text-secondary);
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       z-index: 1;
     }
     
     .form-control {
       width: 100%;
-      padding: 18px 18px 18px 52px;
-      font-size: 1rem;
+      padding: 20px 20px 20px 55px;
+      font-size: 1.1rem;
       border: 2px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 14px;
       background-color: var(--background-color);
       color: var(--text-primary);
       transition: all 0.2s ease;
       font-family: inherit;
+      position: relative;
     }
     
     .form-control:focus {
@@ -583,54 +381,55 @@
     .form-control::placeholder {
       color: var(--text-secondary);
       opacity: 0.7;
+      font-size: 1rem;
     }
     
     .password-toggle {
       position: absolute;
-      right: 15px;
+      right: 18px;
       top: 50%;
       transform: translateY(-50%);
       background: none;
       border: none;
       color: var(--text-secondary);
       cursor: pointer;
-      font-size: 1.2rem;
-      padding: 8px;
+      font-size: 1.3rem;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
       z-index: 1;
-      transition: color 0.2s ease;
-    }
-    
-    .password-toggle:hover {
-      color: var(--accent-blue);
     }
     
     /* Login Button */
     .btn-login {
       width: 100%;
-      padding: 18px;
+      padding: 22px;
       background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
+      border-radius: 14px;
+      font-size: 1.2rem;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       margin-top: 10px;
       font-family: inherit;
     }
     
-    .btn-login:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.3);
+    .btn-login i {
+      font-size: 1.4rem;
     }
     
-    .btn-login:active {
-      transform: translateY(0);
+    .btn-login:active, .btn-login:hover {
+      transform: scale(0.98);
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
     }
     
     .btn-login:disabled {
@@ -643,9 +442,9 @@
     .divider {
       display: flex;
       align-items: center;
-      margin: 30px 0;
+      margin: 35px 0;
       color: var(--text-secondary);
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
     
     .divider::before,
@@ -657,36 +456,35 @@
     }
     
     .divider span {
-      padding: 0 15px;
-      font-weight: 500;
+      padding: 0 20px;
     }
     
     /* Register Options */
     .register-options {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 18px;
     }
     
     .btn-register {
-      padding: 16px;
+      padding: 20px;
       border: 2px solid var(--border-color);
-      border-radius: 12px;
+      border-radius: 14px;
       background: var(--surface-color);
       color: var(--text-primary);
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 15px;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       font-family: inherit;
     }
     
     .btn-register i {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
     }
     
     .btn-student {
@@ -695,11 +493,9 @@
       color: var(--primary-blue);
     }
     
-    .btn-student:hover {
+    .btn-student:active, .btn-student:hover {
       background: var(--primary-blue);
       color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(13, 59, 102, 0.3);
     }
     
     .btn-counselor {
@@ -708,19 +504,17 @@
       color: var(--accent-blue);
     }
     
-    .btn-counselor:hover {
+    .btn-counselor:active, .btn-counselor:hover {
       background: var(--accent-blue);
       color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(42, 157, 143, 0.3);
     }
     
     /* Status Messages */
     .status-message {
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 15px;
-      font-size: 0.95rem;
+      padding: 20px;
+      border-radius: 14px;
+      margin-top: 20px;
+      font-size: 1.05rem;
       display: none;
       animation: slideIn 0.3s ease;
     }
@@ -750,8 +544,8 @@
     
     /* Footer Links */
     .footer-links {
-      margin-top: 35px;
-      padding-top: 20px;
+      margin-top: 40px;
+      padding-top: 25px;
       border-top: 1px solid var(--border-color);
       text-align: center;
     }
@@ -759,9 +553,8 @@
     .quick-links {
       display: flex;
       justify-content: center;
-      gap: 25px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
+      gap: 30px;
+      margin-bottom: 25px;
     }
     
     .quick-link {
@@ -771,48 +564,42 @@
       gap: 8px;
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.9rem;
-      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      transition: color 0.2s ease;
     }
     
     .quick-link i {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       background: var(--background-color);
-      width: 48px;
-      height: 48px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
     }
     
-    .quick-link:hover {
+    .quick-link:active, .quick-link:hover {
       color: var(--accent-blue);
     }
     
-    .quick-link:hover i {
-      background: var(--accent-blue);
-      color: white;
-      transform: translateY(-3px);
-    }
-    
     .copyright {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       line-height: 1.6;
     }
     
     .copyright a {
       color: var(--accent-blue);
+      text-decoration: none;
       font-weight: 500;
     }
     
     /* Loading Spinner */
     .loading-spinner {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       border-top-color: white;
@@ -823,7 +610,7 @@
       to { transform: rotate(360deg); }
     }
     
-    /* Bottom Navigation */
+    /* Bottom Navigation (Mobile only) */
     .bottom-nav {
       height: 70px;
       background: var(--surface-color);
@@ -837,28 +624,28 @@
       left: 0;
       right: 0;
       z-index: 1000;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
     
     .nav-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       color: var(--text-secondary);
       text-decoration: none;
-      font-size: 0.8rem;
-      padding: 8px 12px;
+      font-size: 0.85rem;
+      padding: 10px 15px;
       border-radius: 10px;
       transition: all 0.2s ease;
       background: none;
       border: none;
       cursor: pointer;
-      min-width: 65px;
+      min-width: 70px;
     }
     
     .nav-item i {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
     
     .nav-item.active {
@@ -866,21 +653,12 @@
       background: rgba(42, 157, 143, 0.1);
     }
     
-    .nav-item:hover {
-      color: var(--accent-blue);
-    }
-    
-    /* Desktop Footer */
+    /* Desktop footer */
     .desktop-footer {
-      margin-top: 28px;
+      margin-top: 32px;
       text-align: center;
       padding-top: 20px;
       border-top: 1px solid var(--border-color);
-    }
-    
-    .desktop-footer a {
-      margin: 0 12px;
-      font-size: 0.9rem;
     }
     
     /* POPUP MODAL STYLES */
@@ -890,8 +668,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.5);
       display: none;
       align-items: center;
       justify-content: center;
@@ -907,32 +684,31 @@
     
     .modal-content {
       background: white;
-      border-radius: 20px;
-      max-width: 500px;
+      border-radius: 24px;
+      max-width: 450px;
       width: 100%;
-      max-height: 85vh;
+      max-height: 80vh;
       overflow-y: auto;
-      transform: scale(0.9);
+      transform: translateY(20px);
       transition: transform 0.3s ease;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: var(--shadow-lg);
     }
     
     .modal-overlay.active .modal-content {
-      transform: scale(1);
+      transform: translateY(0);
     }
     
     .modal-header {
-      padding: 25px 24px 20px;
+      padding: 28px 24px 20px;
       border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
-      gap: 12px;
-      position: relative;
+      gap: 15px;
     }
     
     .modal-header i {
       color: var(--accent-blue);
-      font-size: 1.6rem;
+      font-size: 1.8rem;
     }
     
     .modal-header h3 {
@@ -942,52 +718,39 @@
     }
     
     .modal-body {
-      padding: 25px;
+      padding: 28px;
     }
     
     .modal-description {
       line-height: 1.7;
       color: var(--text-secondary);
-      margin-bottom: 25px;
-      font-size: 0.95rem;
-    }
-    
-    .modal-description p {
-      margin-bottom: 15px;
-    }
-    
-    .modal-description strong {
-      color: var(--text-primary);
+      margin-bottom: 28px;
+      font-size: 1.05rem;
     }
     
     .modal-actions {
       display: flex;
-      gap: 12px;
+      gap: 15px;
     }
     
     .modal-btn {
       flex: 1;
-      padding: 16px;
-      border-radius: 12px;
+      padding: 18px;
+      border-radius: 14px;
       font-weight: 600;
       border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
     
     .modal-btn-primary {
       background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
       color: white;
-    }
-    
-    .modal-btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(42, 157, 143, 0.3);
     }
     
     .modal-btn-secondary {
@@ -996,34 +759,29 @@
       border: 1px solid var(--border-color);
     }
     
-    .modal-btn-secondary:hover {
-      background: var(--border-color);
-    }
-    
     .close-btn {
       position: absolute;
-      top: 18px;
-      right: 18px;
-      background: var(--background-color);
+      top: 20px;
+      right: 20px;
+      background: none;
       border: none;
-      font-size: 1.5rem;
+      font-size: 2rem;
       color: var(--text-secondary);
       cursor: pointer;
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
-      transition: all 0.2s ease;
     }
     
     .close-btn:hover {
-      background: var(--border-color);
-      color: var(--text-primary);
+      background: var(--background-color);
     }
     
-    /* RESPONSIVE */
+    /* FIXED RESPONSIVE MEDIA QUERIES */
+    /* Mobile only - Always show unless desktop media query overrides */
     .mobile-container {
       display: block !important;
     }
@@ -1032,6 +790,7 @@
       display: none !important;
     }
     
+    /* Desktop only - Show only on large screens */
     @media (min-width: 993px) {
       .mobile-container {
         display: none !important;
@@ -1042,21 +801,85 @@
       }
     }
     
+    /* Mobile optimizations for smaller screens */
     @media (max-width: 480px) {
       .main-content {
-        padding: 20px 16px 90px;
+        padding: 25px 18px 80px !important;
       }
       
       .login-card {
-        padding: 24px;
+        padding: 25px !important;
+      }
+      
+      .app-header {
+        padding: 22px 18px !important;
+      }
+      
+      .header-content {
+        gap: 18px !important;
+      }
+      
+      .logo-container {
+        width: 65px !important;
+        height: 65px !important;
+      }
+      
+      .app-title h1 {
+        font-size: 1.7rem !important;
+      }
+      
+      .app-title p {
+        font-size: 0.95rem !important;
       }
       
       .welcome-section h2 {
-        font-size: 1.6rem;
+        font-size: 1.8rem !important;
+      }
+      
+      .welcome-section p {
+        font-size: 1.05rem !important;
+      }
+      
+      .form-control {
+        padding: 18px 18px 18px 52px !important;
+        font-size: 1.05rem !important;
+      }
+      
+      .btn-login, .btn-register {
+        padding: 20px !important;
+        font-size: 1.15rem !important;
       }
       
       .quick-links {
-        gap: 20px;
+        gap: 25px !important;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      html {
+        font-size: 15px !important;
+      }
+      
+      .header-content {
+        gap: 15px !important;
+      }
+      
+      .logo-container {
+        width: 60px !important;
+        height: 60px !important;
+      }
+      
+      .app-title h1 {
+        font-size: 1.6rem !important;
+      }
+      
+      .nav-item {
+        min-width: 65px !important;
+        padding: 8px 12px !important;
+      }
+      
+      .nav-item i {
+        font-size: 1.4rem !important;
       }
     }
     
@@ -1074,45 +897,19 @@
 </head>
 <body>
 
-<!-- MOBILE VERSION -->
+<!-- MOBILE VERSION (Default - will be hidden on desktop) -->
 <div class="mobile-container">
   <!-- App Header -->
   <header class="app-header">
     <div class="header-content">
       <div class="logo-container" id="mobileLogoContainer">
+        <!-- Logo dengan fallback ke icon -->
         <i class="fas fa-hands-helping"></i>
       </div>
       <div class="app-title">
         <h1>ASAKUR</h1>
         <p>Aplikasi Siberkonseling Asih dan Syukur</p>
       </div>
-    </div>
-    
-    <!-- Mobile Video -->
-    <div class="mobile-video-container" id="mobileVideoContainer">
-      <div class="video-badge">
-        <i class="fas fa-video"></i>
-        <span>Kenali ASAKUR</span>
-      </div>
-      <img class="video-thumbnail" id="mobileVideoThumbnail" 
-           src="https://asakur.web.app/images/video_thumbnail.jpg" 
-           alt="Video ASAKUR"
-           onerror="this.src='https://asakur.web.app/images/logo_asakur.png'">
-      <div class="play-button" id="mobilePlayButton">
-        <i class="fas fa-play"></i>
-      </div>
-      <video 
-        id="mobileVideoPlayer"
-        class="mobile-video-player"
-        preload="metadata"
-        playsinline
-        muted
-        autoplay
-        controls
-        style="display: none;">
-        <source src="https://asakur.web.app/videos/asakur_introduction.mp4" type="video/mp4">
-        Browser Anda tidak mendukung tag video.
-      </video>
     </div>
   </header>
   
@@ -1121,7 +918,7 @@
     <!-- Welcome Section -->
     <div class="welcome-section">
       <h2>Selamat Datang</h2>
-      <p>Masuk untuk melanjutkan ke layanan konseling online</p>
+      <p>Masuk untuk melanjutkan ke layanan konseling online kami</p>
     </div>
     
     <!-- Login Form -->
@@ -1132,6 +929,7 @@
       </div>
       
       <form id="loginForm" onsubmit="event.preventDefault(); doLogin();">
+        <!-- Username Field -->
         <div class="form-group">
           <div class="input-container">
             <i class="fas fa-user input-icon"></i>
@@ -1145,6 +943,7 @@
           </div>
         </div>
         
+        <!-- Password Field -->
         <div class="form-group">
           <div class="input-container">
             <i class="fas fa-lock input-icon"></i>
@@ -1162,12 +961,14 @@
           </div>
         </div>
         
+        <!-- Login Button -->
         <button type="submit" id="btnLogin" class="btn-login">
           <i class="fas fa-sign-in-alt"></i>
           <span id="loginText">Masuk Sekarang</span>
           <span id="loginLoading" class="loading-spinner" style="display:none;"></span>
         </button>
         
+        <!-- Status Message -->
         <div id="statusMessage" class="status-message"></div>
       </form>
     </div>
@@ -1237,7 +1038,7 @@
   </nav>
 </div>
 
-<!-- DESKTOP VERSION -->
+<!-- DESKTOP VERSION (Hidden by default, shown only on desktop) -->
 <div class="desktop-container">
   <!-- Left Column -->
   <div class="left-column">
@@ -1248,35 +1049,6 @@
     <div class="desktop-app-info">
       <h1>ASAKUR</h1>
       <div class="tagline">Aplikasi Siberkonseling Asih dan Syukur</div>
-      
-      <!-- Desktop Video -->
-      <div class="desktop-video-wrapper">
-        <div class="desktop-video-container" id="desktopVideoContainer">
-          <div class="desktop-video-badge">
-            <i class="fas fa-video"></i>
-            <span>Kenali ASAKUR</span>
-          </div>
-          <img class="desktop-video-thumbnail" id="desktopVideoThumbnail"
-               src="https://asakur.web.app/images/video_thumbnail.jpg" 
-               alt="Video ASAKUR"
-               onerror="this.src='https://asakur.web.app/images/logo_asakur.png'">
-          <div class="desktop-play-button" id="desktopPlayButton">
-            <i class="fas fa-play"></i>
-          </div>
-          <video 
-            id="desktopVideoPlayer"
-            class="desktop-video-player"
-            preload="metadata"
-            playsinline
-            muted
-            autoplay
-            controls
-            style="display: none;">
-            <source src="https://asakur.web.app/videos/asakur_introduction.mp4" type="video/mp4">
-            Browser Anda tidak mendukung tag video.
-          </video>
-        </div>
-      </div>
       
       <div class="description">
         Platform konseling online yang menggabungkan pendekatan psikologis berbasis kasih sayang 
@@ -1317,6 +1089,7 @@
         </div>
         
         <form id="desktopLoginForm" onsubmit="event.preventDefault(); doDesktopLogin();">
+          <!-- Username Field -->
           <div class="form-group">
             <div class="input-container">
               <i class="fas fa-user input-icon"></i>
@@ -1330,6 +1103,7 @@
             </div>
           </div>
           
+          <!-- Password Field -->
           <div class="form-group">
             <div class="input-container">
               <i class="fas fa-lock input-icon"></i>
@@ -1347,19 +1121,23 @@
             </div>
           </div>
           
+          <!-- Login Button -->
           <button type="submit" id="desktopBtnLogin" class="btn-login">
             <i class="fas fa-sign-in-alt"></i>
             <span id="desktopLoginText">Masuk Sekarang</span>
             <span id="desktopLoginLoading" class="loading-spinner" style="display:none;"></span>
           </button>
           
+          <!-- Status Message -->
           <div id="desktopStatusMessage" class="status-message"></div>
         </form>
         
+        <!-- Divider -->
         <div class="divider">
           <span>ATAU</span>
         </div>
         
+        <!-- Register Options -->
         <div class="register-options">
           <button id="desktopBtnRegisterStudent" class="btn-register btn-student">
             <i class="fas fa-user-graduate"></i>
@@ -1372,16 +1150,17 @@
           </button>
         </div>
         
+        <!-- Desktop Footer -->
         <div class="desktop-footer">
           <p style="margin-bottom: 8px;">
-            <a href="mailto:asakur@gmail.com?subject=Bantuan%20ASAKUR">
+            <a href="mailto:asakur@gmail.com?subject=Bantuan%20ASAKUR" style="margin-right: 16px;">
               <i class="fas fa-headset"></i> Bantuan
             </a>
-            <a id="desktopForgotPassword">
+            <a id="desktopForgotPassword" style="margin-right: 16px;">
               <i class="fas fa-key"></i> Lupa Password?
             </a>
             <a href="mailto:dev@greenbox.web.id">
-              <i class="fas fa-code"></i> Developer
+              <i class="fas fa-code"></i> Hubungi Developer
             </a>
           </p>
           <p style="color: var(--text-secondary); font-size: 0.875rem;">
@@ -1394,6 +1173,7 @@
 </div>
 
 <!-- POPUP MODALS -->
+<!-- Register Popup -->
 <div id="registerPopup" class="modal-overlay" onclick="closeModal(event, 'registerPopup')">
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="closeModal(event, 'registerPopup')">&times;</button>
@@ -1416,6 +1196,7 @@
   </div>
 </div>
 
+<!-- About Popup -->
 <div id="aboutPopup" class="modal-overlay" onclick="closeModal(event, 'aboutPopup')">
   <div class="modal-content" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="closeModal(event, 'aboutPopup')">&times;</button>
@@ -1458,215 +1239,84 @@
 // GLOBAL VARIABLES
 // =============================================
 
-var appBaseUrl = '';
-var isPasswordVisible = false;
-var isDesktopPasswordVisible = false;
-
-// Video URL dari ASAKUR
-var VIDEO_URL = 'https://asakur.web.app/videos/asakur_introduction.mp4';
+let appBaseUrl = '';
+let isPasswordVisible = false;
+let isDesktopPasswordVisible = false;
 
 // =============================================
-// LOGO LOADING FUNCTIONS
+// LOGO LOADING WITH CORS FIX
 // =============================================
 
 function loadLogos() {
-  console.log('Loading logos...');
-  var logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
+  const logoUrl = 'https://asakur.web.app/images/logo_asakur.png';
   
   // Load mobile logo
-  loadLogoImage('mobileLogoContainer', logoUrl, 60);
-  
-  // Load desktop logo
-  loadLogoImage('desktopLogoContainer', logoUrl, 120);
-}
-
-function loadLogoImage(containerId, url, size) {
-  var container = document.getElementById(containerId);
-  if (!container) {
-    console.log('Container not found:', containerId);
-    return;
+  const mobileLogoContainer = document.getElementById('mobileLogoContainer');
+  if (mobileLogoContainer) {
+    loadLogoImage(mobileLogoContainer, logoUrl, 70);
   }
   
-  // Create image element
-  var img = document.createElement('img');
+  // Load desktop logo
+  const desktopLogoContainer = document.getElementById('desktopLogoContainer');
+  if (desktopLogoContainer) {
+    loadLogoImage(desktopLogoContainer, logoUrl, 180);
+  }
+}
+
+function loadLogoImage(container, url, size) {
+  // Buat elemen gambar
+  const img = new Image();
   img.alt = 'ASAKUR Logo';
   img.style.width = '85%';
   img.style.height = '85%';
   img.style.objectFit = 'contain';
   
-  // Add loading class
+  // Tambahkan loading class
   container.classList.add('logo-loading');
   
   img.onload = function() {
-    console.log('Logo loaded successfully for:', containerId);
+    console.log('Logo loaded successfully');
     container.classList.remove('logo-loading');
     container.innerHTML = '';
     container.appendChild(img);
   };
   
   img.onerror = function() {
-    console.log('Logo failed to load for:', containerId, 'using fallback icon');
+    console.log('Logo failed to load, using fallback icon');
     container.classList.remove('logo-loading');
     container.innerHTML = '';
     
-    // Use icon as fallback
-    var icon = document.createElement('i');
+    // Gunakan icon sebagai fallback
+    const icon = document.createElement('i');
     icon.className = 'fas fa-hands-helping';
-    icon.style.fontSize = size === 60 ? '32px' : '64px';
+    icon.style.fontSize = size === 70 ? '32px' : '80px';
     icon.style.color = 'var(--primary-blue)';
     container.appendChild(icon);
+    
+    // Coba dengan proxy URL jika gagal (untuk menghindari CORS)
+    tryProxyImage(container, url, size);
   };
   
-  // Try to load image with cache busting
+  // Coba load gambar dengan timestamp untuk cache busting
   img.src = url + '?t=' + new Date().getTime();
 }
 
-// =============================================
-// VIDEO FUNCTIONS - AUTO PLAY DI SEMUA DEVICE
-// =============================================
-
-function loadVideoThumbnails() {
-  var mobileThumbnail = document.getElementById('mobileVideoThumbnail');
-  var desktopThumbnail = document.getElementById('desktopVideoThumbnail');
+function tryProxyImage(container, url, size) {
+  // Alternatif: coba dengan CORS proxy sederhana
+  const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(url);
+  const img = new Image();
   
-  var thumbnailUrl = 'https://asakur.web.app/images/video_thumbnail.jpg';
-  var fallbackThumbnail = 'https://asakur.web.app/images/logo_asakur.png';
+  img.onload = function() {
+    container.innerHTML = '';
+    container.appendChild(img);
+  };
   
-  if (mobileThumbnail) {
-    mobileThumbnail.src = thumbnailUrl;
-  }
+  img.onerror = function() {
+    // Tetap gunakan icon jika proxy juga gagal
+    console.log('Proxy also failed, keeping icon');
+  };
   
-  if (desktopThumbnail) {
-    desktopThumbnail.src = thumbnailUrl;
-  }
-}
-
-function setupVideoPlayers() {
-  // Mobile video player
-  var mobilePlayButton = document.getElementById('mobilePlayButton');
-  var mobileThumbnail = document.getElementById('mobileVideoThumbnail');
-  var mobileVideoPlayer = document.getElementById('mobileVideoPlayer');
-  
-  if (mobilePlayButton && mobileThumbnail && mobileVideoPlayer) {
-    // Add click event for manual play
-    mobilePlayButton.addEventListener('click', function() {
-      playMobileVideo();
-    });
-    
-    // Add click event for thumbnail
-    mobileThumbnail.addEventListener('click', function() {
-      playMobileVideo();
-    });
-  }
-  
-  // Desktop video player
-  var desktopPlayButton = document.getElementById('desktopPlayButton');
-  var desktopThumbnail = document.getElementById('desktopVideoThumbnail');
-  var desktopVideoPlayer = document.getElementById('desktopVideoPlayer');
-  
-  if (desktopPlayButton && desktopThumbnail && desktopVideoPlayer) {
-    // Add click event for manual play
-    desktopPlayButton.addEventListener('click', function() {
-      playDesktopVideo();
-    });
-    
-    // Add click event for thumbnail
-    desktopThumbnail.addEventListener('click', function() {
-      playDesktopVideo();
-    });
-  }
-}
-
-function playMobileVideo() {
-  var mobileThumbnail = document.getElementById('mobileVideoThumbnail');
-  var mobilePlayButton = document.getElementById('mobilePlayButton');
-  var mobileVideoPlayer = document.getElementById('mobileVideoPlayer');
-  
-  if (mobileVideoPlayer) {
-    // Show video player
-    mobileVideoPlayer.style.display = 'block';
-    
-    // Set video source
-    if (!mobileVideoPlayer.src || mobileVideoPlayer.src.indexOf('asakur_introduction.mp4') === -1) {
-      mobileVideoPlayer.src = VIDEO_URL;
-    }
-    
-    // Play video
-    var playPromise = mobileVideoPlayer.play();
-    
-    if (playPromise !== undefined) {
-      playPromise.then(function() {
-        console.log('Mobile video playing');
-      }).catch(function(error) {
-        console.log('Mobile video autoplay failed:', error);
-        // Show play button if autoplay fails
-        if (mobilePlayButton) mobilePlayButton.style.display = 'flex';
-      });
-    }
-    
-    // Hide thumbnail and play button
-    if (mobileThumbnail) {
-      mobileThumbnail.classList.add('hidden');
-    }
-    if (mobilePlayButton) {
-      mobilePlayButton.style.display = 'none';
-    }
-  }
-}
-
-function playDesktopVideo() {
-  var desktopThumbnail = document.getElementById('desktopVideoThumbnail');
-  var desktopPlayButton = document.getElementById('desktopPlayButton');
-  var desktopVideoPlayer = document.getElementById('desktopVideoPlayer');
-  
-  if (desktopVideoPlayer) {
-    // Show video player
-    desktopVideoPlayer.style.display = 'block';
-    
-    // Set video source
-    if (!desktopVideoPlayer.src || desktopVideoPlayer.src.indexOf('asakur_introduction.mp4') === -1) {
-      desktopVideoPlayer.src = VIDEO_URL;
-    }
-    
-    // Play video
-    var playPromise = desktopVideoPlayer.play();
-    
-    if (playPromise !== undefined) {
-      playPromise.then(function() {
-        console.log('Desktop video playing');
-      }).catch(function(error) {
-        console.log('Desktop video autoplay failed:', error);
-        // Show play button if autoplay fails
-        if (desktopPlayButton) desktopPlayButton.style.display = 'flex';
-      });
-    }
-    
-    // Hide thumbnail and play button
-    if (desktopThumbnail) {
-      desktopThumbnail.classList.add('hidden');
-    }
-    if (desktopPlayButton) {
-      desktopPlayButton.style.display = 'none';
-    }
-  }
-}
-
-// Auto play video when page loads - UNTUK SEMUA DEVICE
-function autoPlayVideo() {
-  console.log('Auto playing video for all devices...');
-  
-  // Delay a bit to let page load
-  setTimeout(function() {
-    if (window.innerWidth >= 993) {
-      // Desktop version
-      console.log('Auto playing desktop video');
-      playDesktopVideo();
-    } else {
-      // Mobile version
-      console.log('Auto playing mobile video');
-      playMobileVideo();
-    }
-  }, 1000); // 1 second delay
+  img.src = proxyUrl;
 }
 
 // =============================================
@@ -1674,8 +1324,8 @@ function autoPlayVideo() {
 // =============================================
 
 function togglePasswordVisibility() {
-  var passwordField = document.getElementById('password');
-  var toggleIcon = document.querySelector('#password + .password-toggle i');
+  const passwordField = document.getElementById('password');
+  const toggleIcon = document.querySelector('#password + .password-toggle i');
   
   if (passwordField && toggleIcon) {
     isPasswordVisible = !isPasswordVisible;
@@ -1685,8 +1335,8 @@ function togglePasswordVisibility() {
 }
 
 function toggleDesktopPasswordVisibility() {
-  var passwordField = document.getElementById('desktopPassword');
-  var toggleIcon = document.querySelector('#desktopPassword + .password-toggle i');
+  const passwordField = document.getElementById('desktopPassword');
+  const toggleIcon = document.querySelector('#desktopPassword + .password-toggle i');
   
   if (passwordField && toggleIcon) {
     isDesktopPasswordVisible = !isDesktopPasswordVisible;
@@ -1700,34 +1350,24 @@ function toggleDesktopPasswordVisibility() {
 // =============================================
 
 function showRegisterPopup() {
-  var modal = document.getElementById('registerPopup');
-  if (modal) {
-    modal.style.display = 'flex';
-    setTimeout(function() { 
-      modal.classList.add('active'); 
-    }, 10);
-  }
+  const modal = document.getElementById('registerPopup');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
 }
 
 function showAboutPopup() {
-  var modal = document.getElementById('aboutPopup');
-  if (modal) {
-    modal.style.display = 'flex';
-    setTimeout(function() { 
-      modal.classList.add('active'); 
-    }, 10);
-  }
+  const modal = document.getElementById('aboutPopup');
+  modal.style.display = 'flex';
+  setTimeout(() => modal.classList.add('active'), 10);
 }
 
 function closeModal(event, modalId) {
   event.stopPropagation();
-  var modal = document.getElementById(modalId);
-  if (modal) {
-    modal.classList.remove('active');
-    setTimeout(function() {
-      modal.style.display = 'none';
-    }, 300);
-  }
+  const modal = document.getElementById(modalId);
+  modal.classList.remove('active');
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 300);
 }
 
 // =============================================
@@ -1735,46 +1375,41 @@ function closeModal(event, modalId) {
 // =============================================
 
 function getBaseUrlFromServer() {
-  return new Promise(function(resolve, reject) {
-    console.log("Requesting base URL from server...");
+  return new Promise((resolve, reject) => {
+    console.log("🔍 Requesting base URL from server...");
     
-    if (typeof google !== 'undefined' && google.script && google.script.run) {
-      google.script.run
-        .withSuccessHandler(function(url) {
-          console.log("Base URL received:", url);
-          appBaseUrl = url;
-          
-          try {
-            sessionStorage.setItem('asakur_base_url', url);
-          } catch (e) {
-            console.warn("Cannot save to sessionStorage:", e);
-          }
-          
-          resolve(url);
-        })
-        .withFailureHandler(function(error) {
-          console.error("Failed to get base URL:", error);
-          var fallbackUrl = getFallbackUrl();
-          console.log("Using fallback URL:", fallbackUrl);
-          appBaseUrl = fallbackUrl;
-          resolve(fallbackUrl);
-        })
-        .getBaseUrl();
-    } else {
-      var fallbackUrl = getFallbackUrl();
-      appBaseUrl = fallbackUrl;
-      resolve(fallbackUrl);
-    }
+    google.script.run
+      .withSuccessHandler(function(url) {
+        console.log("✅ Base URL received:", url);
+        appBaseUrl = url;
+        
+        try {
+          sessionStorage.setItem('asakur_base_url', url);
+        } catch (e) {
+          console.warn("Cannot save to sessionStorage:", e);
+        }
+        
+        resolve(url);
+      })
+      .withFailureHandler(function(error) {
+        console.error("❌ Failed to get base URL:", error);
+        
+        const fallbackUrl = getFallbackUrl();
+        console.log("⚠️ Using fallback URL:", fallbackUrl);
+        appBaseUrl = fallbackUrl;
+        resolve(fallbackUrl);
+      })
+      .getBaseUrl();
   });
 }
 
 function getFallbackUrl() {
   try {
-    var currentUrl = window.location.href;
+    const currentUrl = window.location.href;
     console.log("Current URL:", currentUrl);
     
     // Extract base URL untuk Google Apps Script
-    var match = currentUrl.match(/(https:\/\/script\.google\.com\/macros\/s\/[^\/]+)\/exec/);
+    const match = currentUrl.match(/(https:\/\/script\.google\.com\/macros\/s\/[^\/]+)\/exec/);
     if (match) {
       return match[1] + '/exec';
     }
@@ -1787,16 +1422,16 @@ function getFallbackUrl() {
 }
 
 function navigateToPage(page) {
-  console.log("Navigating to page:", page);
+  console.log("🔗 Navigating to page:", page);
   
-  // Close all modals
-  document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+  // Tutup semua modal
+  document.querySelectorAll('.modal-overlay').forEach(modal => {
     modal.classList.remove('active');
     modal.style.display = 'none';
   });
   
   if (!appBaseUrl) {
-    console.warn("Base URL not ready, fetching...");
+    console.warn("⚠️ Base URL not ready, fetching...");
     getBaseUrlFromServer().then(function() {
       performNavigation(page);
     });
@@ -1806,13 +1441,13 @@ function navigateToPage(page) {
 }
 
 function performNavigation(page) {
-  var targetUrl = appBaseUrl;
+  let targetUrl = appBaseUrl;
   
   if (page && page !== '') {
     targetUrl += '?page=' + page;
   }
   
-  console.log("Redirecting to:", targetUrl);
+  console.log("🚀 Redirecting to:", targetUrl);
   
   try {
     if (window.top && window.top !== window.self) {
@@ -1831,14 +1466,14 @@ function performNavigation(page) {
 // =============================================
 
 function doLogin() {
-  var username = document.getElementById("username").value.trim();
-  var password = document.getElementById("password").value.trim();
-  var btnLogin = document.getElementById("btnLogin");
-  var loginText = document.getElementById("loginText");
-  var loginLoading = document.getElementById("loginLoading");
-  var statusMessage = document.getElementById("statusMessage");
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
+  const btnLogin = document.getElementById("btnLogin");
+  const loginText = document.getElementById("loginText");
+  const loginLoading = document.getElementById("loginLoading");
+  const statusMessage = document.getElementById("statusMessage");
 
-  console.log("Mobile Login attempt for username:", username);
+  console.log("🔐 Mobile Login attempt for username:", username);
 
   if (!username || !password) {
     showMobileStatus("Username dan password harus diisi", "error");
@@ -1850,58 +1485,52 @@ function doLogin() {
   loginLoading.style.display = "inline-block";
   statusMessage.style.display = "none";
 
-  var loginTimeout = setTimeout(function() {
+  const loginTimeout = setTimeout(function() {
     showMobileStatus("Waktu login habis. Silakan coba lagi.", "error");
     resetMobileLoginButton();
   }, 15000);
 
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run
-      .withSuccessHandler(function(response) {
-        clearTimeout(loginTimeout);
-        console.log("Mobile Login response:", response);
+  google.script.run
+    .withSuccessHandler(function(response) {
+      clearTimeout(loginTimeout);
+      console.log("✅ Mobile Login response:", response);
+      
+      if (response && response.success) {
+        showMobileStatus("Login berhasil! Mengalihkan...", "success");
         
-        if (response && response.success) {
-          showMobileStatus("Login berhasil! Mengalihkan...", "success");
-          
-          btnLogin.style.background = "linear-gradient(135deg, var(--success-color), #30d158)";
-          
-          setTimeout(function() {
-            if (response.redirectUrl) {
-              console.log("Redirecting to:", response.redirectUrl);
-              performNavigation(response.user.role);
-            } else {
-              navigateToPage(response.user.role);
-            }
-          }, 1000);
-        } else {
-          showMobileStatus(response?.message || "Login gagal. Periksa kredensial Anda.", "error");
-          resetMobileLoginButton();
-        }
-      })
-      .withFailureHandler(function(error) {
-        clearTimeout(loginTimeout);
-        console.error("Mobile Login error:", error);
-        showMobileStatus("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+        btnLogin.style.background = "linear-gradient(135deg, var(--success-color), #30d158)";
+        
+        setTimeout(function() {
+          if (response.redirectUrl) {
+            console.log("🎯 Redirecting to:", response.redirectUrl);
+            performNavigation(response.user.role);
+          } else {
+            navigateToPage(response.user.role);
+          }
+        }, 1000);
+      } else {
+        showMobileStatus(response?.message || "Login gagal. Periksa kredensial Anda.", "error");
         resetMobileLoginButton();
-      })
-      .login(username, password);
-  } else {
-    clearTimeout(loginTimeout);
-    showMobileStatus("Demo mode - Google Apps Script not available", "error");
-    resetMobileLoginButton();
-  }
+      }
+    })
+    .withFailureHandler(function(error) {
+      clearTimeout(loginTimeout);
+      console.error("❌ Mobile Login error:", error);
+      showMobileStatus("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+      resetMobileLoginButton();
+    })
+    .login(username, password);
 }
 
 function doDesktopLogin() {
-  var username = document.getElementById("desktopUsername").value.trim();
-  var password = document.getElementById("desktopPassword").value.trim();
-  var btnLogin = document.getElementById("desktopBtnLogin");
-  var loginText = document.getElementById("desktopLoginText");
-  var loginLoading = document.getElementById("desktopLoginLoading");
-  var statusMessage = document.getElementById("desktopStatusMessage");
+  const username = document.getElementById("desktopUsername").value.trim();
+  const password = document.getElementById("desktopPassword").value.trim();
+  const btnLogin = document.getElementById("desktopBtnLogin");
+  const loginText = document.getElementById("desktopLoginText");
+  const loginLoading = document.getElementById("desktopLoginLoading");
+  const statusMessage = document.getElementById("desktopStatusMessage");
 
-  console.log("Desktop Login attempt for username:", username);
+  console.log("🔐 Desktop Login attempt for username:", username);
 
   if (!username || !password) {
     showDesktopStatus("Username dan password harus diisi", "error");
@@ -1913,59 +1542,56 @@ function doDesktopLogin() {
   loginLoading.style.display = "inline-block";
   statusMessage.style.display = "none";
 
-  var loginTimeout = setTimeout(function() {
+  const loginTimeout = setTimeout(function() {
     showDesktopStatus("Waktu login habis. Silakan coba lagi.", "error");
     resetDesktopLoginButton();
   }, 15000);
 
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    google.script.run
-      .withSuccessHandler(function(response) {
-        clearTimeout(loginTimeout);
-        console.log("Desktop Login response:", response);
+  google.script.run
+    .withSuccessHandler(function(response) {
+      clearTimeout(loginTimeout);
+      console.log("✅ Desktop Login response:", response);
+      
+      if (response && response.success) {
+        showDesktopStatus("Login berhasil! Mengalihkan...", "success");
         
-        if (response && response.success) {
-          showDesktopStatus("Login berhasil! Mengalihkan...", "success");
-          
-          btnLogin.style.background = "linear-gradient(135deg, var(--success-color), #30d158)";
-          
-          setTimeout(function() {
-            if (response.redirectUrl) {
-              console.log("Redirecting to:", response.redirectUrl);
-              performNavigation(response.user.role);
-            } else {
-              navigateToPage(response.user.role);
-            }
-          }, 1000);
-        } else {
-          showDesktopStatus(response?.message || "Login gagal. Periksa kredensial Anda.", "error");
-          resetDesktopLoginButton();
-        }
-      })
-      .withFailureHandler(function(error) {
-        clearTimeout(loginTimeout);
-        console.error("Desktop Login error:", error);
-        showDesktopStatus("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+        btnLogin.style.background = "linear-gradient(135deg, var(--success-color), #30d158)";
+        
+        setTimeout(function() {
+          if (response.redirectUrl) {
+            console.log("🎯 Redirecting to:", response.redirectUrl);
+            performNavigation(response.user.role);
+          } else {
+            navigateToPage(response.user.role);
+          }
+        }, 1000);
+      } else {
+        showDesktopStatus(response?.message || "Login gagal. Periksa kredensial Anda.", "error");
         resetDesktopLoginButton();
-      })
-      .login(username, password);
-  } else {
-    clearTimeout(loginTimeout);
-    showDesktopStatus("Demo mode - Google Apps Script not available", "error");
-    resetDesktopLoginButton();
-  }
+      }
+    })
+    .withFailureHandler(function(error) {
+      clearTimeout(loginTimeout);
+      console.error("❌ Desktop Login error:", error);
+      showDesktopStatus("Terjadi kesalahan saat login. Silakan coba lagi.", "error");
+      resetDesktopLoginButton();
+    })
+    .login(username, password);
 }
 
 function showMobileStatus(message, type) {
-  var statusMessage = document.getElementById("statusMessage");
+  const statusMessage = document.getElementById("statusMessage");
   if (!statusMessage) return;
   
   statusMessage.textContent = message;
-  statusMessage.className = 'status-message status-' + type;
+  statusMessage.className = `status-message status-${type}`;
   statusMessage.style.display = "block";
+  statusMessage.style.animation = "none";
+  void statusMessage.offsetWidth;
+  statusMessage.style.animation = "slideIn 0.3s ease";
   
   if (type === 'error') {
-    setTimeout(function() {
+    setTimeout(() => {
       if (statusMessage.style.display === 'block') {
         statusMessage.style.display = 'none';
       }
@@ -1974,15 +1600,18 @@ function showMobileStatus(message, type) {
 }
 
 function showDesktopStatus(message, type) {
-  var statusMessage = document.getElementById("desktopStatusMessage");
+  const statusMessage = document.getElementById("desktopStatusMessage");
   if (!statusMessage) return;
   
   statusMessage.textContent = message;
-  statusMessage.className = 'status-message status-' + type;
+  statusMessage.className = `status-message status-${type}`;
   statusMessage.style.display = "block";
+  statusMessage.style.animation = "none";
+  void statusMessage.offsetWidth;
+  statusMessage.style.animation = "slideIn 0.3s ease";
   
   if (type === 'error') {
-    setTimeout(function() {
+    setTimeout(() => {
       if (statusMessage.style.display === 'block') {
         statusMessage.style.display = 'none';
       }
@@ -1991,9 +1620,9 @@ function showDesktopStatus(message, type) {
 }
 
 function resetMobileLoginButton() {
-  var btnLogin = document.getElementById("btnLogin");
-  var loginText = document.getElementById("loginText");
-  var loginLoading = document.getElementById("loginLoading");
+  const btnLogin = document.getElementById("btnLogin");
+  const loginText = document.getElementById("loginText");
+  const loginLoading = document.getElementById("loginLoading");
   
   if (btnLogin && loginText && loginLoading) {
     btnLogin.disabled = false;
@@ -2004,9 +1633,9 @@ function resetMobileLoginButton() {
 }
 
 function resetDesktopLoginButton() {
-  var btnLogin = document.getElementById("desktopBtnLogin");
-  var loginText = document.getElementById("desktopLoginText");
-  var loginLoading = document.getElementById("desktopLoginLoading");
+  const btnLogin = document.getElementById("desktopBtnLogin");
+  const loginText = document.getElementById("desktopLoginText");
+  const loginLoading = document.getElementById("desktopLoginLoading");
   
   if (btnLogin && loginText && loginLoading) {
     btnLogin.disabled = false;
@@ -2021,10 +1650,10 @@ function resetDesktopLoginButton() {
 // =============================================
 
 function setupEventListeners() {
-  console.log("Setting up event listeners...");
+  console.log("⚙️ Setting up event listeners...");
   
   // Mobile Event Listeners
-  var btnStudent = document.getElementById('btnRegisterStudent');
+  const btnStudent = document.getElementById('btnRegisterStudent');
   if (btnStudent) {
     btnStudent.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2032,7 +1661,7 @@ function setupEventListeners() {
     });
   }
   
-  var btnCounselor = document.getElementById('btnRegisterCounselor');
+  const btnCounselor = document.getElementById('btnRegisterCounselor');
   if (btnCounselor) {
     btnCounselor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2040,7 +1669,7 @@ function setupEventListeners() {
     });
   }
   
-  var forgotLink = document.getElementById('forgotPassword');
+  const forgotLink = document.getElementById('forgotPassword');
   if (forgotLink) {
     forgotLink.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2049,7 +1678,7 @@ function setupEventListeners() {
   }
   
   // Desktop Event Listeners
-  var desktopBtnStudent = document.getElementById('desktopBtnRegisterStudent');
+  const desktopBtnStudent = document.getElementById('desktopBtnRegisterStudent');
   if (desktopBtnStudent) {
     desktopBtnStudent.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2057,7 +1686,7 @@ function setupEventListeners() {
     });
   }
   
-  var desktopBtnCounselor = document.getElementById('desktopBtnRegisterCounselor');
+  const desktopBtnCounselor = document.getElementById('desktopBtnRegisterCounselor');
   if (desktopBtnCounselor) {
     desktopBtnCounselor.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2065,7 +1694,7 @@ function setupEventListeners() {
     });
   }
   
-  var desktopForgotLink = document.getElementById('desktopForgotPassword');
+  const desktopForgotLink = document.getElementById('desktopForgotPassword');
   if (desktopForgotLink) {
     desktopForgotLink.addEventListener('click', function(e) {
       e.preventDefault();
@@ -2074,7 +1703,7 @@ function setupEventListeners() {
   }
   
   // Mobile Enter Key
-  var passwordField = document.getElementById("password");
+  const passwordField = document.getElementById("password");
   if (passwordField) {
     passwordField.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
@@ -2084,7 +1713,7 @@ function setupEventListeners() {
     });
   }
   
-  var usernameField = document.getElementById("username");
+  const usernameField = document.getElementById("username");
   if (usernameField) {
     usernameField.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
@@ -2095,7 +1724,7 @@ function setupEventListeners() {
   }
   
   // Desktop Enter Key
-  var desktopPasswordField = document.getElementById("desktopPassword");
+  const desktopPasswordField = document.getElementById("desktopPassword");
   if (desktopPasswordField) {
     desktopPasswordField.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
@@ -2105,7 +1734,7 @@ function setupEventListeners() {
     });
   }
   
-  var desktopUsernameField = document.getElementById("desktopUsername");
+  const desktopUsernameField = document.getElementById("desktopUsername");
   if (desktopUsernameField) {
     desktopUsernameField.addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
@@ -2114,6 +1743,38 @@ function setupEventListeners() {
       }
     });
   }
+  
+  // Button effects untuk mobile
+  const mobileButtons = document.querySelectorAll('.mobile-container button');
+  mobileButtons.forEach(button => {
+    button.addEventListener('touchstart', function() {
+      this.style.opacity = '0.8';
+    });
+    
+    button.addEventListener('touchend', function() {
+      this.style.opacity = '1';
+    });
+    
+    button.addEventListener('touchcancel', function() {
+      this.style.opacity = '1';
+    });
+  });
+  
+  // Button effects untuk desktop
+  const desktopButtons = document.querySelectorAll('.desktop-container button');
+  desktopButtons.forEach(button => {
+    button.addEventListener('mousedown', function() {
+      this.style.opacity = '0.8';
+    });
+    
+    button.addEventListener('mouseup', function() {
+      this.style.opacity = '1';
+    });
+    
+    button.addEventListener('mouseleave', function() {
+      this.style.opacity = '1';
+    });
+  });
 }
 
 // =============================================
@@ -2121,22 +1782,37 @@ function setupEventListeners() {
 // =============================================
 
 function forceMobileViewIfNeeded() {
-  var isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
-  var screenWidth = window.innerWidth;
+  // Check if we're on a mobile device
+  const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+  const screenWidth = window.innerWidth;
   
+  console.log("📱 Device check:", {
+    userAgent: navigator.userAgent,
+    isMobileDevice: isMobileDevice,
+    screenWidth: screenWidth,
+    isMobileView: screenWidth < 993 || isMobileDevice
+  });
+  
+  // Force mobile view on mobile devices or small screens
   if (isMobileDevice || screenWidth < 993) {
-    var desktopContainer = document.querySelector('.desktop-container');
+    console.log("📱 Forcing mobile view");
+    
+    // Hide desktop container
+    const desktopContainer = document.querySelector('.desktop-container');
     if (desktopContainer) {
       desktopContainer.style.display = 'none';
     }
     
-    var mobileContainer = document.querySelector('.mobile-container');
+    // Ensure mobile container is visible
+    const mobileContainer = document.querySelector('.mobile-container');
     if (mobileContainer) {
       mobileContainer.style.display = 'block';
     }
     
+    // Add mobile-specific classes
     document.body.classList.add('mobile-view');
   } else {
+    console.log("💻 Using desktop view");
     document.body.classList.add('desktop-view');
   }
 }
@@ -2146,26 +1822,22 @@ function forceMobileViewIfNeeded() {
 // =============================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log("ASAKUR App initializing...");
+  console.log("🚀 ASAKUR App initializing...");
+  console.log("Screen width:", window.innerWidth);
+  console.log("Viewport:", window.visualViewport ? window.visualViewport.width : 'N/A');
+  console.log("In iframe:", window.self !== window.top);
   
   // Force mobile view check
   forceMobileViewIfNeeded();
   
-  // Load logos with simplified system
+  // Load logos
   loadLogos();
   
-  // Setup video
-  loadVideoThumbnails();
-  setupVideoPlayers();
-  
-  // Auto play video on ALL devices (mobile & desktop)
-  autoPlayVideo();
-  
-  // Check saved base URL
+  // Cek saved base URL
   try {
-    var savedUrl = sessionStorage.getItem('asakur_base_url');
+    const savedUrl = sessionStorage.getItem('asakur_base_url');
     if (savedUrl) {
-      console.log("Using saved base URL:", savedUrl);
+      console.log("📦 Using saved base URL:", savedUrl);
       appBaseUrl = savedUrl;
     }
   } catch (e) {
@@ -2175,36 +1847,34 @@ document.addEventListener('DOMContentLoaded', function() {
   // Setup event listeners
   setupEventListeners();
   
-  // Get base URL from server
-  if (typeof google !== 'undefined' && google.script && google.script.run) {
-    getBaseUrlFromServer()
-      .then(function(url) {
-        console.log("Base URL ready:", url);
-        
-        // Auto-focus appropriate field
-        setTimeout(function() {
-          if (window.innerWidth < 993 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            // Mobile
-            var usernameField = document.getElementById("username");
-            if (usernameField) {
-              usernameField.focus();
-            }
-          } else {
-            // Desktop
-            var desktopUsernameField = document.getElementById("desktopUsername");
-            if (desktopUsernameField) {
-              desktopUsernameField.focus();
-            }
+  // Dapatkan base URL dari server
+  getBaseUrlFromServer()
+    .then(function(url) {
+      console.log("✅ Base URL ready:", url);
+      
+      // Auto-focus field yang sesuai
+      setTimeout(() => {
+        if (window.innerWidth < 993 || /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+          // Mobile
+          const usernameField = document.getElementById("username");
+          if (usernameField) {
+            usernameField.focus();
           }
-        }, 300);
-      })
-      .catch(function(error) {
-        console.error("Failed to initialize:", error);
-      });
-  }
+        } else {
+          // Desktop
+          const desktopUsernameField = document.getElementById("desktopUsername");
+          if (desktopUsernameField) {
+            desktopUsernameField.focus();
+          }
+        }
+      }, 300);
+    })
+    .catch(function(error) {
+      console.error("❌ Failed to initialize:", error);
+    });
     
   // Handle resize events
-  var resizeTimeout;
+  let resizeTimeout;
   window.addEventListener('resize', function() {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(function() {
@@ -2223,5 +1893,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
+
 </body>
 </html>

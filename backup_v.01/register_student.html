@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrasi Mahasiswa - ASAKUR</title>
+  
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    :root {
+      --primary-blue: #0d3b66;     /* Biru tua utama */
+      --secondary-blue: #1a5f7a;   /* Biru sedang */
+      --accent-blue: #2a9d8f;      /* Biru kehijauan */
+      --light-blue: #8ecae6;       /* Biru muda */
+      --dark-blue: #023047;        /* Biru sangat tua */
+      --light-bg: #f8f9fa;         /* Background terang */
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--primary-blue) 0%, var(--dark-blue) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #333;
+    }
+    
+    .register-wrapper {
+      width: 100%;
+      max-width: 700px;
+      animation: fadeIn 0.8s ease-out;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .register-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+    
+    .card-header {
+      background: linear-gradient(to right, var(--primary-blue), var(--secondary-blue));
+      color: white;
+      padding: 35px 30px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 5%;
+      width: 90%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+    }
+    
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .header-icon {
+      font-size: 2.8rem;
+      color: var(--light-blue);
+    }
+    
+    .header-text h1 {
+      font-weight: 700;
+      font-size: 2rem;
+      margin-bottom: 5px;
+    }
+    
+    .header-text p {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+    
+    .card-body {
+      padding: 40px;
+    }
+    
+    .progress-bar {
+      margin-bottom: 30px;
+    }
+    
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin-bottom: 10px;
+    }
+    
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: #e9ecef;
+      z-index: 1;
+    }
+    
+    .step {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 80px;
+    }
+    
+    .step-circle {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: #e9ecef;
+      color: #6c757d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-weight: bold;
+      border: 3px solid white;
+    }
+    
+    .step.active .step-circle {
+      background: var(--accent-blue);
+      color: white;
+    }
+    
+    .step-label {
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+    
+    .step.active .step-label {
+      color: var(--dark-blue);
+      font-weight: 600;
+    }
+    
+    .form-section {
+      display: none;
+    }
+    
+    .form-section.active {
+      display: block;
+      animation: slideIn 0.5s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .section-title {
+      color: var(--dark-blue);
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #e9ecef;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .section-title i {
+      color: var(--secondary-blue);
+    }
+    
+    .row {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      color: var(--dark-blue);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    
+    .form-control, .form-select {
+      border: 2px solid #e1e5eb;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus, .form-select:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+    }
+    
+    .input-with-icon {
+      position: relative;
+    }
+    
+    .input-with-icon i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--secondary-blue);
+    }
+    
+    .input-with-icon .form-control {
+      padding-left: 45px;
+    }
+    
+    .form-check {
+      margin-bottom: 15px;
+    }
+    
+    .form-check-input:checked {
+      background-color: var(--accent-blue);
+      border-color: var(--accent-blue);
+    }
+    
+    .form-check-label {
+      color: #555;
+      font-size: 0.95rem;
+    }
+    
+    .terms-box {
+      background-color: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 25px 0;
+      max-height: 200px;
+      overflow-y: auto;
+      border: 1px solid #e9ecef;
+    }
+    
+    .terms-box h5 {
+      color: var(--dark-blue);
+      margin-bottom: 10px;
+    }
+    
+    .terms-box p {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 15px;
+    }
+    
+    .btn-prev, .btn-next, .btn-submit {
+      padding: 14px 30px;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+    }
+    
+    .btn-prev {
+      background-color: #e9ecef;
+      color: #6c757d;
+    }
+    
+    .btn-prev:hover {
+      background-color: #dee2e6;
+      transform: translateY(-2px);
+    }
+    
+    .btn-next {
+      background-color: var(--secondary-blue);
+      color: white;
+    }
+    
+    .btn-next:hover {
+      background-color: var(--primary-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(13, 59, 102, 0.2);
+    }
+    
+    .btn-submit {
+      background: linear-gradient(to right, var(--accent-blue), var(--secondary-blue));
+      color: white;
+      width: 100%;
+    }
+    
+    .btn-submit:hover {
+      background: linear-gradient(to right, var(--secondary-blue), var(--primary-blue));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(42, 157, 143, 0.3);
+    }
+    
+    .status-message {
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: 500;
+      display: none;
+    }
+    
+    .status-success {
+      background-color: rgba(46, 204, 113, 0.1);
+      color: #27ae60;
+      border: 1px solid #2ecc71;
+    }
+    
+    .status-error {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: #c0392b;
+      border: 1px solid #e74c3c;
+    }
+    
+    .back-to-login {
+      text-align: center;
+      margin-top: 25px;
+    }
+    
+    .back-to-login a {
+      color: var(--secondary-blue);
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .back-to-login a:hover {
+      text-decoration: underline;
+    }
+    
+    .password-strength {
+      margin-top: 8px;
+      height: 5px;
+      border-radius: 3px;
+      background: #e9ecef;
+      overflow: hidden;
+    }
+    
+    .password-strength-bar {
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s, background 0.3s;
+      border-radius: 3px;
+    }
+    
+    .strength-weak { width: 33%; background: #e74c3c; }
+    .strength-medium { width: 66%; background: #f39c12; }
+    .strength-strong { width: 100%; background: #27ae60; }
+    
+    @media (max-width: 768px) {
+      .card-body {
+        padding: 30px 25px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      .btn-prev, .btn-next, .btn-submit {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="register-wrapper">
+  <div class="register-card">
+    <div class="card-header">
+      <div class="header-content">
+        <i class="fas fa-user-graduate header-icon"></i>
+        <div class="header-text">
+          <h1>Registrasi Mahasiswa</h1>
+          <p>Bergabung dengan ASAKUR untuk mendapatkan dukungan cybercounseling</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card-body">
+      <!-- Progress Bar -->
+      <div class="progress-bar">
+        <div class="progress-steps">
+          <div class="step active" id="step1">
+            <div class="step-circle">1</div>
+            <div class="step-label">Data Pribadi</div>
+          </div>
+          <div class="step" id="step2">
+            <div class="step-circle">2</div>
+            <div class="step-label">Akun & Keamanan</div>
+          </div>
+          <div class="step" id="step3">
+            <div class="step-circle">3</div>
+            <div class="step-label">Konfirmasi</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Form Sections -->
+      <form id="registerForm">
+        <!-- Section 1: Personal Data -->
+        <div class="form-section active" id="section1">
+          <h3 class="section-title"><i class="fas fa-id-card"></i> Data Pribadi</h3>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nama Lengkap *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-user"></i>
+                <input type="text" class="form-control" id="fullname" required>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">NIM *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-id-badge"></i>
+                <input type="text" class="form-control" id="nim" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-envelope"></i>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nomor Telepon *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-phone"></i>
+                <input type="tel" class="form-control" id="phone" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Kontak Darurat *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-phone-alt"></i>
+                <input type="text" class="form-control" id="emergency_contact" 
+                       placeholder="Nama dan nomor telepon kontak darurat" required>
+              </div>
+              <small class="text-muted">Untuk keadaan darurat, kami akan menghubungi kontak ini</small>
+            </div>
+          </div>
+          
+          <div class="button-group">
+            <button type="button" class="btn-prev" disabled>
+              <i class="fas fa-arrow-left"></i> Sebelumnya
+            </button>
+            <button type="button" class="btn-next" onclick="nextSection()">
+              Selanjutnya <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Section 2: Account & Security -->
+        <div class="form-section" id="section2">
+          <h3 class="section-title"><i class="fas fa-lock"></i> Akun & Keamanan</h3>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Username *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-user-circle"></i>
+                <input type="text" class="form-control" id="username" required>
+              </div>
+              <small class="text-muted" id="usernameFeedback"></small>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Konfirmasi Username *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-user-check"></i>
+                <input type="text" class="form-control" id="usernameConfirm" required>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Password *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-key"></i>
+                <input type="password" class="form-control" id="password" required 
+                       onkeyup="checkPasswordStrength()">
+              </div>
+              <div class="password-strength">
+                <div class="password-strength-bar" id="passwordStrengthBar"></div>
+              </div>
+              <small class="text-muted">Minimal 8 karakter, kombinasi huruf dan angka</small>
+            </div>
+            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Konfirmasi Password *</label>
+              <div class="input-with-icon">
+                <i class="fas fa-key"></i>
+                <input type="password" class="form-control" id="confirmPassword" required 
+                       onkeyup="checkPasswordMatch()">
+              </div>
+              <small class="text-muted" id="passwordMatchFeedback"></small>
+            </div>
+          </div>
+          
+          <div class="button-group">
+            <button type="button" class="btn-prev" onclick="prevSection()">
+              <i class="fas fa-arrow-left"></i> Sebelumnya
+            </button>
+            <button type="button" class="btn-next" onclick="nextSection()">
+              Selanjutnya <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        
+        <!-- Section 3: Confirmation -->
+        <div class="form-section" id="section3">
+          <h3 class="section-title"><i class="fas fa-clipboard-check"></i> Konfirmasi Pendaftaran</h3>
+          
+          <div class="terms-box">
+            <h5>Syarat dan Ketentuan ASAKUR</h5>
+            <p>1. Saya menyatakan bahwa data yang saya berikan adalah benar dan akurat.</p>
+            <p>2. Saya setuju untuk menggunakan layanan cybercounseling dengan penuh tanggung jawab.</p>
+            <p>3. Saya memahami bahwa informasi yang dibagikan dalam sesi konseling bersifat rahasia.</p>
+            <p>4. Saya setuju untuk menghubungi kontak darurat dalam keadaan krisis.</p>
+            <p>5. Saya akan menghormati jadwal konseling yang telah disepakati.</p>
+          </div>
+          
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+            <label class="form-check-label" for="agreeTerms">
+              Saya telah membaca dan menyetujui syarat dan ketentuan di atas
+            </label>
+          </div>
+          
+          <div id="summaryData" class="mb-4">
+            <!-- Data summary akan diisi oleh JavaScript -->
+          </div>
+          
+          <div class="button-group">
+            <button type="button" class="btn-prev" onclick="prevSection()">
+              <i class="fas fa-arrow-left"></i> Sebelumnya
+            </button>
+            <button type="button" class="btn-submit" id="btnSubmit" onclick="submitRegistration()">
+              <i class="fas fa-paper-plane"></i> Daftar Sekarang
+            </button>
+          </div>
+        </div>
+      </form>
+      
+      <div id="statusMessage" class="status-message"></div>
+      
+      <div class="back-to-login">
+        <button onclick="goBackToLogin()" class="btn btn-outline-primary">
+          <i class="fas fa-arrow-left"></i> Kembali ke Halaman Login
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Fungsi untuk kembali ke login
+// Include navigation helper functions
+function getBaseUrlFromServer() {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler(function(url) {
+        console.log("✅ Base URL:", url);
+        try {
+          sessionStorage.setItem('asakur_base_url', url);
+        } catch (e) {}
+        resolve(url);
+      })
+      .withFailureHandler(function(error) {
+        console.error("❌ Error:", error);
+        const fallbackUrl = window.location.href.split('?')[0];
+        resolve(fallbackUrl);
+      })
+      .getBaseUrl();
+  });
+}
+
+function goBackToLogin() {
+  getBaseUrlFromServer().then(function(baseUrl) {
+    console.log("🔙 Redirecting to login:", baseUrl);
+    window.top.location.href = baseUrl;
+  });
+}
+
+// Inisialisasi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', function() {
+  getBaseUrlFromServer();
+});
+
+// Fungsi untuk mendapatkan base URL
+function getAppBaseUrl() {
+  return new Promise((resolve, reject) => {
+    google.script.run
+      .withSuccessHandler(resolve)
+      .withFailureHandler(reject)
+      .getBaseUrl();
+  });
+}
+
+// Variabel untuk multi-step form
+let currentSection = 1;
+const totalSections = 3;
+
+// Fungsi untuk navigasi section
+function nextSection() {
+  if (!validateSection(currentSection)) {
+    return;
+  }
+  
+  document.getElementById(`section${currentSection}`).classList.remove('active');
+  document.getElementById(`step${currentSection}`).classList.remove('active');
+  
+  currentSection++;
+  document.getElementById(`section${currentSection}`).classList.add('active');
+  document.getElementById(`step${currentSection}`).classList.add('active');
+  
+  if (currentSection === totalSections) {
+    showSummary();
+  }
+}
+
+function prevSection() {
+  document.getElementById(`section${currentSection}`).classList.remove('active');
+  document.getElementById(`step${currentSection}`).classList.remove('active');
+  
+  currentSection--;
+  document.getElementById(`section${currentSection}`).classList.add('active');
+  document.getElementById(`step${currentSection}`).classList.add('active');
+}
+
+// Validasi per section
+function validateSection(sectionNum) {
+  let isValid = true;
+  
+  if (sectionNum === 1) {
+    const requiredFields = ['fullname', 'nim', 'email', 'phone', 'emergency_contact'];
+    requiredFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      if (!field.value.trim()) {
+        field.classList.add('is-invalid');
+        isValid = false;
+      } else {
+        field.classList.remove('is-invalid');
+      }
+    });
+    
+    // Validasi email
+    const email = document.getElementById('email').value;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      document.getElementById('email').classList.add('is-invalid');
+      isValid = false;
+    }
+  }
+  
+  if (sectionNum === 2) {
+    const username = document.getElementById('username').value;
+    const usernameConfirm = document.getElementById('usernameConfirm').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    if (username !== usernameConfirm) {
+      document.getElementById('usernameFeedback').textContent = 'Username tidak cocok';
+      document.getElementById('usernameFeedback').style.color = 'red';
+      isValid = false;
+    } else {
+      document.getElementById('usernameFeedback').textContent = 'Username cocok';
+      document.getElementById('usernameFeedback').style.color = 'green';
+    }
+    
+    if (password !== confirmPassword) {
+      document.getElementById('passwordMatchFeedback').textContent = 'Password tidak cocok';
+      document.getElementById('passwordMatchFeedback').style.color = 'red';
+      isValid = false;
+    } else {
+      document.getElementById('passwordMatchFeedback').textContent = 'Password cocok';
+      document.getElementById('passwordMatchFeedback').style.color = 'green';
+    }
+    
+    if (password.length < 8) {
+      isValid = false;
+    }
+  }
+  
+  return isValid;
+}
+
+// Cek kekuatan password
+function checkPasswordStrength() {
+  const password = document.getElementById('password').value;
+  const strengthBar = document.getElementById('passwordStrengthBar');
+  
+  let strength = 0;
+  if (password.length >= 8) strength += 1;
+  if (/[A-Z]/.test(password)) strength += 1;
+  if (/[0-9]/.test(password)) strength += 1;
+  if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+  
+  strengthBar.className = 'password-strength-bar';
+  if (strength === 0) {
+    strengthBar.style.width = '0%';
+  } else if (strength === 1) {
+    strengthBar.classList.add('strength-weak');
+  } else if (strength <= 3) {
+    strengthBar.classList.add('strength-medium');
+  } else {
+    strengthBar.classList.add('strength-strong');
+  }
+}
+
+// Cek kecocokan password
+function checkPasswordMatch() {
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const feedback = document.getElementById('passwordMatchFeedback');
+  
+  if (confirmPassword === '') {
+    feedback.textContent = '';
+    return;
+  }
+  
+  if (password === confirmPassword) {
+    feedback.textContent = 'Password cocok';
+    feedback.style.color = 'green';
+  } else {
+    feedback.textContent = 'Password tidak cocok';
+    feedback.style.color = 'red';
+  }
+}
+
+// Tampilkan summary data
+function showSummary() {
+  const summaryDiv = document.getElementById('summaryData');
+  const data = {
+    fullname: document.getElementById('fullname').value,
+    nim: document.getElementById('nim').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    emergency_contact: document.getElementById('emergency_contact').value,
+    username: document.getElementById('username').value
+  };
+  
+  summaryDiv.innerHTML = `
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Ringkasan Data Anda</h5>
+        <table class="table table-sm">
+          <tr><td><strong>Nama Lengkap</strong></td><td>${data.fullname}</td></tr>
+          <tr><td><strong>NIM</strong></td><td>${data.nim}</td></tr>
+          <tr><td><strong>Email</strong></td><td>${data.email}</td></tr>
+          <tr><td><strong>Telepon</strong></td><td>${data.phone}</td></tr>
+          <tr><td><strong>Kontak Darurat</strong></td><td>${data.emergency_contact}</td></tr>
+          <tr><td><strong>Username</strong></td><td>${data.username}</td></tr>
+        </table>
+        <p class="text-muted">Pastikan data di atas sudah benar sebelum mendaftar.</p>
+      </div>
+    </div>
+  `;
+}
+
+// Submit registrasi
+function submitRegistration() {
+  if (!document.getElementById('agreeTerms').checked) {
+    showStatus('Anda harus menyetujui syarat dan ketentuan', 'error');
+    return;
+  }
+  
+  // Validasi final
+  if (!validateSection(1) || !validateSection(2)) {
+    showStatus('Harap perbaiki data yang masih salah', 'error');
+    return;
+  }
+  
+  // Kumpulkan data
+  const formData = {
+    fullname: document.getElementById('fullname').value,
+    nim: document.getElementById('nim').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    username: document.getElementById('username').value,
+    password: document.getElementById('password').value,
+    emergency_contact: document.getElementById('emergency_contact').value
+  };
+  
+  // Tampilkan loading
+  const btnSubmit = document.getElementById('btnSubmit');
+  const originalText = btnSubmit.innerHTML;
+  btnSubmit.disabled = true;
+  btnSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+  
+  // Kirim ke server
+  google.script.run
+    .withSuccessHandler(function(response) {
+      if (response.success) {
+      showStatus(response.message + ' Mengarahkan ke halaman login...', 'success');
+      setTimeout(() => {
+        goBackToLogin(); // Gunakan fungsi yang sama
+      }, 3000);
+    } else {
+      showStatus(response.message, 'error');
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = originalText;
+      }
+    })
+    .withFailureHandler(function(error) {
+      showStatus('Terjadi kesalahan: ' + error, 'error');
+      btnSubmit.disabled = false;
+      btnSubmit.innerHTML = originalText;
+    })
+    .registerStudent(formData);
+}
+
+// Fungsi untuk menampilkan status
+function showStatus(message, type) {
+  const statusMessage = document.getElementById('statusMessage');
+  statusMessage.textContent = message;
+  statusMessage.className = `status-message status-${type}`;
+  statusMessage.style.display = 'block';
+  statusMessage.scrollIntoView({ behavior: 'smooth' });
+}
+
+// Fungsi khusus untuk navigasi
+function backToLogin() {
+  // Coba beberapa cara mendapatkan URL
+  let baseUrl = '';
+  
+  // 1. Coba dari localStorage
+  if (localStorage.getItem('baseUrl')) {
+    baseUrl = localStorage.getItem('baseUrl');
+  } 
+  // 2. Coba dari window location
+  else {
+    baseUrl = window.location.origin + window.location.pathname;
+    baseUrl = baseUrl.split('?')[0];
+    baseUrl = baseUrl.replace(/\/$/, '');
+  }
+  
+  console.log("Navigating to back login with baseUrl:", baseUrl);
+  
+  // Redirect
+  if (baseUrl) {
+    window.top.location.href = baseUrl;
+  } else {
+    alert("Gagal mendapatkan URL. Silakan refresh halaman.");
+  }
+}
+
+</script>
+
+</body>
+</html>

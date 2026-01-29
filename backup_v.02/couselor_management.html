@@ -4,14 +4,12 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dashboard Admin - ASAKUR</title>
+  <title>Manajemen Konselor - ASAKUR</title>
   
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
   <style>
     :root {
@@ -56,7 +54,7 @@
     }
     
     /* MOBILE VERSION */
-    .mobile-dashboard {
+    .mobile-container {
       display: block;
       min-height: 100vh;
       background-color: var(--surface-color);
@@ -64,7 +62,7 @@
     }
     
     /* DESKTOP VERSION */
-    .desktop-dashboard {
+    .desktop-container {
       display: none;
       min-height: 100vh;
     }
@@ -309,64 +307,76 @@
       color: var(--accent-blue);
     }
     
-    /* MOBILE STATS CARDS */
-    .mobile-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-    
-    .mobile-stat-card {
+    /* MOBILE FILTER CARD */
+    .mobile-filter-card {
       background: var(--surface-color);
       border-radius: 16px;
       padding: 20px;
+      margin-bottom: 20px;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
-      transition: all 0.3s ease;
     }
     
-    .mobile-stat-card:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-3px);
-    }
-    
-    .mobile-stat-icon {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
+    .mobile-filter-group {
       margin-bottom: 15px;
-      color: white;
     }
     
-    .mobile-stat-icon.blue { background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue)); }
-    .mobile-stat-icon.green { background: linear-gradient(135deg, var(--accent-blue), #2a9d8f); }
-    .mobile-stat-icon.light { background: linear-gradient(135deg, var(--light-blue), #8ecae6); }
-    .mobile-stat-icon.dark { background: linear-gradient(135deg, var(--dark-blue), #023047); }
-    
-    .mobile-stat-card h3 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      margin-bottom: 5px;
-      color: var(--dark-blue);
+    .mobile-filter-group:last-child {
+      margin-bottom: 0;
     }
     
-    .mobile-stat-card p {
-      color: var(--text-secondary);
+    .mobile-filter-label {
       font-size: 0.9rem;
-      margin-bottom: 5px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: block;
     }
     
-    .mobile-stat-card small {
+    .mobile-search-input {
+      width: 100%;
+      padding: 15px 20px 15px 45px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+    
+    .mobile-search-input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
+    }
+    
+    .mobile-search-icon {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
       color: var(--text-secondary);
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      font-size: 1.1rem;
+    }
+    
+    .mobile-select {
+      width: 100%;
+      padding: 15px 20px;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background-color: var(--background-color);
+      color: var(--text-primary);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 20px center;
+      background-size: 16px;
+    }
+    
+    .mobile-select:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.15);
     }
     
     /* MOBILE TABLE CONTAINER */
@@ -374,7 +384,7 @@
       background: var(--surface-color);
       border-radius: 16px;
       padding: 20px;
-      margin-top: 25px;
+      margin-top: 20px;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
     }
@@ -386,7 +396,7 @@
     
     .mobile-table {
       width: 100%;
-      min-width: 600px;
+      min-width: 800px;
       border-collapse: collapse;
     }
     
@@ -397,11 +407,13 @@
       padding: 15px;
       text-align: left;
       border-bottom: 2px solid var(--border-color);
+      font-size: 0.9rem;
     }
     
     .mobile-table tbody td {
       padding: 15px;
       border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
     }
     
     .mobile-badge {
@@ -415,6 +427,37 @@
     .badge-pending { background-color: rgba(255, 149, 0, 0.15); color: #cc7700; }
     .badge-approved { background-color: rgba(52, 199, 89, 0.15); color: var(--success-color); }
     .badge-rejected { background-color: rgba(255, 59, 48, 0.15); color: var(--error-color); }
+    .badge-available { background-color: rgba(52, 199, 89, 0.15); color: var(--success-color); }
+    .badge-busy { background-color: rgba(142, 202, 230, 0.15); color: var(--secondary-blue); }
+    
+    .mobile-action-buttons {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    
+    .mobile-action-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-approve { background-color: rgba(52, 199, 89, 0.1); color: var(--success-color); }
+    .btn-reject { background-color: rgba(255, 59, 48, 0.1); color: var(--error-color); }
+    .btn-view { background-color: rgba(13, 59, 102, 0.1); color: var(--primary-blue); }
+    .btn-edit { background-color: rgba(255, 149, 0, 0.1); color: #cc7700; }
+    
+    .btn-approve:hover { background-color: var(--success-color); color: white; }
+    .btn-reject:hover { background-color: var(--error-color); color: white; }
+    .btn-view:hover { background-color: var(--primary-blue); color: white; }
+    .btn-edit:hover { background-color: #cc7700; color: white; }
     
     /* MOBILE BOTTOM NAV */
     .mobile-bottom-nav {
@@ -460,7 +503,7 @@
     }
     
     /* DESKTOP VERSION */
-    .desktop-dashboard {
+    .desktop-container {
       display: flex;
       min-height: 100vh;
     }
@@ -603,7 +646,7 @@
       background-color: var(--background-color);
     }
     
-    .desktop-top-bar {
+    .desktop-header {
       background: var(--surface-color);
       padding: 25px 30px;
       border-radius: 18px;
@@ -614,14 +657,17 @@
       align-items: center;
     }
     
-    .desktop-top-bar h1 {
+    .desktop-header h1 {
       color: var(--dark-blue);
       font-weight: 700;
       font-size: 1.8rem;
       margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
     
-    .desktop-top-bar p {
+    .desktop-header p {
       color: var(--text-secondary);
       margin-bottom: 0;
     }
@@ -649,101 +695,42 @@
       font-size: 1rem;
     }
     
-    /* DESKTOP STATS CARDS */
-    .desktop-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
-      margin-bottom: 30px;
-    }
-    
-    .desktop-stat-card {
-      background: var(--surface-color);
-      border-radius: 18px;
-      padding: 25px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
+    .desktop-add-btn {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
       transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
     }
     
-    .desktop-stat-card:hover {
-      transform: translateY(-5px);
+    .desktop-add-btn:hover {
+      transform: translateY(-2px);
       box-shadow: var(--shadow-md);
     }
     
-    .desktop-stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 5px;
-      background: linear-gradient(to right, var(--secondary-blue), var(--accent-blue));
+    /* DESKTOP FILTER CARD */
+    .desktop-filter-card {
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
     }
     
-    .desktop-stat-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      color: white;
-    }
-    
-    .desktop-stat-card h2 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      color: var(--dark-blue);
-      margin-bottom: 5px;
-    }
-    
-    .desktop-stat-card p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      margin-bottom: 5px;
-    }
-    
-    .desktop-stat-card small {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    /* DESKTOP CHARTS & TABLES */
-    .desktop-content-row {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 30px;
-      margin-top: 30px;
-    }
-    
+    /* DESKTOP TABLE CONTAINER */
     .desktop-table-container {
       background: var(--surface-color);
       border-radius: 18px;
       padding: 30px;
       box-shadow: var(--shadow-sm);
       border: 1px solid var(--border-color);
-    }
-    
-    .desktop-table-title {
-      color: var(--dark-blue);
-      font-weight: 600;
-      font-size: 1.3rem;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    
-    .desktop-table-title i {
-      color: var(--accent-blue);
     }
     
     .desktop-table {
@@ -763,55 +750,52 @@
     .desktop-table tbody td {
       padding: 18px;
       border-bottom: 1px solid var(--border-color);
+      vertical-align: middle;
     }
     
-    .desktop-chart-container {
-      background: var(--surface-color);
-      border-radius: 18px;
-      padding: 30px;
-      box-shadow: var(--shadow-sm);
-      border: 1px solid var(--border-color);
-      height: 100%;
+    .desktop-action-buttons {
+      display: flex;
+      gap: 8px;
     }
     
     /* COMMON STYLES */
-    .btn-action {
-      padding: 8px 12px;
-      border-radius: 8px;
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--secondary-blue), var(--accent-blue));
+      color: white;
       border: none;
-      cursor: pointer;
-      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-    }
-    
-    .btn-approve {
-      background-color: rgba(52, 199, 89, 0.1);
-      color: var(--success-color);
-      border: 1px solid rgba(52, 199, 89, 0.3);
-    }
-    
-    .btn-approve:hover {
-      background-color: var(--success-color);
-      color: white;
-    }
-    
-    .btn-reject {
-      background-color: rgba(255, 59, 48, 0.1);
-      color: var(--error-color);
-      border: 1px solid rgba(255, 59, 48, 0.3);
-    }
-    
-    .btn-reject:hover {
-      background-color: var(--error-color);
-      color: white;
-    }
-    
-    .action-buttons {
-      display: flex;
       gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .btn-outline-custom {
+      background: transparent;
+      color: var(--secondary-blue);
+      border: 2px solid var(--secondary-blue);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-outline-custom:hover {
+      background: var(--secondary-blue);
+      color: white;
     }
     
     /* Loading animation untuk logo */
@@ -827,42 +811,34 @@
     
     /* Responsive Design */
     /* Mobile only */
-    .mobile-dashboard {
+    .mobile-container {
       display: block !important;
     }
     
-    .desktop-dashboard {
+    .desktop-container {
       display: none !important;
     }
     
     /* Desktop only */
     @media (min-width: 993px) {
-      .mobile-dashboard {
+      .mobile-container {
         display: none !important;
       }
       
-      .desktop-dashboard {
+      .desktop-container {
         display: flex !important;
       }
     }
     
     /* Mobile optimizations */
     @media (max-width: 768px) {
-      .mobile-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
       .mobile-main {
         padding: 16px;
         padding-bottom: 80px;
       }
       
-      .mobile-stat-card {
+      .mobile-filter-card {
         padding: 16px;
-      }
-      
-      .mobile-stat-card h3 {
-        font-size: 1.6rem;
       }
       
       .mobile-table-container {
@@ -871,10 +847,6 @@
     }
     
     @media (max-width: 480px) {
-      .mobile-stats-grid {
-        grid-template-columns: 1fr;
-      }
-      
       .mobile-header {
         padding: 16px;
       }
@@ -898,22 +870,12 @@
         font-size: 1.2rem;
       }
     }
-    
-    @media (max-width: 992px) {
-      .desktop-content-row {
-        grid-template-columns: 1fr;
-      }
-      
-      .desktop-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
   </style>
 </head>
 <body>
 
-<!-- MOBILE DASHBOARD -->
-<div class="mobile-dashboard">
+<!-- MOBILE VERSION -->
+<div class="mobile-container">
   <!-- Mobile Header -->
   <header class="mobile-header">
     <div class="mobile-header-content">
@@ -926,11 +888,8 @@
         </div>
         <div class="mobile-header-info">
           <h1>ASAKUR</h1>
-          <p>Admin Dashboard</p>
+          <p>Manajemen Konselor</p>
         </div>
-      </div>
-      <div class="mobile-user-badge" style="display: none;">
-        <div class="desktop-user-badge-avatar" id="mobileUserAvatar">A</div>
       </div>
     </div>
   </header>
@@ -947,7 +906,7 @@
     </div>
     
     <div class="mobile-user-info">
-      <div class="mobile-user-avatar" id="mobileSidebarUserAvatar">A</div>
+      <div class="mobile-user-avatar" id="mobileUserAvatar">A</div>
       <div class="mobile-user-details">
         <h5 id="mobileUserName">Administrator</h5>
         <small id="mobileUserRole">Super Admin</small>
@@ -970,75 +929,65 @@
   
   <!-- Mobile Main Content -->
   <main class="mobile-main">
-    <!-- Stats Section -->
+    <!-- Page Title -->
     <h2 class="mobile-section-title">
-      <i class="fas fa-chart-line"></i>
-      <span>Dashboard Statistik</span>
+      <i class="fas fa-user-md"></i>
+      <span>Manajemen Konselor</span>
     </h2>
     
-    <div class="mobile-stats-grid">
-      <div class="mobile-stat-card">
-        <div class="mobile-stat-icon blue">
-          <i class="fas fa-user-md"></i>
-        </div>
-        <h3 id="mobileTotalCounselors">0</h3>
-        <p>Total Konselor</p>
-        <small><i class="fas fa-clock"></i> <span id="mobilePendingCounselors">0</span> pending</small>
-      </div>
-      
-      <div class="mobile-stat-card">
-        <div class="mobile-stat-icon green">
-          <i class="fas fa-user-graduate"></i>
-        </div>
-        <h3 id="mobileTotalStudents">0</h3>
-        <p>Total Mahasiswa</p>
-        <small><i class="fas fa-chart-line"></i> <span id="mobileActiveStudents">0</span> aktif</small>
-      </div>
-      
-      <div class="mobile-stat-card">
-        <div class="mobile-stat-icon light">
-          <i class="fas fa-calendar-check"></i>
-        </div>
-        <h3 id="mobileTotalSessions">0</h3>
-        <p>Sesi Konseling</p>
-        <small><i class="fas fa-calendar-day"></i> <span id="mobileTodaySessions">0</span> hari ini</small>
-      </div>
-      
-      <div class="mobile-stat-card">
-        <div class="mobile-stat-icon dark">
-          <i class="fas fa-file-alt"></i>
-        </div>
-        <h3 id="mobileTotalAssessments">0</h3>
-        <p>Total Asesmen</p>
-        <small><i class="fas fa-check-circle"></i> <span id="mobileCompletedAssessments">0</span> selesai</small>
-      </div>
+    <!-- Add Button -->
+    <div style="margin-bottom: 20px;">
+      <button class="btn-primary-custom" onclick="addNewCounselor()" style="width: 100%; padding: 15px;">
+        <i class="fas fa-plus"></i>
+        <span>Tambah Konselor Baru</span>
+      </button>
     </div>
     
-    <!-- Chart Section -->
-    <div class="mobile-table-container">
-      <h3 class="mobile-section-title" style="margin-top: 0;">
-        <i class="fas fa-chart-pie"></i>
-        <span>Statistik Sistem</span>
-      </h3>
-      <canvas id="mobileStatsChart" height="200"></canvas>
-      <div style="display: flex; gap: 15px; margin-top: 20px;">
-        <div style="flex: 1; text-align: center; padding: 15px; background: rgba(13, 59, 102, 0.1); border-radius: 12px;">
-          <h4 style="margin: 0; font-weight: 700;" id="mobileChartCounselors">0</h4>
-          <small>Konselor</small>
+    <!-- Filter Card -->
+    <div class="mobile-filter-card">
+      <div class="mobile-filter-group">
+        <div style="position: relative;">
+          <i class="fas fa-search mobile-search-icon"></i>
+          <input type="text" class="mobile-search-input" id="mobileSearchInput" placeholder="Cari konselor..." onkeyup="filterTable()">
         </div>
-        <div style="flex: 1; text-align: center; padding: 15px; background: rgba(42, 157, 143, 0.1); border-radius: 12px;">
-          <h4 style="margin: 0; font-weight: 700;" id="mobileChartStudents">0</h4>
-          <small>Mahasiswa</small>
+      </div>
+      
+      <div class="row" style="margin: 0 -8px;">
+        <div class="mobile-filter-group" style="padding: 0 8px; flex: 1;">
+          <label class="mobile-filter-label">Status</label>
+          <select class="mobile-select" id="mobileStatusFilter" onchange="filterTable()">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
         </div>
+        
+        <div class="mobile-filter-group" style="padding: 0 8px; flex: 1;">
+          <label class="mobile-filter-label">Ketersediaan</label>
+          <select class="mobile-select" id="mobileAvailabilityFilter" onchange="filterTable()">
+            <option value="">Semua</option>
+            <option value="available">Tersedia</option>
+            <option value="busy">Sibuk</option>
+          </select>
+        </div>
+      </div>
+      
+      <div style="margin-top: 15px;">
+        <button class="btn-outline-custom" onclick="exportData()" style="width: 100%; padding: 15px;">
+          <i class="fas fa-download"></i>
+          <span>Export Data</span>
+        </button>
       </div>
     </div>
     
     <!-- Counselors Table -->
     <div class="mobile-table-container">
-      <h3 class="mobile-section-title" style="margin-top: 0;">
-        <i class="fas fa-user-clock"></i>
-        <span>Konselor Pending Approval</span>
+      <h3 class="mobile-section-title" style="margin-top: 0; font-size: 1.1rem;">
+        <i class="fas fa-list"></i>
+        <span>Daftar Konselor</span>
       </h3>
+      
       <div class="mobile-table-scroll">
         <table class="mobile-table">
           <thead>
@@ -1049,13 +998,13 @@
               <th>Aksi</th>
             </tr>
           </thead>
-          <tbody id="mobileCounselorTableBody">
+          <tbody id="mobileCounselorsTableBody">
             <tr>
-              <td colspan="4" style="text-align: center; padding: 30px;">
+              <td colspan="4" style="text-align: center; padding: 40px;">
                 <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-                <p style="margin-top: 10px; color: var(--text-secondary);">Memuat data konselor...</p>
+                <p style="margin-top: 15px; color: var(--text-secondary);">Memuat data konselor...</p>
               </td>
             </tr>
           </tbody>
@@ -1066,11 +1015,11 @@
   
   <!-- Mobile Bottom Navigation -->
   <nav class="mobile-bottom-nav">
-    <button class="mobile-nav-item active" onclick="loadMobileDashboard()">
+    <button class="mobile-nav-item" onclick="navigateToPage('admin')">
       <i class="fas fa-home"></i>
       <span>Dashboard</span>
     </button>
-    <button class="mobile-nav-item" onclick="navigateToPage('counselor_management')">
+    <button class="mobile-nav-item active">
       <i class="fas fa-user-md"></i>
       <span>Konselor</span>
     </button>
@@ -1085,8 +1034,8 @@
   </nav>
 </div>
 
-<!-- DESKTOP DASHBOARD -->
-<div class="desktop-dashboard">
+<!-- DESKTOP VERSION -->
+<div class="desktop-container">
   <!-- Desktop Sidebar -->
   <aside class="desktop-sidebar">
     <div class="desktop-sidebar-header">
@@ -1118,117 +1067,92 @@
   
   <!-- Desktop Main Content -->
   <main class="desktop-main">
-    <!-- Top Bar -->
-    <div class="desktop-top-bar">
+    <!-- Header -->
+    <div class="desktop-header">
       <div>
-        <h1>Dashboard Admin</h1>
-        <p>Selamat datang, <span id="desktopAdminName" class="fw-bold">Administrator</span></p>
+        <h1>
+          <i class="fas fa-user-md"></i> Manajemen Konselor
+        </h1>
+        <p>Kelola data konselor dan persetujuan pendaftaran</p>
       </div>
       
-      <div class="desktop-user-badge">
-        <div class="desktop-user-badge-avatar" id="desktopTopAvatar">A</div>
-        <div>
-          <h6 class="mb-0 fw-bold" id="desktopUsernameDisplay">Admin</h6>
-          <small class="text-muted" id="desktopUserRoleBadge">Super Admin</small>
+      <button class="desktop-add-btn" onclick="addNewCounselor()">
+        <i class="fas fa-plus"></i>
+        <span>Tambah Konselor</span>
+      </button>
+    </div>
+    
+    <!-- Filter Card -->
+    <div class="desktop-filter-card">
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="input-group">
+            <span class="input-group-text" style="background-color: var(--background-color); border: 2px solid var(--border-color); border-right: none; border-radius: 12px 0 0 12px;">
+              <i class="fas fa-search" style="color: var(--text-secondary);"></i>
+            </span>
+            <input type="text" class="form-control" id="desktopSearchInput" placeholder="Cari nama, email, atau telepon..." style="border: 2px solid var(--border-color); border-left: none; border-radius: 0 12px 12px 0; padding: 12px 15px;" onkeyup="filterTable()">
+          </div>
+        </div>
+        
+        <div class="col-md-3">
+          <select class="form-select" id="desktopStatusFilter" style="border: 2px solid var(--border-color); border-radius: 12px; padding: 12px 15px;" onchange="filterTable()">
+            <option value="">Semua Status</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        
+        <div class="col-md-3">
+          <select class="form-select" id="desktopAvailabilityFilter" style="border: 2px solid var(--border-color); border-radius: 12px; padding: 12px 15px;" onchange="filterTable()">
+            <option value="">Semua Ketersediaan</option>
+            <option value="available">Tersedia</option>
+            <option value="busy">Sibuk</option>
+          </select>
+        </div>
+        
+        <div class="col-md-2">
+          <button class="btn-outline-custom" onclick="exportData()" style="width: 100%;">
+            <i class="fas fa-download"></i>
+            <span>Export</span>
+          </button>
         </div>
       </div>
     </div>
     
-    <!-- Stats Cards -->
-    <div class="desktop-stats-grid">
-      <div class="desktop-stat-card">
-        <div class="desktop-stat-icon blue">
-          <i class="fas fa-user-md"></i>
-        </div>
-        <h2 id="desktopTotalCounselors">0</h2>
-        <p>Total Konselor</p>
-        <small><i class="fas fa-clock"></i> <span id="desktopPendingCounselors">0</span> menunggu approval</small>
-      </div>
+    <!-- Counselors Table -->
+    <div class="desktop-table-container">
+      <h4 style="color: var(--dark-blue); font-weight: 600; margin-bottom: 25px; display: flex; align-items: center; gap: 12px;">
+        <i class="fas fa-list"></i>
+        <span>Daftar Konselor</span>
+      </h4>
       
-      <div class="desktop-stat-card">
-        <div class="desktop-stat-icon green">
-          <i class="fas fa-user-graduate"></i>
-        </div>
-        <h2 id="desktopTotalStudents">0</h2>
-        <p>Total Mahasiswa</p>
-        <small><i class="fas fa-chart-line"></i> <span id="desktopActiveStudents">0</span> aktif</small>
-      </div>
-      
-      <div class="desktop-stat-card">
-        <div class="desktop-stat-icon light">
-          <i class="fas fa-calendar-check"></i>
-        </div>
-        <h2 id="desktopTotalSessions">0</h2>
-        <p>Sesi Konseling</p>
-        <small><i class="fas fa-calendar-day"></i> <span id="desktopTodaySessions">0</span> hari ini</small>
-      </div>
-      
-      <div class="desktop-stat-card">
-        <div class="desktop-stat-icon dark">
-          <i class="fas fa-file-alt"></i>
-        </div>
-        <h2 id="desktopTotalAssessments">0</h2>
-        <p>Total Asesmen</p>
-        <small><i class="fas fa-check-circle"></i> <span id="desktopCompletedAssessments">0</span> selesai</small>
-      </div>
-    </div>
-    
-    <!-- Charts & Tables -->
-    <div class="desktop-content-row">
-      <div class="desktop-table-container">
-        <h3 class="desktop-table-title">
-          <i class="fas fa-user-clock"></i>
-          <span>Konselor Menunggu Approval</span>
-        </h3>
-        <div class="table-responsive">
-          <table class="desktop-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Telepon</th>
-                <th>Spesialisasi</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="desktopCounselorTableBody">
-              <tr>
-                <td colspan="7" class="text-center py-5">
-                  <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
-                  <p class="mt-2">Memuat data konselor...</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      
-      <div class="desktop-chart-container">
-        <h3 class="desktop-table-title">
-          <i class="fas fa-chart-pie"></i>
-          <span>Statistik Sistem</span>
-        </h3>
-        <div class="text-center">
-          <canvas id="desktopStatsChart" height="250"></canvas>
-        </div>
-        <div class="row mt-4">
-          <div class="col-6">
-            <div class="text-center p-3 rounded" style="background-color: rgba(13, 59, 102, 0.1);">
-              <h4 class="fw-bold mb-0" id="desktopChartCounselors">0</h4>
-              <small>Konselor</small>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="text-center p-3 rounded" style="background-color: rgba(42, 157, 143, 0.1);">
-              <h4 class="fw-bold mb-0" id="desktopChartStudents">0</h4>
-              <small>Mahasiswa</small>
-            </div>
-          </div>
-        </div>
+      <div class="table-responsive">
+        <table class="desktop-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nama</th>
+              <th>Email</th>
+              <th>Telepon</th>
+              <th>Spesialisasi</th>
+              <th>Pengalaman</th>
+              <th>Status</th>
+              <th>Ketersediaan</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="desktopCounselorsTableBody">
+            <tr>
+              <td colspan="9" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Memuat data konselor...</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
@@ -1246,14 +1170,28 @@
   </div>
 </div>
 
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue)); color: white;">
+        <h5 class="modal-title"><i class="fas fa-user-md me-2"></i> Detail Konselor</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="detailModalBody">
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
 // Global variables
 let baseUrl = '';
+let allCounselors = [];
 let currentSession = null;
-let mobileChart = null;
-let desktopChart = null;
 
 // Logo loading with CORS fix (same as login_mobile.html)
 function loadLogos() {
@@ -1321,7 +1259,7 @@ function tryProxyImage(container, url, size) {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('Dashboard Admin initializing...');
+  console.log('Manajemen Konselor initializing...');
   
   // Force mobile view if needed
   forceMobileViewIfNeeded();
@@ -1338,8 +1276,8 @@ document.addEventListener('DOMContentLoaded', function() {
       // Load session and user info
       loadUserInfo();
       
-      // Load dashboard data
-      loadDashboard();
+      // Load counselors data
+      loadCounselors();
       
       // Setup menu
       setupMenu();
@@ -1351,7 +1289,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .getWebAppUrl();
 });
 
-// Force mobile view if needed (same as login_mobile.html)
+// Force mobile view if needed
 function forceMobileViewIfNeeded() {
   const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
   const screenWidth = window.innerWidth;
@@ -1377,8 +1315,8 @@ function toggleMobileSidebar() {
 // Setup menu items
 function setupMenu() {
   const menuItems = [
-    { id: 'dashboard', title: 'Dashboard', icon: 'fas fa-home', active: true },
-    { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md' },
+    { id: 'admin', title: 'Dashboard', icon: 'fas fa-home' },
+    { id: 'counselor_management', title: 'Manajemen Konselor', icon: 'fas fa-user-md', active: true },
     { id: 'student_management', title: 'Manajemen Mahasiswa', icon: 'fas fa-user-graduate' },
     { id: 'appointment_schedule', title: 'Jadwal & Laporan', icon: 'fas fa-calendar-alt' },
     { id: 'system_settings', title: 'Pengaturan Sistem', icon: 'fas fa-cogs' },
@@ -1440,16 +1378,11 @@ function updateUserInfo(session) {
   document.getElementById('mobileUserName').textContent = name;
   document.getElementById('mobileUserRole').textContent = role;
   document.getElementById('mobileUserAvatar').textContent = initials;
-  document.getElementById('mobileSidebarUserAvatar').textContent = initials;
   
   // Desktop
   document.getElementById('desktopUserName').textContent = name;
   document.getElementById('desktopUserRole').textContent = role;
-  document.getElementById('desktopAdminName').textContent = name;
-  document.getElementById('desktopUsernameDisplay').textContent = session.username || name;
-  document.getElementById('desktopUserRoleBadge').textContent = role;
   document.getElementById('desktopUserAvatar').textContent = initials;
-  document.getElementById('desktopTopAvatar').textContent = initials;
 }
 
 // Navigate to page
@@ -1479,423 +1412,334 @@ function navigateToPage(pageName) {
   }
 }
 
-// Load dashboard data
-function loadDashboard() {
-  loadStatistics();
-  loadCounselorsTable();
-}
-
-function loadMobileDashboard() {
-  // Just reload the current dashboard view
-  loadStatistics();
-  loadCounselorsTable();
-}
-
-// Load statistics
-function loadStatistics() {
-  google.script.run
-    .withSuccessHandler(function(stats) {
-      updateStatistics(stats);
-    })
-    .withFailureHandler(function(error) {
-      console.error('Error loading statistics:', error);
-      showNotification('Gagal memuat statistik', 'error');
-    })
-    .getDashboardStats('admin');
-}
-
-function updateStatistics(stats) {
-  const statValues = {
-    totalCounselors: stats.totalCounselors || 0,
-    pendingCounselors: stats.pendingCounselors || 0,
-    totalStudents: stats.totalStudents || 0,
-    activeStudents: stats.activeStudents || 0,
-    totalSessions: stats.totalSessions || 0,
-    todaySessions: stats.todaySessions || 0,
-    totalAssessments: stats.totalAssessments || 0,
-    completedAssessments: stats.completedAssessments || 0
-  };
-  
-  // Mobile
-  document.getElementById('mobileTotalCounselors').textContent = statValues.totalCounselors;
-  document.getElementById('mobilePendingCounselors').textContent = statValues.pendingCounselors;
-  document.getElementById('mobileTotalStudents').textContent = statValues.totalStudents;
-  document.getElementById('mobileActiveStudents').textContent = statValues.activeStudents;
-  document.getElementById('mobileTotalSessions').textContent = statValues.totalSessions;
-  document.getElementById('mobileTodaySessions').textContent = statValues.todaySessions;
-  document.getElementById('mobileTotalAssessments').textContent = statValues.totalAssessments;
-  document.getElementById('mobileCompletedAssessments').textContent = statValues.completedAssessments;
-  document.getElementById('mobileChartCounselors').textContent = statValues.totalCounselors;
-  document.getElementById('mobileChartStudents').textContent = statValues.totalStudents;
-  
-  // Desktop
-  document.getElementById('desktopTotalCounselors').textContent = statValues.totalCounselors;
-  document.getElementById('desktopPendingCounselors').textContent = statValues.pendingCounselors;
-  document.getElementById('desktopTotalStudents').textContent = statValues.totalStudents;
-  document.getElementById('desktopActiveStudents').textContent = statValues.activeStudents;
-  document.getElementById('desktopTotalSessions').textContent = statValues.totalSessions;
-  document.getElementById('desktopTodaySessions').textContent = statValues.todaySessions;
-  document.getElementById('desktopTotalAssessments').textContent = statValues.totalAssessments;
-  document.getElementById('desktopCompletedAssessments').textContent = statValues.completedAssessments;
-  document.getElementById('desktopChartCounselors').textContent = statValues.totalCounselors;
-  document.getElementById('desktopChartStudents').textContent = statValues.totalStudents;
-  
-  // Update charts
-  updateMobileChart(statValues.totalCounselors, statValues.totalStudents, statValues.totalSessions);
-  updateDesktopChart(statValues.totalCounselors, statValues.totalStudents, statValues.totalSessions);
-}
-
-// Update mobile chart
-function updateMobileChart(counselors, students, sessions) {
-  const ctx = document.getElementById('mobileStatsChart');
-  if (!ctx) return;
-  
-  if (mobileChart) {
-    mobileChart.destroy();
-  }
-  
-  mobileChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Konselor', 'Mahasiswa', 'Sesi'],
-      datasets: [{
-        data: [counselors, students, sessions],
-        backgroundColor: [
-          'rgba(13, 59, 102, 0.8)',
-          'rgba(42, 157, 143, 0.8)',
-          'rgba(142, 202, 230, 0.8)'
-        ],
-        borderColor: [
-          'rgb(13, 59, 102)',
-          'rgb(42, 157, 143)',
-          'rgb(142, 202, 230)'
-        ],
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  });
-}
-
-// Update desktop chart
-function updateDesktopChart(counselors, students, sessions) {
-  const ctx = document.getElementById('desktopStatsChart');
-  if (!ctx) return;
-  
-  if (desktopChart) {
-    desktopChart.destroy();
-  }
-  
-  desktopChart = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Konselor', 'Mahasiswa', 'Sesi'],
-      datasets: [{
-        data: [counselors, students, sessions],
-        backgroundColor: [
-          'rgba(13, 59, 102, 0.8)',
-          'rgba(42, 157, 143, 0.8)',
-          'rgba(142, 202, 230, 0.8)'
-        ],
-        borderColor: [
-          'rgb(13, 59, 102)',
-          'rgb(42, 157, 143)',
-          'rgb(142, 202, 230)'
-        ],
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }
-  });
-}
-
-// Load counselors table
-function loadCounselorsTable() {
-  console.log("🔄 Memanggil getAllCounselors()...");
-  
+// Load counselors
+function loadCounselors() {
   google.script.run
     .withSuccessHandler(function(data) {
-      console.log("✅ Success handler dipanggil");
-      console.log("Data dari server:", data);
-      console.log("Tipe data:", typeof data);
-      console.log("Is array?", Array.isArray(data));
-      
-      // PASTIKAN data selalu array (bahkan jika kosong)
-      const safeData = Array.isArray(data) ? data : [];
-      
-      if (!data) {
-        console.error("❌ Data adalah null/undefined!");
-        showNotification('Data konselor tidak valid', 'error');
-      } else if (data.length === 0) {
-        console.log("ℹ️ Data array kosong diterima");
-      }
-      
-      updateCounselorsTable(safeData);
+      allCounselors = data;
+      displayCounselors(data);
     })
     .withFailureHandler(function(error) {
-      console.error('❌ Error handler dipanggil:', error);
-      console.error('Error details:', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
-      showNotification('Gagal memuat data konselor: ' + error.message, 'error');
-      
-      // Fallback: gunakan array kosong
-      updateCounselorsTable([]);
+      console.error('Error loading counselors:', error);
+      const errorHTML = `
+        <tr>
+          <td colspan="9" class="text-center py-5 text-danger">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <p>Gagal memuat data konselor</p>
+          </td>
+        </tr>
+      `;
+      document.getElementById('mobileCounselorsTableBody').innerHTML = errorHTML;
+      document.getElementById('desktopCounselorsTableBody').innerHTML = errorHTML;
     })
     .getAllCounselors();
 }
 
-function updateCounselorsTable(data) {
+// Display counselors
+function displayCounselors(counselors) {
   // Mobile table
-  const mobileTbody = document.getElementById('mobileCounselorTableBody');
-  updateTableBody(mobileTbody, data, true);
+  updateMobileTable(counselors);
   
   // Desktop table
-  const desktopTbody = document.getElementById('desktopCounselorTableBody');
-  updateTableBody(desktopTbody, data, false);
+  updateDesktopTable(counselors);
 }
 
-function updateTableBody(tbody, data, isMobile) {
-  console.log("🔍 DEBUG updateTableBody START");
-  console.log("Data parameter:", data);
-  console.log("Is array?", Array.isArray(data));
+function updateMobileTable(counselors) {
+  const tbody = document.getElementById('mobileCounselorsTableBody');
   
-  if (!tbody) {
-    console.error("❌ Table body element not found!");
-    return;
-  }
-  
-  if (!data || !Array.isArray(data)) {
-    console.error("❌ Data is not an array or is null");
+  if (!counselors || counselors.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="${isMobile ? '4' : '7'}" class="text-center py-5">
-          <i class="fas fa-exclamation-triangle fa-2x text-warning mb-3"></i>
-          <p>Format data tidak valid</p>
-          <small class="text-muted">${typeof data}</small>
+        <td colspan="4" class="text-center py-5">
+          <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
+          <p>Belum ada data konselor</p>
         </td>
       </tr>
     `;
     return;
   }
   
-  console.log("Total data items:", data.length);
-  
-  // LOG SEMUA DATA UNTUK DEBUG
-  data.forEach((item, index) => {
-    console.log(`Item ${index}:`, {
-      user_id: item.user_id,
-      name: item.name,
-      status: item.status,
-      statusType: typeof item.status,
-      hasStatus: 'status' in item
-    });
-  });
-  
-  // FILTER YANG LEBIH FLEKSIBEL
-  const pendingCounselors = data.filter(item => {
-    if (!item || typeof item !== 'object') return false;
-    
-    const status = item.status;
-    console.log(`Checking item ${item.user_id}: status="${status}", type=${typeof status}`);
-    
-    // Cek berbagai kemungkinan penulisan "pending"
-    if (!status) return false;
-    
-    const statusStr = String(status).toLowerCase().trim();
-    return statusStr === 'pending' || 
-           statusStr === 'menunggu' || 
-           statusStr.includes('pending') ||
-           statusStr.includes('menunggu');
-  });
-  
-  console.log("Pending counselors found:", pendingCounselors.length);
-  console.log("Pending details:", pendingCounselors);
-  
-  if (pendingCounselors.length === 0) {
-    console.log("⚠️ No pending counselors found, showing all data for debugging");
-    
-    // UNTUK DEBUG: Tampilkan SEMUA data dulu untuk verifikasi
-    const allCounselors = data.filter(item => item && typeof item === 'object');
-    console.log("All counselors count:", allCounselors.length);
-    
-    if (allCounselors.length > 0) {
-      // Tampilkan semua data (debug mode)
-      let rowsHTML = '';
-      allCounselors.forEach(function(item) {
-        const badgeClass = item.status === 'pending' ? 'badge-pending' : 
-                          item.status === 'approved' ? 'badge-approved' : 
-                          item.status === 'rejected' ? 'badge-rejected' : 'badge-pending';
-        const badgeText = item.status || 'unknown';
-        
-        if (isMobile) {
-          rowsHTML += `
-            <tr>
-              <td>${item.name || '-'}</td>
-              <td>${item.specialization || 'Umum'}</td>
-              <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
-                    <i class="fas fa-check"></i>
-                  </button>
-                  <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          `;
-        } else {
-          rowsHTML += `
-            <tr>
-              <td class="fw-bold">${item.user_id}</td>
-              <td>${item.name}</td>
-              <td>${item.email || '-'}</td>
-              <td>${item.phone || '-'}</td>
-              <td>${item.specialization || 'Umum'}</td>
-              <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
-              <td>
-                <div class="action-buttons">
-                  <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
-                    <i class="fas fa-check"></i>
-                  </button>
-                  <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          `;
-        }
-      });
-      
-      // Tambahkan header debug
-      const debugHeader = `
-        <tr style="background-color: #fff3cd;">
-          <td colspan="${isMobile ? '4' : '7'}" class="text-center">
-            <small class="text-warning">
-              <i class="fas fa-bug"></i> DEBUG MODE: Menampilkan ${allCounselors.length} konselor (semua status)
-            </small>
-          </td>
-        </tr>
-      `;
-      
-      tbody.innerHTML = debugHeader + rowsHTML;
-    } else {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="${isMobile ? '4' : '7'}" class="text-center py-5">
-            <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
-            <p>Tidak ada data konselor</p>
-          </td>
-        </tr>
-      `;
-    }
-    return;
-  }
-  
-  // JIKA ADA PENDING: Tampilkan seperti biasa
   let rowsHTML = '';
-  pendingCounselors.forEach(function(item) {
-    const badgeClass = 'badge-pending';
-    const badgeText = 'Pending';
+  
+  counselors.forEach(function(counselor) {
+    let statusBadge = 'badge-pending';
+    let statusText = 'Pending';
     
-    if (isMobile) {
-      rowsHTML += `
-        <tr>
-          <td>${item.name || '-'}</td>
-          <td>${item.specialization || 'Umum'}</td>
-          <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
-                <i class="fas fa-check"></i>
-              </button>
-              <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
-    } else {
-      rowsHTML += `
-        <tr>
-          <td class="fw-bold">${item.user_id}</td>
-          <td>${item.name}</td>
-          <td>${item.email || '-'}</td>
-          <td>${item.phone || '-'}</td>
-          <td>${item.specialization || 'Umum'}</td>
-          <td><span class="mobile-badge ${badgeClass}">${badgeText}</span></td>
-          <td>
-            <div class="action-buttons">
-              <button class="btn-action btn-approve" onclick="approveCounselor('${item.user_id}')" title="Approve">
-                <i class="fas fa-check"></i>
-              </button>
-              <button class="btn-action btn-reject" onclick="rejectCounselor('${item.user_id}')" title="Reject">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </td>
-        </tr>
-      `;
+    if (counselor.status === 'approved') {
+      statusBadge = 'badge-approved';
+      statusText = 'Approved';
+    } else if (counselor.status === 'rejected') {
+      statusBadge = 'badge-rejected';
+      statusText = 'Rejected';
     }
+    
+    const availabilityBadge = counselor.availability === 'available' ? 'badge-available' : 'badge-busy';
+    const availabilityText = counselor.availability === 'available' ? 'Tersedia' : 'Sibuk';
+    
+    rowsHTML += `
+      <tr>
+        <td>
+          <div style="font-weight: 600;">${counselor.name}</div>
+          <small style="color: var(--text-secondary);">${counselor.user_id}</small>
+        </td>
+        <td>${counselor.specialization || 'Umum'}</td>
+        <td>
+          <span class="mobile-badge ${statusBadge}">${statusText}</span><br>
+          <small style="font-size: 0.8rem; color: var(--text-secondary);">${availabilityText}</small>
+        </td>
+        <td>
+          <div class="mobile-action-buttons">
+            ${counselor.status === 'pending' ? `
+              <button class="mobile-action-btn btn-approve" onclick="updateStatus('${counselor.user_id}', 'approved')" title="Approve">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="mobile-action-btn btn-reject" onclick="updateStatus('${counselor.user_id}', 'rejected')" title="Reject">
+                <i class="fas fa-times"></i>
+              </button>
+            ` : ''}
+            <button class="mobile-action-btn btn-view" onclick="viewDetail('${counselor.user_id}')" title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="mobile-action-btn btn-edit" onclick="editCounselor('${counselor.user_id}')" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
   });
   
   tbody.innerHTML = rowsHTML;
-  console.log("✅ Table updated with", pendingCounselors.length, "pending counselors");
 }
 
-// Approve counselor
-function approveCounselor(userId) {
-  if (confirm(`Setujui konselor ID ${userId}?`)) {
+function updateDesktopTable(counselors) {
+  const tbody = document.getElementById('desktopCounselorsTableBody');
+  
+  if (!counselors || counselors.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" class="text-center py-5">
+          <i class="fas fa-user-md fa-2x text-muted mb-3"></i>
+          <p>Belum ada data konselor</p>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  let rowsHTML = '';
+  
+  counselors.forEach(function(counselor) {
+    let statusBadge = 'badge-pending';
+    let statusText = 'Pending';
+    
+    if (counselor.status === 'approved') {
+      statusBadge = 'badge-approved';
+      statusText = 'Approved';
+    } else if (counselor.status === 'rejected') {
+      statusBadge = 'badge-rejected';
+      statusText = 'Rejected';
+    }
+    
+    const availabilityBadge = counselor.availability === 'available' ? 'badge-available' : 'badge-busy';
+    const availabilityText = counselor.availability === 'available' ? 'Tersedia' : 'Sibuk';
+    
+    rowsHTML += `
+      <tr>
+        <td class="fw-bold">${counselor.user_id}</td>
+        <td>${counselor.name}</td>
+        <td>${counselor.email || '-'}</td>
+        <td>${counselor.phone || '-'}</td>
+        <td>${counselor.specialization || 'Umum'}</td>
+        <td>${counselor.experience || 'N/A'}</td>
+        <td><span class="mobile-badge ${statusBadge}">${statusText}</span></td>
+        <td><span class="mobile-badge ${availabilityBadge}">${availabilityText}</span></td>
+        <td>
+          <div class="desktop-action-buttons">
+            ${counselor.status === 'pending' ? `
+              <button class="mobile-action-btn btn-approve" onclick="updateStatus('${counselor.user_id}', 'approved')" title="Approve">
+                <i class="fas fa-check"></i>
+              </button>
+              <button class="mobile-action-btn btn-reject" onclick="updateStatus('${counselor.user_id}', 'rejected')" title="Reject">
+                <i class="fas fa-times"></i>
+              </button>
+            ` : ''}
+            <button class="mobile-action-btn btn-view" onclick="viewDetail('${counselor.user_id}')" title="Detail">
+              <i class="fas fa-eye"></i>
+            </button>
+            <button class="mobile-action-btn btn-edit" onclick="editCounselor('${counselor.user_id}')" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+  
+  tbody.innerHTML = rowsHTML;
+}
+
+// Filter table
+function filterTable() {
+  let searchInput, statusFilter, availabilityFilter;
+  
+  if (window.innerWidth < 993) {
+    // Mobile
+    searchInput = document.getElementById('mobileSearchInput').value.toLowerCase();
+    statusFilter = document.getElementById('mobileStatusFilter').value;
+    availabilityFilter = document.getElementById('mobileAvailabilityFilter').value;
+  } else {
+    // Desktop
+    searchInput = document.getElementById('desktopSearchInput').value.toLowerCase();
+    statusFilter = document.getElementById('desktopStatusFilter').value;
+    availabilityFilter = document.getElementById('desktopAvailabilityFilter').value;
+  }
+  
+  let filtered = allCounselors;
+  
+  // Apply search filter
+  if (searchInput) {
+    filtered = filtered.filter(c => 
+      c.name.toLowerCase().includes(searchInput) ||
+      (c.email && c.email.toLowerCase().includes(searchInput)) ||
+      (c.phone && c.phone.includes(searchInput)) ||
+      (c.specialization && c.specialization.toLowerCase().includes(searchInput)) ||
+      c.user_id.toLowerCase().includes(searchInput)
+    );
+  }
+  
+  // Apply status filter
+  if (statusFilter) {
+    filtered = filtered.filter(c => c.status === statusFilter);
+  }
+  
+  // Apply availability filter
+  if (availabilityFilter) {
+    filtered = filtered.filter(c => c.availability === availabilityFilter);
+  }
+  
+  displayCounselors(filtered);
+}
+
+// Update status
+function updateStatus(userId, newStatus) {
+  const action = newStatus === 'approved' ? 'menyetujui' : 'menolak';
+  const counselor = allCounselors.find(c => c.user_id === userId);
+  const counselorName = counselor ? counselor.name : 'konselor ini';
+  
+  if (confirm(`Apakah Anda yakin ingin ${action} ${counselorName}?`)) {
     google.script.run
-      .withSuccessHandler(function(res) {
-        if (res.success) {
-          showNotification('Konselor berhasil disetujui', 'success');
-          loadStatistics();
-          loadCounselorsTable();
+      .withSuccessHandler(function(result) {
+        if (result.success) {
+          showNotification(`Konselor berhasil ${newStatus === 'approved' ? 'disetujui' : 'ditolak'}`, 'success');
+          loadCounselors();
         } else {
-          showNotification(res.message || 'Gagal approve konselor', 'error');
+          showNotification(result.message || 'Gagal update status', 'error');
         }
       })
-      .updateCounselorStatus(userId, 'approved');
+      .updateCounselorStatus(userId, newStatus);
   }
 }
 
-// Reject counselor
-function rejectCounselor(userId) {
-  if (confirm(`Tolak konselor ID ${userId}?`)) {
-    google.script.run
-      .withSuccessHandler(function(res) {
-        if (res.success) {
-          showNotification('Konselor berhasil ditolak', 'success');
-          loadStatistics();
-          loadCounselorsTable();
-        } else {
-          showNotification(res.message || 'Gagal reject konselor', 'error');
-        }
-      })
-      .updateCounselorStatus(userId, 'rejected');
+// View detail
+function viewDetail(userId) {
+  const counselor = allCounselors.find(c => c.user_id === userId);
+  
+  if (!counselor) {
+    showNotification('Data konselor tidak ditemukan', 'error');
+    return;
   }
+  
+  const statusText = counselor.status === 'approved' ? 'Disetujui' : counselor.status === 'rejected' ? 'Ditolak' : 'Menunggu';
+  const availabilityText = counselor.availability === 'available' ? 'Tersedia' : 'Sibuk';
+  
+  const detailHTML = `
+    <div class="row">
+      <div class="col-md-4 text-center mb-4">
+        <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--secondary-blue)); margin: 0 auto; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; font-weight: bold;">
+          ${counselor.name.charAt(0).toUpperCase()}
+        </div>
+        <h5 class="mt-3">${counselor.name}</h5>
+        <div class="mb-2">
+          <span class="mobile-badge ${counselor.status === 'approved' ? 'badge-approved' : counselor.status === 'rejected' ? 'badge-rejected' : 'badge-pending'}">${statusText}</span>
+          <span class="mobile-badge ${counselor.availability === 'available' ? 'badge-available' : 'badge-busy'} ms-2">${availabilityText}</span>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>ID Konselor:</strong><br>
+            <span>${counselor.user_id}</span>
+          </div>
+          <div class="col-6">
+            <strong>Spesialisasi:</strong><br>
+            <span>${counselor.specialization || 'Umum'}</span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-6">
+            <strong>Email:</strong><br>
+            <span>${counselor.email || '-'}</span>
+          </div>
+          <div class="col-6">
+            <strong>Telepon:</strong><br>
+            <span>${counselor.phone || '-'}</span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <strong>Pengalaman:</strong><br>
+            <span>${counselor.experience || 'Tidak ada informasi'}</span>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-12">
+            <strong>Catatan:</strong><br>
+            <span>${counselor.notes || 'Tidak ada catatan'}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 text-end">
+      <button class="btn btn-primary me-2" onclick="editCounselor('${userId}')">
+        <i class="fas fa-edit me-1"></i> Edit
+      </button>
+      <button class="btn btn-outline-secondary" data-bs-dismiss="modal">
+        Tutup
+      </button>
+    </div>
+  `;
+  
+  document.getElementById('detailModalBody').innerHTML = detailHTML;
+  const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+  modal.show();
+}
+
+// Edit counselor
+function editCounselor(userId) {
+  showNotification('Fitur edit konselor akan segera tersedia', 'info');
+}
+
+// Add new counselor
+function addNewCounselor() {
+  showNotification('Fitur tambah konselor akan segera tersedia', 'info');
+}
+
+// Export data
+function exportData() {
+  google.script.run
+    .withSuccessHandler(function(csvData) {
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `konselor_data_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showNotification('Data berhasil diexport', 'success');
+    })
+    .exportCounselorsData();
 }
 
 // Show notification
@@ -1913,7 +1757,7 @@ function showNotification(message, type) {
   `;
   notification.innerHTML = `
     <div style="display: flex; align-items: center; gap: 10px;">
-      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'}"></i>
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'warning' ? 'fa-exclamation-triangle' : type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle'}"></i>
       <div>${message}</div>
     </div>
     <button type="button" class="btn-close" data-bs-dismiss="alert" style="position: absolute; top: 15px; right: 15px;"></button>
@@ -1928,7 +1772,7 @@ function showNotification(message, type) {
   }, 5000);
 }
 
-// ========== LOGOUT SIMPLE & EFFECTIVE ==========
+// Logout
 function logout() {
   if (!confirm('Apakah Anda yakin ingin logout?')) {
     return;
@@ -1968,39 +1812,7 @@ function logout() {
     .serverLogout();
 }
 
-// Fungsi helper
-function getRedirectUrl(response) {
-  let redirectUrl = baseUrl || window.location.origin;
-  
-  // Cek dari response server
-  if (response && response.redirectUrl) {
-    redirectUrl = response.redirectUrl;
-  }
-  
-  // Jika baseUrl masih kosong, coba dapatkan dari current URL
-  if (!baseUrl) {
-    const currentUrl = window.location.href;
-    const urlParts = currentUrl.split('?');
-    redirectUrl = urlParts[0];
-  }
-  
-  return redirectUrl;
-}
-
-function performRedirect(url) {
-  try {
-    if (window.top && window.top !== window.self) {
-      window.top.location.href = url;
-    } else {
-      window.location.href = url;
-    }
-  } catch (e) {
-    // Fallback absolute
-    window.open(url, '_top');
-  }
-}
-
-//============= Handle window resize =============
+// Handle window resize
 let resizeTimeout;
 window.addEventListener('resize', function() {
   clearTimeout(resizeTimeout);

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asakur App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      overflow: hidden;
+      background: #f5f5f5;
+    }
+
+    /* Loading Overlay */
+    #loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease;
+    }
+
+    #loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 255, 255, 0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: white;
+      margin-top: 20px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    /* Iframe Container */
+    #iframe-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    #app-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      background: white;
+    }
+
+    /* Error Message */
+    #error-message {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 500px;
+      z-index: 10000;
+    }
+
+    #error-message h2 {
+      color: #e74c3c;
+      margin-bottom: 15px;
+    }
+
+    #error-message p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    #error-message code {
+      display: block;
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 15px 0;
+      font-size: 12px;
+      word-break: break-all;
+      color: #333;
+    }
+
+    #error-message button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 25px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+      margin: 5px;
+    }
+
+    #error-message button:hover {
+      background: #764ba2;
+    }
+
+    .error-details {
+      text-align: left;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .error-details h3 {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .error-details ol {
+      margin-left: 20px;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .error-details li {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div id="loading-overlay">
+    <div class="loader"></div>
+    <div class="loading-text">Memuat aplikasi...</div>
+  </div>
+
+  <!-- Error Message -->
+  <div id="error-message">
+    <h2>⚠️ Gagal Memuat Iframe</h2>
+    <p id="error-description">Google Apps Script memblokir iframe. Silakan periksa konfigurasi deployment Anda.</p>
+    <code id="error-url"></code>
+    
+    <div>
+      <button onclick="reloadApp()">Coba Lagi</button>
+      <button onclick="openInNewTab()">Buka di Tab Baru</button>
+    </div>
+
+    <div class="error-details">
+      <h3>📋 Checklist Perbaikan:</h3>
+      <ol>
+        <li>Pastikan di Code.gs sudah ada: <code>.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)</code></li>
+        <li>Deploy ulang sebagai "New deployment" (bukan "Test deployment")</li>
+        <li>Pilih "Execute as: Me" dan "Who has access: Anyone"</li>
+        <li>Gunakan URL deployment yang baru (bukan URL test)</li>
+        <li>Pastikan tidak ada error di Google Apps Script</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- Iframe Container -->
+  <div id="iframe-container">
+    <iframe 
+      id="app-iframe" 
+      src="" 
+      allowfullscreen
+      allow="geolocation; microphone; camera"
+    ></iframe>
+  </div>
+
+  <script>
+    // ========================================
+    // KONFIGURASI - GANTI DENGAN URL ANDA
+    // ========================================
+    const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx9673OasD9Aq8Cox6ndh8DVr_gy-ThKHTl0Zkr5YxZrJ8jniGFWl0XTh1SvRw4yVlpqw/exec';
+    
+    // ========================================
+    // SCRIPT UTAMA
+    // ========================================
+    const iframe = document.getElementById('app-iframe');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const errorMessage = document.getElementById('error-message');
+    const errorUrl = document.getElementById('error-url');
+    const errorDescription = document.getElementById('error-description');
+    
+    let loadTimeout;
+    let hasLoaded = false;
+
+    // Fungsi untuk mendapatkan parameter dari URL
+    function getUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      return params;
+    }
+
+    // Fungsi untuk membangun URL iframe dengan parameter
+    function buildIframeUrl() {
+      const params = getUrlParams();
+      let url = GOOGLE_APPS_SCRIPT_URL;
+      
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+      
+      return url;
+    }
+
+    // Fungsi untuk memuat iframe
+    function loadIframe() {
+      hasLoaded = false;
+      const iframeUrl = buildIframeUrl();
+      
+      console.log('Loading iframe:', iframeUrl);
+      
+      // Set URL di error message untuk debug
+      errorUrl.textContent = iframeUrl;
+      
+      // Clear previous timeout
+      if (loadTimeout) {
+        clearTimeout(loadTimeout);
+      }
+      
+      // Set iframe source
+      iframe.src = iframeUrl;
+      
+      // Set timeout untuk mendeteksi loading yang terlalu lama
+      loadTimeout = setTimeout(() => {
+        if (!hasLoaded) {
+          console.error('Iframe load timeout');
+          showError('Iframe gagal dimuat dalam waktu 15 detik. Kemungkinan ada masalah dengan Google Apps Script deployment.');
+        }
+      }, 15000);
+    }
+
+    // Event listener ketika iframe selesai dimuat
+    iframe.addEventListener('load', function() {
+      console.log('Iframe loaded successfully');
+      hasLoaded = true;
+      
+      // Clear timeout
+      if (loadTimeout) {
+        clearTimeout(loadTimeout);
+      }
+      
+      // Test jika iframe benar-benar accessible
+      try {
+        // Coba akses iframe (akan error jika blocked)
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+        
+        // Jika berhasil tanpa error, sembunyikan loading
+        setTimeout(() => {
+          loadingOverlay.classList.add('hidden');
+        }, 500);
+        
+      } catch (e) {
+        // Jika error cross-origin, itu normal untuk iframe
+        // Tapi tetap hide loading karena iframe sudah load
+        console.log('Cross-origin (normal):', e.message);
+        setTimeout(() => {
+          loadingOverlay.classList.add('hidden');
+        }, 500);
+      }
+    });
+
+    // Event listener untuk error
+    iframe.addEventListener('error', function(e) {
+      console.error('Iframe error:', e);
+      showError('Iframe error: Google Apps Script tidak dapat dimuat. Periksa console untuk detail.');
+    });
+
+    // Fungsi untuk menampilkan error
+    function showError(message) {
+      hasLoaded = true; // Stop timeout
+      loadingOverlay.classList.add('hidden');
+      errorMessage.style.display = 'block';
+      errorDescription.textContent = message;
+    }
+
+    // Fungsi reload
+    function reloadApp() {
+      errorMessage.style.display = 'none';
+      loadingOverlay.classList.remove('hidden');
+      iframe.src = ''; // Reset iframe
+      setTimeout(() => {
+        loadIframe();
+      }, 100);
+    }
+
+    // Fungsi buka di tab baru
+    function openInNewTab() {
+      const url = buildIframeUrl();
+      window.open(url, '_blank');
+    }
+
+    // Listen untuk messages dari iframe (untuk komunikasi)
+    window.addEventListener('message', function(event) {
+      // Log semua messages untuk debugging
+      console.log('Message from iframe:', event.data);
+      
+      // Validasi origin (uncomment jika perlu)
+      // if (!event.origin.includes('script.google.com')) return;
+      
+      // Handle custom messages dari Google Apps Script
+      if (event.data && event.data.type) {
+        switch(event.data.type) {
+          case 'ready':
+            console.log('Iframe is ready');
+            loadingOverlay.classList.add('hidden');
+            break;
+          case 'navigate':
+            // Handle navigasi dari dalam iframe
+            console.log('Navigate to:', event.data.page);
+            break;
+        }
+      }
+    });
+
+    // Monitor browser back/forward
+    window.addEventListener('popstate', function(event) {
+      console.log('Popstate detected');
+      loadIframe();
+    });
+
+    // Deteksi network errors
+    window.addEventListener('online', function() {
+      console.log('Back online');
+      if (!hasLoaded) {
+        reloadApp();
+      }
+    });
+
+    window.addEventListener('offline', function() {
+      console.log('Gone offline');
+      showError('Tidak ada koneksi internet. Periksa koneksi Anda.');
+    });
+
+    // Inisialisasi
+    document.addEventListener('DOMContentLoaded', function() {
+      loadIframe();
+    });
+
+    // Tambahan: Deteksi jika iframe di-block oleh CSP atau X-Frame-Options
+    iframe.addEventListener('securitypolicyviolation', function(e) {
+      console.error('Security policy violation:', e);
+      showError('Iframe diblokir oleh security policy. Pastikan Google Apps Script sudah di-deploy dengan benar dengan setXFrameOptionsMode(ALLOWALL).');
+    });
+
+    // Console info
+    console.log('%c🚀 Asakur App Loaded', 'color: #667eea; font-size: 16px; font-weight: bold;');
+    console.log('Iframe URL:', GOOGLE_APPS_SCRIPT_URL);
+    console.log('Current URL:', window.location.href);
+    console.log('User Agent:', navigator.userAgent);
+  </script>
+</body>
+</html>

@@ -1234,65 +1234,6 @@
         </table>
       </div>
     </div>
-
-    <!-- Tambahkan di bagian bawah sebelum </main> -->
-    <div class="card border-warning mt-3">
-      <div class="card-header bg-warning text-dark">
-        <h6 class="mb-0"><i class="fas fa-tools"></i> System Debug Panel</h6>
-      </div>
-      <div class="card-body">
-        <div class="row g-2">
-          <div class="col-md-3">
-            <button class="btn btn-sm btn-outline-warning w-100" onclick="checkAppPermissions()">
-              <i class="fas fa-shield-alt"></i> Cek Permission
-            </button>
-          </div>
-          <div class="col-md-3">
-            <button class="btn btn-sm btn-outline-info w-100" onclick="testConnection()">
-              <i class="fas fa-wifi"></i> Test Koneksi
-            </button>
-          </div>
-          <div class="col-md-3">
-            <button class="btn btn-sm btn-outline-primary w-100" onclick="loadActualSessions()">
-              <i class="fas fa-database"></i> Load Data
-            </button>
-          </div>
-          <div class="col-md-3">
-            <button class="btn btn-sm btn-outline-secondary w-100" onclick="loadTestData()">
-              <i class="fas fa-vial"></i> Data Test
-            </button>
-          </div>
-        </div>
-        <div class="mt-2">
-          <small class="text-muted" id="debugStatus">Status: Ready</small>
-        </div>
-      </div>
-    </div>
-
-    <script>
-    // Fungsi helper untuk debug
-    function testConnection() {
-      document.getElementById('debugStatus').textContent = 'Status: Testing connection...';
-      
-      google.script.run
-        .withSuccessHandler(function(response) {
-          try {
-            var result = JSON.parse(response);
-            document.getElementById('debugStatus').textContent = 
-              'Status: ✅ Connected - ' + result.message;
-            console.log('Connection test:', result);
-          } catch (e) {
-            document.getElementById('debugStatus').textContent = 
-              'Status: Connected (raw: ' + response.substring(0, 50) + '...)';
-          }
-        })
-        .withFailureHandler(function(error) {
-          document.getElementById('debugStatus').textContent = 
-            'Status: ❌ Connection failed: ' + error.message;
-        })
-        .testConnection();
-    }
-    </script>
   </main>
   
   <!-- Mobile Bottom Navigation -->
@@ -1595,6 +1536,38 @@ function tryProxyImage(container, url, size) {
   img.src = proxyUrl;
 }
 
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Jadwal & Laporan initializing...');
+  
+  // Force mobile view if needed
+  forceMobileViewIfNeeded();
+  
+  // Load logos
+  loadLogos();
+  
+  // Get base URL
+  google.script.run
+    .withSuccessHandler(function(url) {
+      baseUrl = url;
+      console.log('Base URL loaded:', baseUrl);
+      
+      // Load session and user info
+      loadUserInfo();
+      
+      // Load sessions data
+      loadSessions();
+      
+      // Setup menu
+      setupMenu();
+    })
+    .withFailureHandler(function(error) {
+      console.error('Error loading base URL:', error);
+      showNotification('Gagal memuat konfigurasi sistem', 'error');
+    })
+    .getWebAppUrl();
+});
+
 // Force mobile view if needed
 function forceMobileViewIfNeeded() {
   const isMobileDevice = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
@@ -1720,411 +1693,27 @@ function navigateToPage(pageName) {
 
 // Load sessions
 function loadSessions() {
-  console.log('🚀 loadSessions() called');
-  
-  // Show loading
-  showLoadingState();
-  
-  // Test connection dulu
-  console.log('Testing connection...');
-  
   google.script.run
-    .withSuccessHandler(function(response) {
-      console.log('Connection test response:', response);
-      
-      try {
-        var result = JSON.parse(response);
-        
-        if (result.success) {
-          console.log('✅ Connection successful');
-          loadActualSessions();
-        } else {
-          console.error('❌ Connection test failed:', result.error);
-          showErrorState('Koneksi gagal: ' + (result.error || 'Unknown error'));
-        }
-      } catch (e) {
-        console.error('Error parsing connection test:', e);
-        // Lanjut langsung ke load sessions
-        loadActualSessions();
-      }
+    .withSuccessHandler(function(data) {
+      allSessions = data;
+      updateStatistics(data);
+      renderCalendar();
+      displaySessions(data);
     })
     .withFailureHandler(function(error) {
-      console.error('Connection test failed:', error);
-      showErrorState('Tidak dapat terhubung ke server: ' + error.message);
-    })
-    .testConnection();
-}
-
-// Fungsi untuk load sessions sebenarnya
-function loadActualSessions() {
-  console.log('Loading actual sessions...');
-  
-  google.script.run
-    .withSuccessHandler(function(result) {
-      console.log('getAllSessions result type:', typeof result);
-      console.log('Is array?', Array.isArray(result));
-      console.log('Result:', result);
-      
-      if (Array.isArray(result)) {
-        allSessions = result;
-        console.log(`✅ Success! Loaded ${result.length} sessions from database`);
-        
-        updateStatistics(result);
-        renderCalendar();
-        displaySessions(result);
-        
-        // Tampilkan notifikasi
-        if (result.length > 0) {
-          showNotification(`Berhasil memuat ${result.length} sesi dari database`, 'success');
-        } else {
-          showNotification('Database sesi kosong', 'info');
-        }
-      } else {
-        console.warn('Unexpected response format:', result);
-        showNoDataState();
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error('getAllSessions failed:', error);
-      showErrorState('Gagal memuat data: ' + error.message);
+      console.error('Error loading sessions:', error);
+      const errorHTML = `
+        <tr>
+          <td colspan="7" class="text-center py-5 text-danger">
+            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+            <p>Gagal memuat data sesi</p>
+          </td>
+        </tr>
+      `;
+      document.getElementById('mobileSessionsTableBody').innerHTML = errorHTML;
+      document.getElementById('desktopSessionsTableBody').innerHTML = errorHTML;
     })
     .getAllSessions();
-}
-
-// Fungsi untuk debugging - hanya tampilkan jika ada masalah
-function debugSessions() {
-  console.log('Debugging sessions...');
-  
-  google.script.run
-    .withSuccessHandler(function(result) {
-      console.log('Debug result:', result);
-      
-      if (result && result.success && result.data) {
-        allSessions = result.data;
-        console.log(`✅ Debug loaded ${result.data.length} sessions`);
-        
-        updateStatistics(result.data);
-        renderCalendar();
-        displaySessions(result.data);
-        
-        showNotification('Menggunakan data debug', 'warning');
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error('Debug failed:', error);
-      showNotification('Debug juga gagal: ' + error.message, 'error');
-    })
-    .debugGetAllSessions();
-}
-
-// Tambahkan fungsi untuk cek permission
-function checkAppPermissions() {
-  console.log('Checking permissions...');
-  
-  google.script.run
-    .withSuccessHandler(function(response) {
-      try {
-        var result = JSON.parse(response);
-        console.log('Permissions:', result);
-        
-        let message = '=== PERMISSION CHECK ===\n\n';
-        message += 'User: ' + (result.permissions?.user || 'Unknown') + '\n';
-        message += 'Spreadsheet Access: ' + (result.permissions?.spreadsheet ? '✅' : '❌') + '\n';
-        message += 'Drive Access: ' + (result.permissions?.drive ? '✅' : '❌') + '\n';
-        message += 'Script ID: ' + (result.environment?.scriptId || 'Unknown') + '\n';
-        
-        alert(message);
-      } catch (e) {
-        console.error('Error parsing permission check:', e);
-        alert('Error checking permissions');
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error('Permission check failed:', error);
-      alert('Cannot check permissions: ' + error.message);
-    })
-    .checkPermissions();
-}
-
-// Fungsi untuk cek database
-function checkAndInitializeDatabase() {
-  console.log('Checking database...');
-  
-  google.script.run
-    .withSuccessHandler(function(result) {
-      console.log('Database check result:', result);
-      
-      if (result && result.success) {
-        // Tampilkan hasil
-        let message = `=== DATABASE CHECK ===\n\n`;
-        message += `Sheet: ${result.sheetName}\n`;
-        message += `Total Rows: ${result.dimensions.rows}\n`;
-        message += `Data Rows: ${result.dimensions.dataRows}\n`;
-        message += `Columns: ${result.dimensions.cols}\n\n`;
-        message += `Headers: ${result.headers.join(', ')}\n\n`;
-        
-        if (result.sampleData && result.sampleData.length > 0) {
-          message += `Sample Data:\n`;
-          result.sampleData.forEach(function(row) {
-            message += `Row ${row.row}: ${JSON.stringify(row.data)}\n`;
-          });
-        }
-        
-        alert(message);
-        
-        // Jika ada data, load ulang
-        if (result.dimensions.dataRows > 0) {
-          showNotification(`Database ditemukan dengan ${result.dimensions.dataRows} data sesi`, 'success');
-          loadSessions();
-        } else {
-          if (confirm('Database kosong. Buat data contoh?')) {
-            createSampleData();
-          }
-        }
-      } else {
-        let errorMsg = 'Gagal memeriksa database';
-        if (result && result.error) {
-          errorMsg += ': ' + result.error;
-        }
-        showNotification(errorMsg, 'error');
-      }
-    })
-    .withFailureHandler(function(error) {
-      console.error('Database check failed:', error);
-      showNotification('Tidak dapat mengakses database: ' + error.message, 'error');
-    })
-    .checkSessionsSheet();
-}
-
-// Fungsi untuk cek sheet langsung
-function checkSheetData() {
-  console.log('Checking sheet data...');
-  
-  google.script.run
-    .withSuccessHandler(function(result) {
-      console.log('Sheet check result:', result);
-      
-      let message = `Sheet: ${result.sheetName}\n`;
-      message += `Rows: ${result.dimensions.rows}, Cols: ${result.dimensions.cols}\n`;
-      message += `Data rows: ${result.dimensions.dataRows}\n\n`;
-      message += `Headers: ${result.headers.join(', ')}\n\n`;
-      
-      if (result.sampleData.length > 0) {
-        message += `Sample data (first ${result.sampleData.length} rows):\n`;
-        result.sampleData.forEach(function(row) {
-          message += `Row ${row.row}: ${JSON.stringify(row.data)}\n`;
-        });
-      } else {
-        message += 'No data found in sheet\n';
-      }
-      
-      // Show in alert
-      alert(message);
-      
-      // Also log to console
-      console.log('Sheet check details:', result);
-    })
-    .withFailureHandler(function(error) {
-      console.error('Sheet check failed:', error);
-      alert('Error checking sheet: ' + error.message);
-    })
-    .checkSessionsSheet();
-}
-
-// Tambahkan fungsi helper untuk loading state
-function showLoadingState() {
-  const loadingHTML = `
-    <tr>
-      <td colspan="7" class="text-center py-5">
-        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
-        <h5 class="mt-3">Memuat data sesi...</h5>
-        <p class="text-muted">Silakan tunggu</p>
-      </td>
-    </tr>
-  `;
-  
-  document.getElementById('mobileSessionsTableBody').innerHTML = loadingHTML;
-  document.getElementById('desktopSessionsTableBody').innerHTML = loadingHTML;
-}
-
-function hideLoadingState() {
-  // Loading state akan diganti oleh displaySessions
-}
-
-// Update showNoDataState untuk tombol yang benar
-function showNoDataState() {
-  const noDataHTML = `
-    <tr>
-      <td colspan="7" class="text-center py-5">
-        <i class="fas fa-database fa-3x text-muted mb-3"></i>
-        <h5>Database Kosong</h5>
-        <p class="text-muted">Tidak ada data sesi konseling.</p>
-        <div class="mt-3">
-          <button class="btn btn-primary me-2" onclick="checkAndInitializeDatabase()">
-            <i class="fas fa-search me-1"></i>Cek Database
-          </button>
-          <button class="btn btn-outline-primary" onclick="createSampleData()">
-            <i class="fas fa-plus me-1"></i>Buat Data Contoh
-          </button>
-        </div>
-      </td>
-    </tr>
-  `;
-  
-  document.getElementById('mobileSessionsTableBody').innerHTML = noDataHTML;
-  document.getElementById('desktopSessionsTableBody').innerHTML = noDataHTML;
-  
-  updateStatistics([]);
-}
-
-function showErrorState(message) {
-  const errorHTML = `
-    <tr>
-      <td colspan="7" class="text-center py-5 text-danger">
-        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
-        <h5>Error Memuat Data</h5>
-        <p>${message}</p>
-        <div class="mt-3">
-          <button class="btn btn-warning me-2" onclick="loadSessions()">
-            <i class="fas fa-redo me-1"></i>Coba Lagi
-          </button>
-          <button class="btn btn-info me-2" onclick="loadTestData()">
-            <i class="fas fa-vial me-1"></i>Gunakan Data Test
-          </button>
-          <button class="btn btn-outline-secondary" onclick="checkSheetData()">
-            <i class="fas fa-search me-1"></i>Debug Database
-          </button>
-        </div>
-      </td>
-    </tr>
-  `;
-  
-  document.getElementById('mobileSessionsTableBody').innerHTML = errorHTML;
-  document.getElementById('desktopSessionsTableBody').innerHTML = errorHTML;
-  
-  // Update stats to zero
-  updateStatistics([]);
-}
-
-// Update fungsi createSampleData:
-function createSampleData() {
-  if (!confirm('Buat data contoh untuk sesi konseling? Data akan ditambahkan ke database.')) {
-    return;
-  }
-  
-  showLoading(true);
-  
-  google.script.run
-    .withSuccessHandler(function(result) {
-      showLoading(false);
-      console.log('Sample data result:', result);
-      
-      if (result && result.success) {
-        showNotification('Data contoh berhasil dibuat!', 'success');
-        
-        // Reload data after 1 second
-        setTimeout(function() {
-          loadSessions();
-        }, 1000);
-      } else {
-        showNotification(result.error || 'Gagal membuat data contoh', 'error');
-      }
-    })
-    .withFailureHandler(function(error) {
-      showLoading(false);
-      console.error('Error creating sample data:', error);
-      showNotification('Error: ' + error.message, 'error');
-    })
-    .createSampleSessionsData();
-}
-
-// Perbaiki fungsi updateStatistics untuk handle null/undefined:
-function updateStatistics(data) {
-  console.log('Updating statistics with data:', data);
-  
-  // Handle null/undefined
-  if (!data) {
-    data = [];
-  }
-  
-  // Pastikan data adalah array
-  if (!Array.isArray(data)) {
-    console.warn('updateStatistics: data is not an array:', data);
-    data = [];
-  }
-  
-  // Hitung statistik dengan null safety
-  const total = data.length || 0;
-  const scheduled = data.filter(s => s && s.status === 'scheduled').length || 0;
-  const completed = data.filter(s => s && s.status === 'completed').length || 0;
-  const cancelled = data.filter(s => s && s.status === 'cancelled').length || 0;
-  const videoCall = data.filter(s => s && s.session_type === 'video_call').length || 0;
-  const chat = data.filter(s => s && s.session_type === 'chat').length || 0;
-  const inPerson = data.filter(s => s && s.session_type === 'in_person').length || 0;
-  
-  console.log('Stats calculated:', { total, scheduled, completed, cancelled, videoCall, chat, inPerson });
-  
-  // Update mobile elements dengan null safety
-  const updateElementSafely = (id, value) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = value;
-    } else {
-      console.warn(`Element with id ${id} not found`);
-    }
-  };
-  
-  // Mobile elements
-  updateElementSafely('mobileTotalSessions', total);
-  updateElementSafely('mobileScheduledSessions', scheduled);
-  updateElementSafely('mobileCompletedSessions', completed);
-  updateElementSafely('mobileCancelledSessions', cancelled);
-  updateElementSafely('mobileVideoCallCount', videoCall);
-  updateElementSafely('mobileChatCount', chat);
-  updateElementSafely('mobileInPersonCount', inPerson);
-  
-  // Desktop elements
-  updateElementSafely('desktopTotalSessions', total);
-  updateElementSafely('desktopScheduledSessions', scheduled);
-  updateElementSafely('desktopCompletedSessions', completed);
-  updateElementSafely('desktopCancelledSessions', cancelled);
-  updateElementSafely('desktopVideoCallCount', videoCall);
-  updateElementSafely('desktopChatCount', chat);
-  updateElementSafely('desktopInPersonCount', inPerson);
-  
-  // Update charts dengan null safety
-  try {
-    updateMobileChart(scheduled, completed, cancelled);
-  } catch (chartError) {
-    console.error('Error updating mobile chart:', chartError);
-  }
-  
-  try {
-    updateDesktopChart(scheduled, completed, cancelled);
-  } catch (chartError) {
-    console.error('Error updating desktop chart:', chartError);
-  }
-}
-
-// Helper function untuk update element
-function updateElement(id, value) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = value;
-  }
-}
-
-// Tambahkan fungsi untuk loading indicator
-function showLoading(show) {
-  const modal = document.getElementById('loadingModal');
-  if (modal) {
-    const bsModal = new bootstrap.Modal(modal);
-    if (show) {
-      bsModal.show();
-    } else {
-      bsModal.hide();
-    }
-  }
 }
 
 // Update statistics
@@ -2297,25 +1886,15 @@ function displaySessions(sessions) {
   updateDesktopTable(sessions);
 }
 
-// Perbaiki fungsi updateMobileTable dan updateDesktopTable:
 function updateMobileTable(sessions) {
   const tbody = document.getElementById('mobileSessionsTableBody');
   
-  if (!tbody) {
-    console.error('Mobile table body not found');
-    return;
-  }
-  
-  // Handle null/undefined/empty
-  if (!sessions || !Array.isArray(sessions) || sessions.length === 0) {
+  if (!sessions || sessions.length === 0) {
     tbody.innerHTML = `
       <tr>
         <td colspan="4" class="text-center py-5">
           <i class="fas fa-calendar-times fa-2x text-muted mb-3"></i>
           <p>Belum ada data sesi</p>
-          <button class="btn btn-sm btn-primary mt-2" onclick="createSampleData()">
-            <i class="fas fa-plus me-1"></i>Buat Data Contoh
-          </button>
         </td>
       </tr>
     `;
@@ -2323,56 +1902,39 @@ function updateMobileTable(sessions) {
   }
   
   let rowsHTML = '';
+  const recentSessions = sessions.slice(0, 10); // Show only 10 recent sessions on mobile
   
-  sessions.forEach(function(session, index) {
-    // Null safety untuk session object
-    if (!session) return;
-    
-    const sessionId = session.session_id || `SES${index + 1}`;
-    const status = session.status || 'scheduled';
-    const sessionType = session.session_type || 'video_call';
-    const studentName = session.student_name || 'Mahasiswa';
-    
+  recentSessions.forEach(function(session) {
     let statusBadge = 'badge-scheduled';
     let statusText = 'Terjadwal';
     
-    if (status === 'completed') {
+    if (session.status === 'completed') {
       statusBadge = 'badge-completed';
       statusText = 'Selesai';
-    } else if (status === 'cancelled') {
+    } else if (session.status === 'cancelled') {
       statusBadge = 'badge-cancelled';
       statusText = 'Dibatalkan';
     }
     
-    // Format tanggal dengan null safety
-    let formattedDate = 'Tanggal tidak tersedia';
-    if (session.scheduled_date) {
-      try {
-        const date = new Date(session.scheduled_date);
-        if (!isNaN(date.getTime())) {
-          formattedDate = date.toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
-        }
-      } catch (dateError) {
-        console.error('Error formatting date:', dateError);
-      }
-    }
+    const date = session.scheduled_date ? new Date(session.scheduled_date) : new Date();
+    const formattedDate = date.toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
     
     rowsHTML += `
       <tr>
         <td>
           <div style="font-weight: 600;">${formattedDate}</div>
-          <small style="color: var(--text-secondary);">${sessionId}</small>
+          <small style="color: var(--text-secondary);">${session.session_id}</small>
         </td>
-        <td>${studentName}</td>
+        <td>${session.student_name || 'Mahasiswa'}</td>
         <td><span class="mobile-badge ${statusBadge}">${statusText}</span></td>
         <td>
           <div class="mobile-action-buttons">
-            <button class="mobile-action-btn btn-view" onclick="viewSessionDetail('${sessionId}')" title="Detail">
+            <button class="mobile-action-btn btn-view" onclick="viewSessionDetail('${session.session_id}')" title="Detail">
               <i class="fas fa-eye"></i>
             </button>
           </div>
@@ -2383,50 +1945,6 @@ function updateMobileTable(sessions) {
   
   tbody.innerHTML = rowsHTML;
 }
-
-// Tambahkan logging untuk debugging di initialization:
-document.addEventListener('DOMContentLoaded', function() {
-  console.log('Jadwal & Laporan initializing...');
-  
-  // Force mobile view if needed
-  forceMobileViewIfNeeded();
-  
-  // Load logos
-  loadLogos();
-  
-  // Get base URL
-  google.script.run
-    .withSuccessHandler(function(url) {
-      baseUrl = url;
-      console.log('Base URL loaded:', baseUrl);
-      
-      // Setup menu first
-      setupMenu();
-      
-      // Load session and user info
-      loadUserInfo();
-      
-      // Load sessions data (with retry mechanism)
-      setTimeout(function() {
-        loadSessions();
-      }, 1000);
-      
-    })
-    .withFailureHandler(function(error) {
-      console.error('Error loading base URL:', error);
-      
-      // Fallback URL
-      baseUrl = window.location.href.split('?')[0];
-      console.log('Using fallback base URL:', baseUrl);
-      
-      setupMenu();
-      loadUserInfo();
-      setTimeout(function() {
-        loadSessions();
-      }, 1000);
-    })
-    .getWebAppUrl();
-});
 
 function updateDesktopTable(sessions) {
   const tbody = document.getElementById('desktopSessionsTableBody');
